@@ -1,0 +1,4 @@
+language: csharp
+solution: DeveImageOptimizer.sln
+notifications:
+  email: false
