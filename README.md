@@ -19,4 +19,6 @@ This tool has some advantages/differences over the GUI for FileOptimizer:
 | 4 | If you select a folder it will only take PNG's and JPEG's from that folder to optimize, no other formats will be included | 0% |
 | 5 | Automated builds / release | Travis-CI: 50%, AppVeyor: 100% |
 
+## Screenshot
+
 ![Screenshot](Screenshot.png)
