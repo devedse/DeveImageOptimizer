@@ -1,0 +1,44 @@
+﻿<Window x:Class="DeveImageOptimizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeveImageOptimizer"
+        mc:Ignorable="d"
+        Title="DeveImageOptimizer" Height="350" Width="525">
+    <Grid>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="Main"  DataContext="{Binding Main, Source={StaticResource Locator}}">
+                <StackPanel Background="AliceBlue">
+                    <Label Content="Path:"></Label>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding ProcessingStateData.ProcessingDirectory, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Button Grid.Column="1" Content="Browse"></Button>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Configuration"  DataContext="{Binding Settings, Source={StaticResource Locator}}">
+                <Grid Background="AliceBlue">
+                    <ScrollViewer Margin="0,0,0,35">
+                        <StackPanel>
+                            <Label Content="FileOptimizer Path:"></Label>
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Text="{Binding UserSettingsData.FileOptimizerPath, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                <Button Grid.Column="1" Content="Browse"></Button>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Button Content="Save" Height="35" VerticalAlignment="Bottom" Command="{Binding SaveCommand}" IsEnabled="{Binding UserSettingsData.IsChanged}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
