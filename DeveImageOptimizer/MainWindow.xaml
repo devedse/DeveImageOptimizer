@@ -9,9 +9,16 @@
     <Grid>
         <TabControl x:Name="tabControl">
             <TabItem Header="Main"  DataContext="{Binding Main, Source={StaticResource Locator}}">
-                <StackPanel Background="AliceBlue">
-                    <Label Content="Path:"></Label>
-                    <Grid HorizontalAlignment="Stretch">
+                <Grid Background="AliceBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="0" Content="Path:"></Label>
+                    <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
@@ -19,7 +26,16 @@
                         <TextBox Grid.Column="0" Text="{Binding ProcessingStateData.ProcessingDirectory, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         <Button Grid.Column="1" Content="Browse"></Button>
                     </Grid>
-                </StackPanel>
+                    <Button Grid.Row="2" Content="Go" Command="{Binding GoCommand}"/>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox Grid.Column="0" DataContext="{Binding ProcessingStateData.ProcessedFiles}"></ListBox>
+                        <ListBox Grid.Column="1" DataContext="{Binding ProcessingStateData.FailedFiles}"></ListBox>
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="Configuration"  DataContext="{Binding Settings, Source={StaticResource Locator}}">
                 <Grid Background="AliceBlue">

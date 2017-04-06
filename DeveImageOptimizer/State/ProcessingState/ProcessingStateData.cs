@@ -1,6 +1,7 @@
 ﻿using DeveImageOptimizer.State;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace DeveImageOptimizer.ProcessingState
@@ -9,8 +10,8 @@ namespace DeveImageOptimizer.ProcessingState
     public class ProcessingStateData : INotifyPropertyChanged
     {
         public string ProcessingDirectory { get; set; } = string.Empty;
-        public List<string> ProcessedFiles { get; set; } = new List<string>();
-        public List<string> FailedFiles { get; set; } = new List<string>();
+        public ObservableCollection<string> ProcessedFiles { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> FailedFiles { get; set; } = new ObservableCollection<string>();
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -1,6 +1,12 @@
+using DeveImageOptimizer.FileProcessing;
+using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ProcessingState;
 using DeveImageOptimizer.State;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DeveImageOptimizer.ViewModel
 {
@@ -25,11 +31,22 @@ namespace DeveImageOptimizer.ViewModel
             ProcessingStateData = StaticState.ProcessingStateManager.State;
 
             ProcessingStateData.PropertyChanged += ProcessingStateData_PropertyChanged;
+
+            GoCommand = new RelayCommand(async () => await GoCommandImp(), () => true);
         }
 
         private void ProcessingStateData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             StaticState.ProcessingStateManager.Save();
+        }
+
+        public ICommand GoCommand { get; private set; }
+        private async Task GoCommandImp()
+        {
+            var fileOptimizer = new FileOptimizerProcessor(StaticState.UserSettingsManager.State.FileOptimizerPath, Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, Constants.TempDirectoryName));
+            var fileProcessor = new FileProcessor(fileOptimizer, ProcessingStateData);
+            await fileProcessor.ProcessDirectory(ProcessingStateData.ProcessingDirectory);
+
         }
     }
 }
