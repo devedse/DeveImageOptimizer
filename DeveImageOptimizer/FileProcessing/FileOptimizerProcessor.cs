@@ -29,7 +29,10 @@ namespace DeveImageOptimizer.FileProcessing
 
             await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
 
-            var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath);
+            var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
+            {
+                CreateNoWindow = true
+            };
             await ProcessRunner.RunProcessAsync(processStartInfo);
 
             return await ImageComparer.AreImagesEqualAsync(fileToOptimize, tempFilePath);

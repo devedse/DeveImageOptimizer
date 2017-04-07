@@ -46,7 +46,6 @@ namespace DeveImageOptimizer.ViewModel
             var fileOptimizer = new FileOptimizerProcessor(StaticState.UserSettingsManager.State.FileOptimizerPath, Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, Constants.TempDirectoryName));
             var fileProcessor = new FileProcessor(fileOptimizer, ProcessingStateData);
             await fileProcessor.ProcessDirectory(ProcessingStateData.ProcessingDirectory);
-
         }
     }
 }

@@ -16,7 +16,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Label Grid.Row="0" Content="Path:"></Label>
                     <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
@@ -32,8 +32,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Grid.Column="0" DataContext="{Binding ProcessingStateData.ProcessedFiles}"></ListBox>
-                        <ListBox Grid.Column="1" DataContext="{Binding ProcessingStateData.FailedFiles}"></ListBox>
+                        <ListBox Grid.Column="0" ItemsSource="{Binding ProcessingStateData.ProcessedFiles}"></ListBox>
+                        <ListBox Grid.Column="1" ItemsSource="{Binding ProcessingStateData.FailedFiles}"></ListBox>
                     </Grid>
                 </Grid>
             </TabItem>
