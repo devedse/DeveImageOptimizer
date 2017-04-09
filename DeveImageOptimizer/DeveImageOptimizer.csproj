@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C9030AAD-A097-4494-89D5-B8E16FD1CB62}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>DeveImageOptimizer</RootNamespace>
     <AssemblyName>DeveImageOptimizer</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
@@ -34,6 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -83,6 +86,7 @@
     <Compile Include="Helpers\AsyncFileHelper.cs" />
     <Compile Include="Helpers\FolderHelperMethods.cs" />
     <Compile Include="Helpers\ImageComparer.cs" />
+    <Compile Include="Helpers\LockImage.cs" />
     <Compile Include="Helpers\ProcessRunner.cs" />
     <Compile Include="State\IChangable.cs" />
     <Compile Include="State\ProcessingState\ProcessingStateData.cs" />

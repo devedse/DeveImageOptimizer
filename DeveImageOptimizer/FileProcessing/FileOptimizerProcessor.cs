@@ -33,9 +33,32 @@ namespace DeveImageOptimizer.FileProcessing
             {
                 CreateNoWindow = true
             };
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
             await ProcessRunner.RunProcessAsync(processStartInfo);
 
-            return await ImageComparer.AreImagesEqualAsync(fileToOptimize, tempFilePath);
+            var imagesEqual = await ImageComparer.AreImagesEqualAsync2(fileToOptimize, tempFilePath);
+
+            if (imagesEqual)
+            {
+                await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
+                File.Delete(tempFilePath);
+            }
+            else
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
+                var fileExtension = Path.GetExtension(fileToOptimize);
+                var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
+
+                var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
+                var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
+
+                //Write a file as Blah_FAILED.png
+                await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
+                File.Delete(tempFilePath);
+            }
+
+            return imagesEqual;
         }
     }
 }
