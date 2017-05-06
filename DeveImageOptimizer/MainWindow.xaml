@@ -23,7 +23,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding ProcessingStateData.ProcessingDirectory, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBox Grid.Column="0" Text="{Binding WindowState.ProcessingDirectory, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         <Button Grid.Column="1" Content="Browse"></Button>
                     </Grid>
                     <Button Grid.Row="2" Content="Go" Command="{Binding GoCommand}"/>
@@ -32,8 +32,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Grid.Column="0" ItemsSource="{Binding ProcessingStateData.ProcessedFiles}"></ListBox>
-                        <ListBox Grid.Column="1" ItemsSource="{Binding ProcessingStateData.FailedFiles}"></ListBox>
+                        <ListBox Grid.Column="0" ItemsSource="{Binding FilesProcessingState.ProcessedFiles}"></ListBox>
+                        <ListBox Grid.Column="1" ItemsSource="{Binding FilesProcessingState.FailedFiles}"></ListBox>
                     </Grid>
                 </Grid>
             </TabItem>

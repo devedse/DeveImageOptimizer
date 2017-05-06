@@ -56,8 +56,10 @@ namespace DeveImageOptimizer.Helpers
             bitmapData = source.LockBits(rect, ImageLockMode.ReadWrite, source.PixelFormat);
 
             // create byte array to copy pixel values
-            int step = (int)(Depth / 8.0f + 1.0f);
-            Pixels = new byte[pixelCount * step];
+            // This was the old shitty code from the internet (which doesn't work with Depth < 8):
+            // int step = Depth / 8;
+            // This is correct:
+            Pixels = new byte[bitmapData.Stride * Height];
             Iptr = bitmapData.Scan0;
 
             // Copy data from pointer to array

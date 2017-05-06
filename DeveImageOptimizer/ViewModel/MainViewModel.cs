@@ -1,7 +1,7 @@
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.ProcessingState;
 using DeveImageOptimizer.State;
+using DeveImageOptimizer.State.MainWindowState;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.IO;
@@ -24,28 +24,36 @@ namespace DeveImageOptimizer.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        public ProcessingStateData ProcessingStateData { get; set; }
+        public WindowState WindowState { get; set; }
+        public FilesProcessingState FilesProcessingState { get; set; }
 
         public MainViewModel()
         {
-            ProcessingStateData = StaticState.ProcessingStateManager.State;
+            WindowState = StaticState.WindowStateManager.State;
+            FilesProcessingState = StaticState.FilesProcessingStateManager.State;
 
-            ProcessingStateData.PropertyChanged += ProcessingStateData_PropertyChanged;
+            WindowState.PropertyChanged += ProcessingStateData_PropertyChanged;
+            FilesProcessingState.PropertyChanged += FilesProcessingState_PropertyChanged;
 
             GoCommand = new RelayCommand(async () => await GoCommandImp(), () => true);
         }
 
+        private void FilesProcessingState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            StaticState.FilesProcessingStateManager.Save();
+        }
+
         private void ProcessingStateData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            StaticState.ProcessingStateManager.Save();
+            StaticState.WindowStateManager.Save();
         }
 
         public ICommand GoCommand { get; private set; }
         private async Task GoCommandImp()
         {
             var fileOptimizer = new FileOptimizerProcessor(StaticState.UserSettingsManager.State.FileOptimizerPath, Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, Constants.TempDirectoryName));
-            var fileProcessor = new FileProcessor(fileOptimizer, ProcessingStateData);
-            await fileProcessor.ProcessDirectory(ProcessingStateData.ProcessingDirectory);
+            var fileProcessor = new FileProcessor(fileOptimizer, FilesProcessingState);
+            await fileProcessor.ProcessDirectory(WindowState.ProcessingDirectory);
         }
     }
 }

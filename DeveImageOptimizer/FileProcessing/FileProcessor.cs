@@ -1,4 +1,4 @@
-﻿using DeveImageOptimizer.ProcessingState;
+﻿using DeveImageOptimizer.State.MainWindowState;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +11,9 @@ namespace DeveImageOptimizer.FileProcessing
     public class FileProcessor
     {
         private FileOptimizerProcessor _fileOptimizer;
-        private ProcessingStateData _processingStateData;
+        private FilesProcessingState _processingStateData;
 
-        public FileProcessor(FileOptimizerProcessor fileOptimizer, ProcessingStateData processingStateData)
+        public FileProcessor(FileOptimizerProcessor fileOptimizer, FilesProcessingState processingStateData)
         {
             _fileOptimizer = fileOptimizer;
             _processingStateData = processingStateData;
@@ -50,11 +50,11 @@ namespace DeveImageOptimizer.FileProcessing
 
                 if (worked)
                 {
-                    _processingStateData.ProcessedFiles.Add(file);
+                    _processingStateData.AddProcessedFile(file);
                 }
                 else
                 {
-                    _processingStateData.FailedFiles.Add(file);
+                    _processingStateData.AddFailedFile(file);
                 }
             }
         }
