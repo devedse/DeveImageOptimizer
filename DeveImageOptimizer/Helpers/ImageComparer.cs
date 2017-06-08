@@ -50,7 +50,6 @@ namespace DeveImageOptimizer.Helpers
                                 if (pixel1.A == 0 && pixel2.A == 0)
                                 {
                                     //Optimization that happens to better be able to compress png's sometimes
-                                    return true;
                                 }
                                 return false;
                             }
@@ -95,7 +94,6 @@ namespace DeveImageOptimizer.Helpers
                                 if (pixel1.A == 0 && pixel2.A == 0)
                                 {
                                     //Optimization that happens to better be able to compress png's sometimes
-                                    return true;
                                 }
                                 return false;
                             }
