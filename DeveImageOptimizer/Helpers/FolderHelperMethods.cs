@@ -10,7 +10,7 @@ namespace DeveImageOptimizer.Helpers
 
         private static string CreateAssemblyDirectory()
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            string codeBase = Assembly.GetEntryAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path);

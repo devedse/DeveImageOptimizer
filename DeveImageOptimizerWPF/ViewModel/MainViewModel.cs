@@ -1,14 +1,15 @@
+using DeveImageOptimizer;
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.State;
-using DeveImageOptimizer.State.MainWindowState;
+using DeveImageOptimizerWPF.State;
+using DeveImageOptimizerWPF.State.MainWindowState;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace DeveImageOptimizer.ViewModel
+namespace DeveImageOptimizerWPF.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

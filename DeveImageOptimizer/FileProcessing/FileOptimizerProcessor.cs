@@ -1,10 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.FileProcessing
@@ -33,11 +29,12 @@ namespace DeveImageOptimizer.FileProcessing
             {
                 CreateNoWindow = true
             };
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.CreateNoWindow = true;
 
             await ProcessRunner.RunProcessAsync(processStartInfo);
 
-            var imagesEqual = await ImageComparer.AreImagesEqualAsync2(fileToOptimize, tempFilePath);
+            var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
             if (imagesEqual)
             {

@@ -1,4 +1,4 @@
-﻿using DeveImageOptimizer.State.MainWindowState;
+﻿using DeveImageOptimizer.State;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +11,9 @@ namespace DeveImageOptimizer.FileProcessing
     public class FileProcessor
     {
         private FileOptimizerProcessor _fileOptimizer;
-        private FilesProcessingState _processingStateData;
+        private IFilesProcessingState _processingStateData;
 
-        public FileProcessor(FileOptimizerProcessor fileOptimizer, FilesProcessingState processingStateData)
+        public FileProcessor(FileOptimizerProcessor fileOptimizer, IFilesProcessingState processingStateData)
         {
             _fileOptimizer = fileOptimizer;
             _processingStateData = processingStateData;

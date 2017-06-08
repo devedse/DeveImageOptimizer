@@ -1,10 +1,7 @@
-﻿using DeveImageOptimizer.State;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.ComponentModel;
 
-namespace DeveImageOptimizer.State.MainWindowState
+namespace DeveImageOptimizerWPF.State.MainWindowState
 {
     [Serializable]
     public class WindowState : INotifyPropertyChanged

@@ -1,7 +1,7 @@
-﻿using DeveImageOptimizer.State.MainWindowState;
-using DeveImageOptimizer.State.UserSettings;
+﻿using DeveImageOptimizerWPF.State.MainWindowState;
+using DeveImageOptimizerWPF.State.UserSettings;
 
-namespace DeveImageOptimizer.State
+namespace DeveImageOptimizerWPF.State
 {
     public static class StaticState
     {

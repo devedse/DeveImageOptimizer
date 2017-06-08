@@ -1,5 +1,5 @@
-﻿using DeveImageOptimizer.State;
-using DeveImageOptimizer.State.UserSettings;
+﻿using DeveImageOptimizerWPF.State;
+using DeveImageOptimizerWPF.State.UserSettings;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace DeveImageOptimizer.ViewModel
+namespace DeveImageOptimizerWPF.ViewModel
 {
     [ImplementPropertyChanged]
     public class SettingsViewModel : ViewModelBase

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DeveImageOptimizer.State
+namespace DeveImageOptimizerWPF.State
 {
     public class StateManager<T> where T : class, new()
     {

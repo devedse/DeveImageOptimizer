@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace DeveImageOptimizer.State.UserSettings
+namespace DeveImageOptimizerWPF.State.UserSettings
 {
     [Serializable]
     [ImplementPropertyChanged]
