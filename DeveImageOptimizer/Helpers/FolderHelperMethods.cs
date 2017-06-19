@@ -15,5 +15,7 @@ namespace DeveImageOptimizer.Helpers
             string path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path);
         }
+
+        public static Lazy<string> TempDirectory = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value + Constants.TempDirectoryName));
     }
 }
