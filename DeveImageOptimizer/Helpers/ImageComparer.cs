@@ -50,8 +50,6 @@
 //                                if (pixel1.A == 0 && pixel2.A == 0)
 //                                {
 //                                    //Optimization that happens to better be able to compress png's sometimes
-//                                    //UHHHH wtf, returning true is simply wrong here
-//                                    return true;
 //                                }
 //                                return false;
 //                            }
@@ -96,8 +94,6 @@
 //                                if (pixel1.A == 0 && pixel2.A == 0)
 //                                {
 //                                    //Optimization that happens to better be able to compress png's sometimes
-//                                    //UHHHH wtf, returning true is simply wrong here
-//                                    //return true;
 //                                }
 //                                return false;
 //                            }
