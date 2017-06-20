@@ -21,22 +21,20 @@ build_script:
   - cmd: dotnet build -c Release
 
 test_script:
-  - cmd: dotnet test -c release test\DeveMazeGenerator.Tests\DeveMazeGenerator.Tests.csproj
+  - cmd: dotnet test -c release DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
   
 after_test:
-  - cmd: dotnet pack -c Release src\DeveMazeGenerator\
+  - cmd: dotnet pack -c Release DeveImageOptimizer\
   - cmd: Scripts\GoRepack.cmd
 
 artifacts:
-- path: Scripts\DeveMazeGeneratorCore.7z
-  name: droppackage7z
-- path: Scripts\DeveMazeGeneratorCore.zip
-  name: droppackagezip
-- path: 'src\DeveMazeGenerator\bin\Release\*.nupkg'
+- path: 'DeveImageOptimizer\bin\Release\*.nupkg'
   name: nugetPackages
+- path: Scripts\Output\*.exe
+  name: droppackage
 
 deploy:
 - provider: GitHub
   auth_token:
     secure: do7S++r1rE5E3IZujCoMONsWYJNF7eoRoPyJbxSD851I850OlEq0gsHH/Tji7o00
-  artifact: droppackage7z,droppackagezip,nugetPackages
+  artifact: nugetPackages,droppackage
