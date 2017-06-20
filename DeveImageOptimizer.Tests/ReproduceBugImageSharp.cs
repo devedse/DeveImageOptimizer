@@ -1,5 +1,8 @@
+using DeveImageOptimizer.Helpers;
 using ImageSharp;
 using System;
+using System.IO;
+using System.Reflection;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests
@@ -9,7 +12,16 @@ namespace DeveImageOptimizer.Tests
         [Fact]
         public void ReproducesBug()
         {
-            var img = Image.Load(@"DeveImageOptimizer.Tests\TestImages\Image1.JPG");
+            var startupAssembly = typeof(ReproduceBugImageSharp).GetTypeInfo().Assembly;
+            var cb = startupAssembly.CodeBase;
+
+            UriBuilder uri = new UriBuilder(cb);
+            string path = Uri.UnescapeDataString(uri.Path);
+            var assemblyDir = Path.GetDirectoryName(path);
+
+            var image1path = Path.Combine(assemblyDir, "TestImages", "Image1.JPG");
+
+            var img = Image.Load(image1path);
 
             int width = img.Width;
             int height = img.Height;

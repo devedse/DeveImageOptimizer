@@ -6,7 +6,7 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class FolderHelperMethods
     {
-        public static Lazy<string> AssemblyDirectory = new Lazy<string>(() => CreateAssemblyDirectory());
+        public static Lazy<string> AssemblyDirectory { get; private set; } = new Lazy<string>(() => CreateAssemblyDirectory());
 
         private static string CreateAssemblyDirectory()
         {
@@ -16,6 +16,6 @@ namespace DeveImageOptimizer.Helpers
             return Path.GetDirectoryName(path);
         }
 
-        public static Lazy<string> TempDirectory = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value + Constants.TempDirectoryName));
+        public static Lazy<string> TempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value + Constants.TempDirectoryName));
     }
 }
