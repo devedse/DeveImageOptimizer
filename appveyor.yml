@@ -22,16 +22,10 @@ build_script:
 
 test_script:
   - cmd: dotnet test -c release DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
-  
-after_test:
-  - cmd: dotnet pack -c Release DeveImageOptimizer\
-  - cmd: Scripts\GoRepack.cmd
 
 artifacts:
 - path: 'DeveImageOptimizer\bin\Release\*.nupkg'
   name: nugetPackages
-- path: Scripts\Output\*.exe
-  name: droppackage
 
 deploy:
 - provider: GitHub
