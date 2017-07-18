@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="System.Memory" Version="4.4.0-preview2-25405-01" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
@@ -16,6 +17,12 @@
 
   <ItemGroup>
     <Folder Include="TestImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ImageSharp">
+      <HintPath>..\..\ImageSharp\src\ImageSharp\bin\Debug\netstandard1.3\ImageSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

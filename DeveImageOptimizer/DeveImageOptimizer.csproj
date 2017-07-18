@@ -14,11 +14,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+    <Compile Remove="VIPS\**" />
+    <EmbeddedResource Remove="VIPS\**" />
+    <None Remove="VIPS\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ImageSharp\src\ImageSharp\ImageSharp.csproj" />
+    <PackageReference Include="ImageSharp" Version="1.0.0-alpha9-00173" />
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+    <PackageReference Include="System.Memory" Version="4.4.0-preview2-25405-01" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0-preview2-25405-01" />
   </ItemGroup>
 
 </Project>

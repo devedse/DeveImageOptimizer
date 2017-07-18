@@ -16,6 +16,22 @@ namespace DeveImageOptimizer.Helpers
             return Path.GetDirectoryName(path);
         }
 
-        public static Lazy<string> TempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value + Constants.TempDirectoryName));
+        public static Lazy<string> TempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value, Constants.TempDirectoryName));
+
+        public static Lazy<string> AssemblyDirectoryForTests { get; private set; } = new Lazy<string>(() => CreateAssemblyDirectoryForTests());
+
+        private static string CreateAssemblyDirectoryForTests()
+        {
+            var startupAssembly = typeof(FolderHelperMethods).GetTypeInfo().Assembly;
+            var cb = startupAssembly.CodeBase;
+
+            UriBuilder uri = new UriBuilder(cb);
+            string path = Uri.UnescapeDataString(uri.Path);
+            var assemblyDir = Path.GetDirectoryName(path);
+
+            return assemblyDir;
+        }
+
+        public static Lazy<string> TempDirectoryForTests { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectoryForTests.Value, Constants.TempDirectoryName));
     }
 }

@@ -49,5 +49,16 @@ namespace DeveImageOptimizer.Tests
                 throw new Exception("KAPOT");
             }
         }
+
+        [Fact]
+        public async void AreImagesEqual()
+        {
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "Image1.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "Image2.JPG");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(image1path, image2path);
+
+            Assert.True(areEqual);
+        }
     }
 }

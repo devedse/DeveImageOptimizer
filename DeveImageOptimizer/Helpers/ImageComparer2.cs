@@ -1,4 +1,5 @@
-﻿using ImageSharp;
+﻿using DeveImageOptimizer.ImageConversion;
+using ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,20 @@ namespace DeveImageOptimizer.Helpers
         {
             var w = Stopwatch.StartNew();
 
+            var extension1 = Path.GetExtension(image1Path);
+            var extension2 = Path.GetExtension(image2Path);
+
+            if (string.Equals(extension1, ".jpg", StringComparison.OrdinalIgnoreCase) || string.Equals(extension1, ".jpeg", StringComparison.OrdinalIgnoreCase))
+            {
+                image1Path = ImageConverter.ConvertJpgToPng(image1Path);
+            }
+
+            if (string.Equals(extension2, ".jpg", StringComparison.OrdinalIgnoreCase) || string.Equals(extension2, ".jpeg", StringComparison.OrdinalIgnoreCase))
+            {
+                image2Path = ImageConverter.ConvertJpgToPng(image2Path);
+            }
+
+
             var image1 = Image.Load(image1Path);
             var image2 = Image.Load(image2Path);
 
@@ -33,16 +48,6 @@ namespace DeveImageOptimizer.Helpers
 
             int width = image1.Width;
             int height = image1.Height;
-
-            using (var fs = new FileStream("image1.bmp", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
-            {
-                image1.SaveAsBmp(fs);
-            }
-
-            using (var fs = new FileStream("image2.bmp", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
-            {
-                image2.SaveAsBmp(fs);
-            }
 
             for (int y = 0; y < height; y++)
             {
