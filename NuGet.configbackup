@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packagesources>
+    <add key="myget.org dotnet-core" value="https://dotnet.myget.org/f/dotnet-core/api/v3/index.json" />
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+  </packagesources>
+</configuration>
