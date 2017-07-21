@@ -15,7 +15,7 @@ assembly_info:
 before_build:
   - ps: .\scripts\set-version.ps1
   - cmd: dotnet --info
-  - cmd: dotnet restore
+  - cmd: dotnet restore --verbosity n
 
 build_script:
   - cmd: dotnet build -c Release
