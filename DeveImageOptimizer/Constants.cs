@@ -6,6 +6,6 @@
         public const string TempDirectoryName = "Temp";
 
         //public const string VipsDir = @"C:\Users\Davy\Downloads\VIPS";
-        public const string VipsDir = @".nuget\packages\vipsnuget\1.0.5\tools\VIPS";
+        public const string VipsDir = @".nuget\packages\vipsnuget\1.0.5\tools";
     }
 }
