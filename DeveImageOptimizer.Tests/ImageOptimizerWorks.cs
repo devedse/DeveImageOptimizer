@@ -82,7 +82,11 @@ namespace DeveImageOptimizer.Tests
 
             Assert.True(worked);
 
+            var fileOptimized = new FileInfo(image1temppath);
+            var fileUnoptimized = new FileInfo(image1path);
 
+            //Verify that the new file is actually smaller
+            Assert.True(fileOptimized.Length < fileUnoptimized.Length);
 
             File.Delete(image1temppath);
             Directory.Delete(tempfortestdir);
