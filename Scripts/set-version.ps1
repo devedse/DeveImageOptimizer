@@ -6,7 +6,7 @@ If($env:APPVEYOR_PULL_REQUEST_NUMBER -ne $null) {
 } ElseIf($env:APPVEYOR_REPO_BRANCH -ne 'master' -and -not $env:APPVEYOR_REPO_BRANCH.StartsWith('release')) {
   $PreReleaseName = '-' + $env:APPVEYOR_REPO_BRANCH
 } Else {
-  $PreReleaseName = '-CI'
+  $PreReleaseName = '' # This was previously: '-CI'
 }
 
 $PSScriptFilePath = (Get-Item $MyInvocation.MyCommand.Path).FullName
