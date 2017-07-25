@@ -1,3 +1,4 @@
+using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using ImageSharp;
 using System;
@@ -8,12 +9,12 @@ using Xunit;
 
 namespace DeveImageOptimizer.Tests
 {
-    public class ReproduceBugImageSharp
+    public class ImageOptimizerWorks
     {
         [Fact]
         public void ReproducesBug()
         {
-            var startupAssembly = typeof(ReproduceBugImageSharp).GetTypeInfo().Assembly;
+            var startupAssembly = typeof(ImageOptimizerWorks).GetTypeInfo().Assembly;
             var cb = startupAssembly.CodeBase;
 
             UriBuilder uri = new UriBuilder(cb);
@@ -59,6 +60,32 @@ namespace DeveImageOptimizer.Tests
             var areEqual = await ImageComparer2.AreImagesEqualAsync(image1path, image2path);
 
             Assert.True(areEqual);
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizesImage()
+        {
+            var fileOptimizerPath = @"C:\Users\Davy\Downloads\FileOptimizerFull\FileOptimizer64.exe";
+
+            Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
+
+            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.TempDirectoryForTests.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "Image1.JPG");
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "TempForTest");
+            var image1temppath = Path.Combine(tempfortestdir, "Image1.JPG");
+
+            Directory.CreateDirectory(tempfortestdir);
+            File.Copy(image1path, image1temppath, true);
+
+
+            var worked = await fop.OptimizeFile(image1temppath);
+
+            Assert.True(worked);
+
+
+
+            File.Delete(image1temppath);
+            Directory.Delete(tempfortestdir);
         }
     }
 }

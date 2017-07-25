@@ -9,6 +9,7 @@ namespace DeveImageOptimizer.ImageConversion
 {
     public static class ImageConverter
     {
+
         public static string ConvertJpgToPng(string inputPath)
         {
             Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
@@ -18,7 +19,7 @@ namespace DeveImageOptimizer.ImageConversion
             string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, $"{imageName}.png");
+            var outPath = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, $"{imageName}_{Path.GetRandomFileName()}.png");
             string args = $"COPY \"{inputPath}\" \"{outPath}\"";
 
             var psi = new ProcessStartInfo(pathVips, args);

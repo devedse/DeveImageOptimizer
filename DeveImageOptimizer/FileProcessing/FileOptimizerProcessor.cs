@@ -18,7 +18,7 @@ namespace DeveImageOptimizer.FileProcessing
             Directory.CreateDirectory(tempDirectory);
         }
 
-        public async Task<bool> OptimizeFile(string fileToOptimize)
+        public async Task<bool> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
         {
             var fileName = Path.GetFileName(fileToOptimize);
             var tempFilePath = Path.Combine(_tempDirectory, fileName);
@@ -27,10 +27,10 @@ namespace DeveImageOptimizer.FileProcessing
 
             var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
             {
-                CreateNoWindow = true
+                CreateNoWindow = true,
             };
             //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            processStartInfo.CreateNoWindow = true;
+            //processStartInfo.CreateNoWindow = true;
 
             await ProcessRunner.RunProcessAsync(processStartInfo);
 
@@ -39,22 +39,24 @@ namespace DeveImageOptimizer.FileProcessing
             if (imagesEqual)
             {
                 await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
-                File.Delete(tempFilePath);
             }
             else
             {
-                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
-                var fileExtension = Path.GetExtension(fileToOptimize);
-                var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
+                if (saveFailedOptimizedFile)
+                {
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
+                    var fileExtension = Path.GetExtension(fileToOptimize);
+                    var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
 
-                var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
-                var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
+                    var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
+                    var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
 
-                //Write a file as Blah_FAILED.png
-                await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
-                File.Delete(tempFilePath);
+                    //Write a file as Blah_FAILED.png
+                    await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
+                }
             }
 
+            File.Delete(tempFilePath);
             return imagesEqual;
         }
     }
