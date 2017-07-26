@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestImages\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="ImageSharp">
       <HintPath>..\..\ImageSharp\src\ImageSharp\bin\Debug\netstandard1.3\ImageSharp.dll</HintPath>
     </Reference>
@@ -31,10 +27,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestImages\Image1.JPG">
+    <None Update="TestImages\Image1A.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestImages\Image2.JPG">
+    <None Update="TestImages\Image1B.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Image2A.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Image2B.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Image3A.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Image3B.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -21,9 +21,11 @@ namespace DeveImageOptimizer.FileProcessing
         public async Task<bool> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
         {
             var fileName = Path.GetFileName(fileToOptimize);
-            var tempFilePath = Path.Combine(_tempDirectory, fileName);
+            var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
 
             await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
+
+            var oldRotation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
 
             var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
             {
@@ -33,6 +35,8 @@ namespace DeveImageOptimizer.FileProcessing
             //processStartInfo.CreateNoWindow = true;
 
             await ProcessRunner.RunProcessAsync(processStartInfo);
+
+            await ExifImageRotator.RerotateImageAsync(tempFilePath, oldRotation);
 
             var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
