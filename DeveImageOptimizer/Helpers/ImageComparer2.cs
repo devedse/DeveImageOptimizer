@@ -41,8 +41,7 @@ namespace DeveImageOptimizer.Helpers
 
         private static Image<Rgba32> LoadImageHelper(string imagePath, List<string> tempFiles, bool useImageSharpBugWorkaround)
         {
-            var imageExtension = Path.GetExtension(imagePath);
-            if (useImageSharpBugWorkaround && string.Equals(imageExtension, ".jpg", StringComparison.OrdinalIgnoreCase) || string.Equals(imageExtension, ".jpeg", StringComparison.OrdinalIgnoreCase))
+            if (useImageSharpBugWorkaround && FileTypeHelper.IsJpgFile(imagePath))
             {
                 var imageAsPngPath = ImageConverter.ConvertJpgToPngWithAutoRotate(imagePath);
                 tempFiles.Add(imageAsPngPath);

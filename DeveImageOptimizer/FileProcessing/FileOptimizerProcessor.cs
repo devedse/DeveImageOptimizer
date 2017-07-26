@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using ExifLibrary;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -25,7 +26,12 @@ namespace DeveImageOptimizer.FileProcessing
 
             await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
 
-            var oldRotation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
+            Orientation jpegFileOrientation = Orientation.Normal;
+            bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
+            if (shouldUseJpgWorkaround)
+            {
+                jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
+            }
 
             var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
             {
@@ -36,7 +42,10 @@ namespace DeveImageOptimizer.FileProcessing
 
             await ProcessRunner.RunProcessAsync(processStartInfo);
 
-            await ExifImageRotator.RerotateImageAsync(tempFilePath, oldRotation);
+            if (shouldUseJpgWorkaround)
+            {
+                await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
+            }
 
             var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
