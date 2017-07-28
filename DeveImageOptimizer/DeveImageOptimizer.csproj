@@ -21,8 +21,4 @@
     <PackageReference Include="VIPSNuget" Version="1.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exif\" />
-  </ItemGroup>
-
 </Project>
