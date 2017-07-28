@@ -8,7 +8,7 @@
     <Version>1.0.0.0</Version>
     <Title>DeveImageOptimizer</Title>
     <Authors>Devedse</Authors>
-    <Description>A library to more easily control image optimization from C# with https://encode.ru/threads/1589-FileOptimizer.</Description>
+    <Description>A library to more easily control image optimization from C# using https://encode.ru/threads/1589-FileOptimizer</Description>
     <PackageProjectUrl>https://github.com/devedse/DeveImageOptimizer</PackageProjectUrl>
     <PackageTags>image;drawing;optimization</PackageTags>
   </PropertyGroup>
