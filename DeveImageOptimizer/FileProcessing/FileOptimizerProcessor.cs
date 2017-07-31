@@ -39,7 +39,7 @@ namespace DeveImageOptimizer.FileProcessing
 
                 await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
 
-                Orientation jpegFileOrientation = Orientation.Normal;
+                Orientation? jpegFileOrientation = null;
                 bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
                 if (shouldUseJpgWorkaround)
                 {

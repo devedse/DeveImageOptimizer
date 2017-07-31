@@ -1252,8 +1252,11 @@ namespace ExifLibrary
             private static void Reduce(ref uint numerator, ref uint denominator)
             {
                 uint gcd = MathEx.GCD(numerator, denominator);
-                numerator = numerator / gcd;
-                denominator = denominator / gcd;
+                if (gcd > 1)
+                {
+                    numerator = numerator / gcd;
+                    denominator = denominator / gcd;
+                }
             }
             #endregion
         }

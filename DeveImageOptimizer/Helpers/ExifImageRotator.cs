@@ -8,7 +8,7 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class ExifImageRotator
     {
-        public async static Task<Orientation> UnrotateImageAsync(string path)
+        public async static Task<Orientation?> UnrotateImageAsync(string path)
         {
             return await Task.Run(() =>
             {
@@ -16,20 +16,28 @@ namespace DeveImageOptimizer.Helpers
             });
         }
 
-        private static Orientation UnrotateImage(string path)
+        private static Orientation? UnrotateImage(string path)
         {
             var file = ExifFile.Read(path);
 
-            var orientationExif = file.Properties[ExifTag.Orientation];
-            var retval = (Orientation)orientationExif.Value;
-            orientationExif.Value = Orientation.Normal;
+            ExifProperty orientationExif;
 
-            file.Save(path);
+            if (file.Properties.TryGetValue(ExifTag.Orientation, out orientationExif))
+            {
+                var retval = (Orientation)orientationExif.Value;
+                orientationExif.Value = Orientation.Normal;
 
-            return retval;
+                file.Save(path);
+
+                return retval;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public async static Task RerotateImageAsync(string path, Orientation newOrientation)
+        public async static Task RerotateImageAsync(string path, Orientation? newOrientation)
         {
             await Task.Run(() =>
             {
@@ -37,14 +45,25 @@ namespace DeveImageOptimizer.Helpers
             });
         }
 
-        private static void RerotateImage(string path, Orientation newOrientation)
+        private static void RerotateImage(string path, Orientation? newOrientation)
         {
-            var file = ExifFile.Read(path);
+            if (newOrientation != null)
+            {
+                var file = ExifFile.Read(path);
 
-            var orientationExif = file.Properties[ExifTag.Orientation];
-            orientationExif.Value = newOrientation;
+                ExifProperty orientationExif;
 
-            file.Save(path);
+                if (file.Properties.TryGetValue(ExifTag.Orientation, out orientationExif))
+                {
+                    orientationExif.Value = newOrientation;
+                }
+                else
+                {
+                    throw new Exception("MetaData is not kept equal");
+                }
+
+                file.Save(path);
+            }
         }
     }
 }
