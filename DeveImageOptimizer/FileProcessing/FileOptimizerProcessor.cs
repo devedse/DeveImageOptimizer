@@ -1,5 +1,8 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.State;
 using ExifLibrary;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,58 +22,87 @@ namespace DeveImageOptimizer.FileProcessing
             Directory.CreateDirectory(tempDirectory);
         }
 
-        public async Task<bool> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
+        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
         {
-            var fileName = Path.GetFileName(fileToOptimize);
-            var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
+            long originalFileSize = new FileInfo(fileToOptimize).Length;
 
-            await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
+            var tempFiles = new List<string>();
+            bool imagesEqual = false;
 
-            Orientation jpegFileOrientation = Orientation.Normal;
-            bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
-            if (shouldUseJpgWorkaround)
+            var errors = new List<string>();
+
+            try
             {
-                jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
-            }
+                var fileName = Path.GetFileName(fileToOptimize);
+                var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
+                tempFiles.Add(tempFilePath);
 
-            var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
-            {
-                CreateNoWindow = true,
-            };
-            //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            //processStartInfo.CreateNoWindow = true;
+                await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
 
-            await ProcessRunner.RunProcessAsync(processStartInfo);
-
-            if (shouldUseJpgWorkaround)
-            {
-                await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
-            }
-
-            var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
-
-            if (imagesEqual)
-            {
-                await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
-            }
-            else
-            {
-                if (saveFailedOptimizedFile)
+                Orientation? jpegFileOrientation = null;
+                bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
+                if (shouldUseJpgWorkaround)
                 {
-                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
-                    var fileExtension = Path.GetExtension(fileToOptimize);
-                    var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
+                    jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
+                }
 
-                    var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
-                    var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
+                {
+                    CreateNoWindow = true,
+                };
+                //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //processStartInfo.CreateNoWindow = true;
 
-                    //Write a file as Blah_FAILED.png
-                    await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
+                await ProcessRunner.RunProcessAsync(processStartInfo);
+
+                if (shouldUseJpgWorkaround)
+                {
+                    await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
+                }
+
+                imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
+
+                if (imagesEqual)
+                {
+                    await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
+                }
+                else
+                {
+                    errors.Add("Optimized image isn't equal to source image.");
+
+                    if (saveFailedOptimizedFile)
+                    {
+                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
+                        var fileExtension = Path.GetExtension(fileToOptimize);
+                        var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
+
+                        var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
+                        var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
+
+                        //Write a file as Blah_FAILED.png
+                        await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add($"Exception happened when optimizing or comparing the image:{Environment.NewLine}{ex}");
+            }
+            finally
+            {
+                foreach (var tempFile in tempFiles)
+                {
+                    FileHelperMethods.SafeDeleteTempFile(tempFile);
                 }
             }
 
-            File.Delete(tempFilePath);
-            return imagesEqual;
+            //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
+            long optimizedFileSize = new FileInfo(fileToOptimize).Length;
+
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, originalFileSize, optimizedFileSize, errors);
+
+
+            return optimizedFileResult;
         }
     }
 }

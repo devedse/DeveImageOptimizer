@@ -19,44 +19,43 @@ namespace DeveImageOptimizer.FileProcessing
             _processingStateData = processingStateData;
         }
 
-        public async Task ProcessDirectory(string directory)
+        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory)
         {
-            await ProcessDirectoryInternal(directory);
-        }
+            var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
 
-        private async Task ProcessDirectoryInternal(string directory)
-        {
             var files = Directory.GetFiles(directory);
-
+            
             foreach (var file in files)
             {
-                await ProcessFile(file);
+                var extension = Path.GetExtension(file).ToUpperInvariant();
+                if (Constants.ValidExtensions.Contains(extension))
+                {
+                    var optimizedFileResult = await ProcessFile(file);
+                    optimizedFileResultsForThisDirectory.Add(optimizedFileResult);
+                }
             }
+
+            IEnumerable<OptimizedFileResult> concattedRetVal = optimizedFileResultsForThisDirectory;
 
             var directories = Directory.GetDirectories(directory);
-
             foreach (var subDirectory in directories)
             {
-                await ProcessDirectoryInternal(subDirectory);
+                var results = await ProcessDirectory(subDirectory);
+                concattedRetVal = concattedRetVal.Concat(results);
             }
+
+            return concattedRetVal;
         }
 
-        private async Task ProcessFile(string file)
+        private async Task<OptimizedFileResult> ProcessFile(string file)
         {
-            var extension = Path.GetExtension(file).ToUpperInvariant();
-            if (Constants.ValidExtensions.Contains(extension))
+            var optimizedFileResult = await _fileOptimizer.OptimizeFile(file);
+            if (_processingStateData != null)
             {
-                var worked = await _fileOptimizer.OptimizeFile(file);
-
-                if (worked)
-                {
-                    _processingStateData.AddProcessedFile(file);
-                }
-                else
-                {
-                    _processingStateData.AddFailedFile(file);
-                }
+                _processingStateData.AddProcessedFile(optimizedFileResult);
             }
+
+            return optimizedFileResult;
         }
     }
 }

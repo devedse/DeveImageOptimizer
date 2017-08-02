@@ -118,10 +118,7 @@ namespace DeveImageOptimizer.Helpers
             {
                 foreach (var tempFile in tempFiles)
                 {
-                    if (File.Exists(tempFile))
-                    {
-                        File.Delete(tempFile);
-                    }
+                    FileHelperMethods.SafeDeleteTempFile(tempFile);
                 }
             }
         }

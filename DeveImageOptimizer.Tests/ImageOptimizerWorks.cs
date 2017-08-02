@@ -120,6 +120,12 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("Image2A.JPG");
         }
 
+        [SkippableFact]
+        public async void CorrectlyOptimizedPexelsPhoto()
+        {
+            await OptimizeFileTest("pexels-photo.jpg");
+        }
+
         [Fact]
         public async void RemovesExifRotationAndReapliesAfterwards()
         {
@@ -160,7 +166,7 @@ namespace DeveImageOptimizer.Tests
 
         private async Task OptimizeFileTest(string fileName)
         {
-            var fileOptimizerPath = @"C:\Users\Davy\Downloads\FileOptimizerFull\FileOptimizer64.exe";
+            var fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
 
             Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
 
@@ -176,7 +182,7 @@ namespace DeveImageOptimizer.Tests
             {
                 var worked = await fop.OptimizeFile(image1temppath);
 
-                Assert.True(worked);
+                Assert.True(worked.Successful);
 
                 var fileOptimized = new FileInfo(image1temppath);
                 var fileUnoptimized = new FileInfo(image1path);
@@ -187,7 +193,7 @@ namespace DeveImageOptimizer.Tests
             finally
             {
                 File.Delete(image1temppath);
-                Directory.Delete(tempfortestdir);
+                Directory.Delete(tempfortestdir, true);
             }
         }
     }
