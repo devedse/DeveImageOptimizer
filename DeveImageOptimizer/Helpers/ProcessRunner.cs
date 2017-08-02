@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.Helpers
 {
     public static class ProcessRunner
     {
-        public static Task RunProcessAsync(ProcessStartInfo processStartInfo)
+        public static Task<int> RunProcessAsync(ProcessStartInfo processStartInfo)
         {
-            // there is no non-generic TaskCompletionSource
-            var tcs = new TaskCompletionSource<bool>();
+            Console.WriteLine();
+            Console.WriteLine($"> {Path.GetFileName(processStartInfo.FileName)} {processStartInfo.Arguments}");
+
+            var tcs = new TaskCompletionSource<int>();
 
             var process = new Process
             {
@@ -22,7 +22,7 @@ namespace DeveImageOptimizer.Helpers
 
             process.Exited += (sender, args) =>
             {
-                tcs.SetResult(true);
+                tcs.SetResult(process.ExitCode);
                 process.Dispose();
             };
 
