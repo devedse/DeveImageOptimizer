@@ -126,6 +126,50 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("pexels-photo.jpg");
         }
 
+        [SkippableFact]
+        public async void CorrectlyOptimizedVimPicture()
+        {
+
+            await OptimizeFileTest("vim16x16.png");
+        }
+
+        [SkippableFact]
+        public async void CanReadThisPngCorrectly()
+        {
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "vim16x16output.png");
+
+            try
+            {
+                using (var img = Image.Load(image1path))
+                {
+                    using (var fs = new FileStream(outputImage, FileMode.Create))
+                    {
+                        img.SaveAsPng(fs);
+                    }
+
+                    //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
+                    using (var outputtedImage = Image.Load(outputImage))
+                    {
+                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        Assert.True(result);
+                    }
+
+                    //I'll just check the pixel by hand.
+                    var pixel = img.Pixels[1];
+                    Skip.If(pixel.A != 0, "Pixel at X: 1 and Y: 0 should be transparent.");
+                }
+            }
+            finally
+            {
+                if (File.Exists(outputImage))
+                {
+                    File.Delete(outputImage);
+                }
+            }
+        }
+
         [Fact]
         public async void RemovesExifRotationAndReapliesAfterwards()
         {
