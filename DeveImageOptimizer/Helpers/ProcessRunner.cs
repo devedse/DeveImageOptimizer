@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.Helpers
 {
-    public static class ProcessRunner
+    internal static class ProcessRunner
     {
         public static Task<int> RunProcessAsync(ProcessStartInfo processStartInfo)
         {
-            Console.WriteLine();
             Console.WriteLine($"> {Path.GetFileName(processStartInfo.FileName)} {processStartInfo.Arguments}");
 
             var tcs = new TaskCompletionSource<int>();

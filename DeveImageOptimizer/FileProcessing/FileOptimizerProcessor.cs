@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.FileProcessing
@@ -30,9 +31,13 @@ namespace DeveImageOptimizer.FileProcessing
             bool imagesEqual = false;
 
             var errors = new List<string>();
+            var w = Stopwatch.StartNew();
 
             try
             {
+                Console.WriteLine();
+                Console.WriteLine($"Optimizing image: {fileToOptimize}");
+
                 var fileName = Path.GetFileName(fileToOptimize);
                 var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
                 tempFiles.Add(tempFilePath);
@@ -101,6 +106,15 @@ namespace DeveImageOptimizer.FileProcessing
 
             var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, originalFileSize, optimizedFileSize, errors);
 
+            if (errors.Any())
+            {
+                Console.WriteLine("Errors:");
+                foreach(var error in errors)
+                {
+                    Console.WriteLine($"\tError: {error}");
+                }
+            }
+            Console.WriteLine($"Image optimization completed. Result: {imagesEqual}");
 
             return optimizedFileResult;
         }

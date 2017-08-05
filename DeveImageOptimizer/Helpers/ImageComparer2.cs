@@ -103,9 +103,8 @@ namespace DeveImageOptimizer.Helpers
                             }
                         }
                     }
-
-                    Console.WriteLine("Wrong pixels: " + pixelsWrong);
-                    Console.WriteLine($"Elapsed time: {w.Elapsed}");
+                    
+                    Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}");
                     if (pixelsWrong > 0)
                     {
                         return false;
