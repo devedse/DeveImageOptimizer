@@ -36,7 +36,7 @@ namespace DeveImageOptimizer.FileProcessing
             try
             {
                 Console.WriteLine();
-                Console.WriteLine($" === Optimizing image: {fileToOptimize} ===");
+                Console.WriteLine($"=== Optimizing image: {fileToOptimize} ===");
 
                 var fileName = Path.GetFileName(fileToOptimize);
                 var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
