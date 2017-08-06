@@ -129,7 +129,6 @@ namespace DeveImageOptimizer.Tests
         [SkippableFact]
         public async void CorrectlyOptimizedVimPicture()
         {
-
             await OptimizeFileTest("vim16x16.png");
         }
 
