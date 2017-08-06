@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DeveImageOptimizer.State
 {
@@ -10,14 +11,17 @@ namespace DeveImageOptimizer.State
         public long OriginalSize { get; }
         public long OptimizedSize { get; }
 
-        public List<string> Errors { get; set; }
+        public TimeSpan Duration { get; }
 
-        public OptimizedFileResult(string path, bool successful, long originalSize, long optimizedSize, List<string> errors)
+        public List<string> Errors { get; }
+
+        public OptimizedFileResult(string path, bool successful, long originalSize, long optimizedSize, TimeSpan duration, List<string> errors)
         {
             Path = path;
             Successful = successful;
             OriginalSize = originalSize;
             OptimizedSize = optimizedSize;
+            Duration = duration;
             Errors = errors;
         }
     }

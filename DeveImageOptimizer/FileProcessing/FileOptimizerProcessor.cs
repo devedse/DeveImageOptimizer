@@ -25,13 +25,14 @@ namespace DeveImageOptimizer.FileProcessing
 
         public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
         {
+            var w = Stopwatch.StartNew();
+
             long originalFileSize = new FileInfo(fileToOptimize).Length;
 
             var tempFiles = new List<string>();
             bool imagesEqual = false;
 
             var errors = new List<string>();
-            var w = Stopwatch.StartNew();
 
             try
             {
@@ -101,20 +102,21 @@ namespace DeveImageOptimizer.FileProcessing
                 }
             }
 
+            w.Stop();
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
             long optimizedFileSize = new FileInfo(fileToOptimize).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, originalFileSize, optimizedFileSize, errors);
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, originalFileSize, optimizedFileSize, w.Elapsed, errors);
 
             if (errors.Any())
             {
                 Console.WriteLine("Errors:");
-                foreach(var error in errors)
+                foreach (var error in errors)
                 {
                     Console.WriteLine($"\tError: {error}");
                 }
             }
-            Console.WriteLine($"Image optimization completed. Result: {imagesEqual}");
+            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {imagesEqual}");
 
             return optimizedFileResult;
         }
