@@ -108,6 +108,17 @@ namespace DeveImageOptimizer.Tests
         //    Assert.True(areEqual);
         //}
 
+        [Fact]
+        public async void AreImagesEqualVimImage()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16_1.png");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16_2.png");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
         [SkippableFact]
         public async void CorrectlyOptimizesLandscapeImage()
         {
@@ -129,14 +140,14 @@ namespace DeveImageOptimizer.Tests
         [SkippableFact]
         public async void CorrectlyOptimizedVimPicture()
         {
-            await OptimizeFileTest("vim16x16.png");
+            await OptimizeFileTest("vim16x16_1.png");
         }
 
-        [SkippableFact]
+        [Fact]
         public async void CanReadThisPngCorrectly()
         {
             Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16_1.png");
             var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "vim16x16output.png");
 
             try
