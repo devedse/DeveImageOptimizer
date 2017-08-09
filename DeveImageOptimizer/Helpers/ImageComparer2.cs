@@ -70,6 +70,8 @@ namespace DeveImageOptimizer.Helpers
                     image1.AutoOrient();
                     image2.AutoOrient();
 
+                    var frame = image1.Frames[0];
+
                     if (image1.Width != image2.Width || image1.Height != image2.Height)
                     {
                         return false;

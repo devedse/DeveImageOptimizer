@@ -119,6 +119,28 @@ namespace DeveImageOptimizer.Tests
             Assert.True(areEqual);
         }
 
+        [Fact]
+        public async void AreImagesEqualGif()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "devtools-full_1.gif");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "devtools-full_2.gif");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
+        [Fact]
+        public async void AreImagesEqualVersioningImage()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "versioning-1_1.png");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "versioning-1_2.png");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
         [SkippableFact]
         public async void CorrectlyOptimizesLandscapeImage()
         {
@@ -142,6 +164,19 @@ namespace DeveImageOptimizer.Tests
         {
             await OptimizeFileTest("vim16x16_1.png");
         }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizesGifImage()
+        {
+            await OptimizeFileTest("devtools-full_1.gif");
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizesVersioningImage()
+        {
+            await OptimizeFileTest("versioning-1_1.png");
+        }
+
 
         [Fact]
         public async void CanReadThisPngCorrectly()
