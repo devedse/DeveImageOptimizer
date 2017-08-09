@@ -22,7 +22,6 @@ namespace DeveImageOptimizer.Helpers
 
         private static string GetRotatedAmount(Image<Rgba32> source)
         {
-
             var blah = source?.MetaData?.ExifProfile?.GetValue(ExifTag.Orientation);
             if (blah == null)
             {
@@ -83,7 +82,6 @@ namespace DeveImageOptimizer.Helpers
                         using (ImageFrame<Rgba32> frame1FromImage = new ImageFrame<Rgba32>(image1))
                         using (ImageFrame<Rgba32> frame2FromImage = new ImageFrame<Rgba32>(image2))
                         {
-
                             var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
                             var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
 
