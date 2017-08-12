@@ -150,7 +150,10 @@ namespace DeveImageOptimizer.Helpers
                                 {
                                     //Incorrect frame number
                                     Console.WriteLine("Number of frames is not correct");
-                                    pixelsWrong += 1; //Just to be sure it fails
+                                    if (pixelsWrong == 0)
+                                    {
+                                        pixelsWrong += 1; //Just to be sure it fails
+                                    }
                                     break;
                                 }
                             }

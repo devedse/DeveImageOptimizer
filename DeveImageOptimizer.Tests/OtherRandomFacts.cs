@@ -13,7 +13,7 @@ namespace DeveImageOptimizer.Tests
     public class OtherRandomFacts
     {
         [SkippableFact]
-        public void ReproducesBug()
+        public void ReproducesJpgDecoderBug()
         {
             var startupAssembly = typeof(FileOptimizerProcessorFacts).GetTypeInfo().Assembly;
             var cb = startupAssembly.CodeBase;
