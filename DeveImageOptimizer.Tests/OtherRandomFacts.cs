@@ -82,5 +82,45 @@ namespace DeveImageOptimizer.Tests
                 }
             }
         }
+
+        [Fact]
+        public async void LoadAndSaveThisImage()
+        {
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "versioning-1_2.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "versioning-1_2_output.png");
+
+            try
+            {
+                using (var img = Image.Load(image1path))
+                {
+                    using (var fs = new FileStream(outputImage, FileMode.Create))
+                    {
+                        img.SaveAsPng(fs);
+                    }
+
+                    //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
+                    using (var outputtedImage = Image.Load(outputImage))
+                    {
+                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        Assert.True(result);
+                    }
+
+                    //I'll just check the pixel by hand.
+                    var pixel = img.Pixels[0];
+                    if (pixel.A != 0)
+                    {
+                        throw new Exception("Pixel at X: 0 and Y: 0 should be transparent.");
+                    }
+                }
+            }
+            finally
+            {
+                if (File.Exists(outputImage))
+                {
+                    File.Delete(outputImage);
+                }
+            }
+        }
     }
 }
