@@ -79,6 +79,17 @@ namespace DeveImageOptimizer.Tests
         }
 
         [Fact]
+        public async void AreImagesEqualGif2()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "pitch_1.gif");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "pitch_2.gif");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
+        [Fact]
         public async void AreImagesEqualVersioningImage()
         {
             var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "versioning-1_1.png");

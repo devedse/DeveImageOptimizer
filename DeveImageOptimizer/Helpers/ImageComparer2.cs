@@ -137,12 +137,12 @@ namespace DeveImageOptimizer.Helpers
                                     }
                                 }
 
-                                if (pointer1 >= image1.Frames.Count && pointer2 >= image2.Frames.Count)
+                                if (pointer1 > image1.Frames.Count && pointer2 > image2.Frames.Count)
                                 {
                                     //Same number of frames
                                     break;
                                 }
-                                else if (pointer1 < image1.Frames.Count && pointer2 < image2.Frames.Count)
+                                else if (pointer1 <= image1.Frames.Count && pointer2 <= image2.Frames.Count)
                                 {
                                     //Just continue;
                                 }
