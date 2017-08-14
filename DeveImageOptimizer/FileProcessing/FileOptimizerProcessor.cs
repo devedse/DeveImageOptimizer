@@ -116,7 +116,7 @@ namespace DeveImageOptimizer.FileProcessing
                     Console.WriteLine($"\tError: {error}");
                 }
             }
-            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {imagesEqual}");
+            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {imagesEqual}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
 
             return optimizedFileResult;
         }
