@@ -48,6 +48,12 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("versioning-1_1.png");
         }
 
+        [SkippableFact]
+        public async void CorrectlyOptimizesSnakeImage()
+        {
+            await OptimizeFileTest("snake.png");
+        }
+
         [Fact]
         public async void RemovesExifRotationAndReapliesAfterwards()
         {
