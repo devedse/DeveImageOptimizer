@@ -54,6 +54,12 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("snake.png");
         }
 
+        [SkippableFact]
+        public async void CorrectlyOptimizesCraDynamicImportImage()
+        {
+            await OptimizeFileTest("cra-dynamic-import_1.gif");
+        }
+
         [Fact]
         public async void RemovesExifRotationAndReapliesAfterwards()
         {

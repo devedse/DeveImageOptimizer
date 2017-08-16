@@ -99,5 +99,16 @@ namespace DeveImageOptimizer.Tests
 
             Assert.True(areEqual);
         }
+
+        [Fact]
+        public async void AreImagesEqualCraDynamicImport()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "cra-dynamic-import_1.gif");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "cra-dynamic-import_2.gif");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
     }
 }
