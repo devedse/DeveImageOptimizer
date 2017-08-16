@@ -60,6 +60,36 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("cra-dynamic-import_1.gif");
         }
 
+        [SkippableFact]
+        public async void CorrectlyOptimizedDevtoolsSidePaneImage()
+        {
+            await OptimizeFileTest("devtools-side-pane_1.gif");
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizedImageSharpImage1()
+        {
+            await OptimizeFileTest("Imagesharp/Resize_IsAppliedToAllFrames_Rgba32_giphy.gif");
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizedImageSharpImage2()
+        {
+            await OptimizeFileTest("Imagesharp/ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizedImageSharpImage3()
+        {
+            await OptimizeFileTest("Imagesharp/ResizeWithBoxPadMode_Rgba32_CalliphoraPartial.png");
+        }
+
+        [SkippableFact]
+        public async void CorrectlyOptimizedImageSharpImage4()
+        {
+            await OptimizeFileTest("Imagesharp/ResizeWithPadMode_Rgba32_CalliphoraPartial.png");
+        }
+
         [Fact]
         public async void RemovesExifRotationAndReapliesAfterwards()
         {

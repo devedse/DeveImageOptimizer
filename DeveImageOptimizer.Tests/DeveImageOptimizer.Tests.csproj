@@ -39,6 +39,12 @@
     <None Update="TestImages\devtools-full_2.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\devtools-side-pane_1.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\devtools-side-pane_2.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\Image1A.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -55,6 +61,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestImages\Image3B.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Imagesharp\ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Imagesharp\ResizeWithBoxPadMode_Rgba32_CalliphoraPartial.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Imagesharp\ResizeWithPadMode_Rgba32_CalliphoraPartial.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\Imagesharp\Resize_IsAppliedToAllFrames_Rgba32_giphy.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestImages\pexels-photo.jpg">

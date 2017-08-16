@@ -84,7 +84,7 @@ namespace DeveImageOptimizer.Helpers
                         {
                             var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
                             var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
-
+                           
                             frame1FromImage.MetaData.FrameDelay = image1.MetaData.FrameDelay;
                             frame2FromImage.MetaData.FrameDelay = image2.MetaData.FrameDelay;
 
@@ -100,7 +100,28 @@ namespace DeveImageOptimizer.Helpers
                                 imageFrames2[i + 1] = image2.Frames[i];
                             }
 
-                            //ImageFrame<Rgba32> frame2 = new ImageFrame<Rgba32>(image2);
+                            //This code outputs all gif frames as png images
+                            //for (int i = 0; i < imageFrames1.Length; i++)
+                            //{
+                            //    using (var im = new Image<Rgba32>(imageFrames1[i]))
+                            //    {
+                            //        using (var fs = new FileStream($"1_{i}.png", FileMode.Create))
+                            //        {
+                            //            im.SaveAsPng(fs);
+                            //        }
+                            //    }
+                            //}
+
+                            //for (int i = 0; i < imageFrames2.Length; i++)
+                            //{
+                            //    using (var im = new Image<Rgba32>(imageFrames2[i]))
+                            //    {
+                            //        using (var fs = new FileStream($"2_{i}.png", FileMode.Create))
+                            //        {
+                            //            im.SaveAsPng(fs);
+                            //        }
+                            //    }
+                            //}
 
                             int delay1 = frame1FromImage.MetaData.FrameDelay;
                             int delay2 = frame2FromImage.MetaData.FrameDelay;
@@ -112,6 +133,25 @@ namespace DeveImageOptimizer.Helpers
                             {
                                 pixelsWrong += FindWrongPixels(frame1, frame2);
 
+                                //This code outputs the incorrect frames as an image
+                                if (pixelsWrong != 0)
+                                {
+                                    using (var im = new Image<Rgba32>(frame1))
+                                    {
+                                        using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
+                                        {
+                                            im.SaveAsPng(fs);
+                                        }
+                                    }
+                                    using (var im = new Image<Rgba32>(frame2))
+                                    {
+                                        using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
+                                        {
+                                            im.SaveAsPng(fs);
+                                        }
+                                    }
+                                }
+
                                 var min = Math.Min(delay1, delay2);
                                 delay1 -= min;
                                 delay2 -= min;
@@ -120,7 +160,7 @@ namespace DeveImageOptimizer.Helpers
                                 {
                                     pointer1++;
 
-                                    if (pointer1 < image1.Frames.Count)
+                                    if (pointer1 <= image1.Frames.Count)
                                     {
                                         frame1 = imageFrames1[pointer1];
                                         delay1 += frame1.MetaData.FrameDelay;
@@ -130,7 +170,7 @@ namespace DeveImageOptimizer.Helpers
                                 {
                                     pointer2++;
 
-                                    if (pointer2 < image2.Frames.Count)
+                                    if (pointer2 <= image2.Frames.Count)
                                     {
                                         frame2 = imageFrames2[pointer2];
                                         delay2 += frame2.MetaData.FrameDelay;
