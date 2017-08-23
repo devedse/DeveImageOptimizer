@@ -90,43 +90,11 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("Imagesharp/ResizeWithPadMode_Rgba32_CalliphoraPartial.png");
         }
 
-        [Fact]
-        public async void RemovesExifRotationAndReapliesAfterwards()
+        [SkippableFact]
+        public async void CorrectlyOptimizesIconImage()
         {
-            var fileName = "Image2A.JPG";
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "TempForTest");
-            var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
-
-            Directory.CreateDirectory(tempfortestdir);
-            File.Copy(image1path, image1temppath, true);
-
-            try
-            {
-                var imageBefore = Image.Load(image1temppath);
-
-                var oldRotation = await ExifImageRotator.UnrotateImageAsync(image1temppath);
-
-                var imageAfterUnrotate = Image.Load(image1temppath);
-
-                await ExifImageRotator.RerotateImageAsync(image1temppath, oldRotation);
-
-                var imageAfter = Image.Load(image1temppath);
-
-                var rotBefore = imageBefore.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                var rotAfterUnrotate = imageAfterUnrotate.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                var rotAfter = imageAfter.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-
-                Assert.True(rotBefore.ToString().Contains("270"));
-                Assert.True(rotAfterUnrotate.ToString().ToLowerInvariant().Contains("normal"));
-                Assert.Equal(rotBefore, rotAfter);
-            }
-            finally
-            {
-                File.Delete(image1temppath);
-                Directory.Delete(tempfortestdir);
-            }
-        }
+            await OptimizeFileTest("icon_1.png");
+        }       
 
         private async Task OptimizeFileTest(string fileName)
         {

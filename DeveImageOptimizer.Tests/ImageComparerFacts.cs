@@ -122,5 +122,16 @@ namespace DeveImageOptimizer.Tests
 
             Assert.True(areEqual);
         }
+
+        [Fact]
+        public async void AreImagesEqualIconImage()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "icon_1.png");
+            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "icon_2.png");
+
+            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
     }
 }
