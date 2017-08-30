@@ -91,6 +91,13 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
+        public async void CorrectlyOptimizesGifSourceImage()
+        {
+            //This image doesn't optimize correctly. This is a bug in FileOptimizerFull
+            await OptimizeFileTest("Source.gif");
+        }
+
+        [SkippableFact]
         public async void CorrectlyOptimizesIconImage()
         {
             await OptimizeFileTest("icon_1.png");
