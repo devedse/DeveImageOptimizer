@@ -125,7 +125,6 @@ namespace DeveImageOptimizer.Tests
             finally
             {
                 File.Delete(image1temppath);
-                Directory.Delete(tempfortestdir, true);
             }
         }
     }
