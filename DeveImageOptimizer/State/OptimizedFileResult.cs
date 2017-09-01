@@ -13,7 +13,7 @@ namespace DeveImageOptimizer.State
 
         public TimeSpan Duration { get; }
 
-        public List<string> Errors { get; }
+        public IEnumerable<string> Errors { get; }
 
         public OptimizedFileResult(string path, bool successful, long originalSize, long optimizedSize, TimeSpan duration, List<string> errors)
         {
