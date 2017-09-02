@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImageSharp" Version="1.0.0-alpha9-00191" />
+    <PackageReference Include="ImageSharp" Version="1.0.0-alpha9-00194" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Memory" Version="4.4.0-preview2-25405-01" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.0" />
