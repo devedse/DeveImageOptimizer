@@ -11,12 +11,12 @@ namespace DeveImageOptimizer.FileProcessing
     public class FileProcessor
     {
         private FileOptimizerProcessor _fileOptimizer;
-        private IFilesProcessingState _processingStateData;
+        private IFilesProcessedListener _fileProcessedListener;
 
-        public FileProcessor(FileOptimizerProcessor fileOptimizer, IFilesProcessingState processingStateData)
+        public FileProcessor(FileOptimizerProcessor fileOptimizer, IFilesProcessedListener fileProcessedListener)
         {
             _fileOptimizer = fileOptimizer;
-            _processingStateData = processingStateData;
+            _fileProcessedListener = fileProcessedListener;
         }
 
         public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory)
@@ -50,9 +50,9 @@ namespace DeveImageOptimizer.FileProcessing
         private async Task<OptimizedFileResult> ProcessFile(string file)
         {
             var optimizedFileResult = await _fileOptimizer.OptimizeFile(file);
-            if (_processingStateData != null)
+            if (_fileProcessedListener != null)
             {
-                _processingStateData.AddProcessedFile(optimizedFileResult);
+                _fileProcessedListener.AddProcessedFile(optimizedFileResult);
             }
 
             return optimizedFileResult;
