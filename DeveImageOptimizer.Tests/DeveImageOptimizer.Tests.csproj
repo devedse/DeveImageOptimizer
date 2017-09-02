@@ -13,16 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeveImageOptimizer\DeveImageOptimizer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ImageSharp">
-      <HintPath>..\..\ImageSharp\src\ImageSharp\bin\Debug\netstandard1.3\ImageSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
@@ -90,6 +80,15 @@
     <None Update="TestImages\pitch_2.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\SampleDirToOptimize\TestImageGIF.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\SampleDirToOptimize\TestImageJPG.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\SampleDirToOptimize\TestImagePNG.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\snake.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -108,6 +107,14 @@
     <None Update="TestImages\vim16x16_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestImages\SampleDirToOptimize\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeveImageOptimizer\DeveImageOptimizer.csproj" />
   </ItemGroup>
 
 </Project>

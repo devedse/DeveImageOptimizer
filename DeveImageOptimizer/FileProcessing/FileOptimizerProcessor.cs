@@ -106,7 +106,7 @@ namespace DeveImageOptimizer.FileProcessing
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
             long optimizedFileSize = new FileInfo(fileToOptimize).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, originalFileSize, optimizedFileSize, w.Elapsed, errors);
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
 
             if (errors.Any())
             {

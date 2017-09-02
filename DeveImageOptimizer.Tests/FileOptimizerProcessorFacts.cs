@@ -1,10 +1,6 @@
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
-using ImageSharp;
-using System;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,105 +9,104 @@ namespace DeveImageOptimizer.Tests
     public class FileOptimizerProcessorFacts
     {
         [SkippableFact]
-        public async void CorrectlyOptimizesLandscapeImage()
+        public async Task CorrectlyOptimizesLandscapeImage()
         {
             await OptimizeFileTest("Image1A.JPG");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesStandingRotatedImage()
+        public async Task CorrectlyOptimizesStandingRotatedImage()
         {
             await OptimizeFileTest("Image2A.JPG");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedPexelsPhoto()
+        public async Task CorrectlyOptimizedPexelsPhoto()
         {
             await OptimizeFileTest("pexels-photo.jpg");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedVimPicture()
+        public async Task CorrectlyOptimizedVimPicture()
         {
             await OptimizeFileTest("vim16x16_1.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesGifImage()
+        public async Task CorrectlyOptimizesGifImage()
         {
             await OptimizeFileTest("devtools-full_1.gif");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesVersioningImage()
+        public async Task CorrectlyOptimizesVersioningImage()
         {
             await OptimizeFileTest("versioning-1_1.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesSnakeImage()
+        public async Task CorrectlyOptimizesSnakeImage()
         {
             await OptimizeFileTest("snake.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesCraDynamicImportImage()
+        public async Task CorrectlyOptimizesCraDynamicImportImage()
         {
             await OptimizeFileTest("cra-dynamic-import_1.gif");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedDevtoolsSidePaneImage()
+        public async Task CorrectlyOptimizedDevtoolsSidePaneImage()
         {
             await OptimizeFileTest("devtools-side-pane_1.gif");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedImageSharpImage1()
+        public async Task CorrectlyOptimizedImageSharpImage1()
         {
             await OptimizeFileTest("Imagesharp/Resize_IsAppliedToAllFrames_Rgba32_giphy.gif");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedImageSharpImage2()
+        public async Task CorrectlyOptimizedImageSharpImage2()
         {
             await OptimizeFileTest("Imagesharp/ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedImageSharpImage3()
+        public async Task CorrectlyOptimizedImageSharpImage3()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithBoxPadMode_Rgba32_CalliphoraPartial.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizedImageSharpImage4()
+        public async Task CorrectlyOptimizedImageSharpImage4()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithPadMode_Rgba32_CalliphoraPartial.png");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesGifSourceImage()
+        public async Task CorrectlyOptimizesGifSourceImage()
         {
             //This image doesn't optimize correctly. This is a bug in FileOptimizerFull
             await OptimizeFileTest("Source.gif");
         }
 
         [SkippableFact]
-        public async void CorrectlyOptimizesIconImage()
+        public async Task CorrectlyOptimizesIconImage()
         {
             await OptimizeFileTest("icon_1.png");
         }       
 
         private async Task OptimizeFileTest(string fileName)
         {
-            var fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
-
+            const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
             Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
 
-            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "TempForTest");
+            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);

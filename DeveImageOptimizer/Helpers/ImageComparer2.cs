@@ -12,9 +12,9 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class ImageComparer2
     {
-        public static async Task<bool> AreImagesEqualAsync(string image1Path, string image2Path, bool useImageSharpBugWorkaround = true)
+        public static Task<bool> AreImagesEqualAsync(string image1Path, string image2Path, bool useImageSharpBugWorkaround = true)
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 return AreImagesEqual(image1Path, image2Path, useImageSharpBugWorkaround);
             });
@@ -84,7 +84,7 @@ namespace DeveImageOptimizer.Helpers
                         {
                             var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
                             var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
-                           
+
                             frame1FromImage.MetaData.FrameDelay = image1.MetaData.FrameDelay;
                             frame2FromImage.MetaData.FrameDelay = image2.MetaData.FrameDelay;
 

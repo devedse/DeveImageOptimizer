@@ -1,11 +1,9 @@
 ﻿using DeveImageOptimizer.Helpers;
 using ImageSharp;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests
@@ -24,34 +22,35 @@ namespace DeveImageOptimizer.Tests
 
             var image1path = Path.Combine(assemblyDir, "TestImages", "Image1A.JPG");
 
-            var img = Image.Load(image1path);
-
-            int width = img.Width;
-            int height = img.Height;
-
-            int x = 5990;
-            int y = 3992;
-
-            var thePixel = img.Pixels[y * width + x];
-
-            Skip.If(thePixel.R == 36 && thePixel.G == 15 && thePixel.B == 10, "Test skipped but actual decoding has failed. This should be fixed once ImageSharp fixes their JPG decoder.");
-
-            if (thePixel.R == 38 && thePixel.G == 14 && thePixel.B == 12)
+            using (var img = Image.Load(image1path))
             {
-                Console.WriteLine("Goed :)");
-            }
-            else
-            {
-                throw new Exception("KAPOT");
+                int width = img.Width;
+                int height = img.Height;
+
+                int x = 5990;
+                int y = 3992;
+
+                var thePixel = img.Pixels[y * width + x];
+
+                Skip.If(thePixel.R == 36 && thePixel.G == 15 && thePixel.B == 10, "Test skipped but actual decoding has failed. This should be fixed once ImageSharp fixes their JPG decoder.");
+
+                if (thePixel.R == 38 && thePixel.G == 14 && thePixel.B == 12)
+                {
+                    Console.WriteLine("Goed :)");
+                }
+                else
+                {
+                    throw new Exception("KAPOT");
+                }
             }
         }
 
         [Fact]
-        public async void CanReadThisPngCorrectly()
+        public async Task CanReadThisPngCorrectly()
         {
-            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "vim16x16_1.png");
-            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "vim16x16output.png");
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "vim16x16output.png");
 
             try
             {
@@ -84,11 +83,11 @@ namespace DeveImageOptimizer.Tests
         }
 
         [Fact]
-        public async void LoadAndSaveThisImage()
+        public async Task LoadAndSaveThisImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "versioning-1_2.png");
-            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "versioning-1_2_output.png");
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "versioning-1_2_output.png");
 
             try
             {
@@ -124,11 +123,11 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
-        public async void LoadAndSaveSnakeImage()
+        public async Task LoadAndSaveSnakeImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", "snake.png");
-            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "snake_output.png");
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "snake.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "snake_output.png");
 
             try
             {
@@ -167,11 +166,11 @@ namespace DeveImageOptimizer.Tests
         }
 
         [Fact]
-        public async void LoadAndSaveImageSharpImage2()
+        public async Task LoadAndSaveImageSharpImage2()
         {
-            Directory.CreateDirectory(FolderHelperMethods.TempDirectoryForTests.Value);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages","Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
-            var outputImage = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "Imagesharp2.png");
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "Imagesharp2.png");
 
             try
             {
@@ -207,11 +206,11 @@ namespace DeveImageOptimizer.Tests
         }
 
         [Fact]
-        public async void RemovesExifRotationAndReapliesAfterwards()
+        public async Task RemovesExifRotationAndReapliesAfterwards()
         {
             var fileName = "Image2A.JPG";
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectoryForTests.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectoryForTests.Value, "TempForTest");
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -219,23 +218,26 @@ namespace DeveImageOptimizer.Tests
 
             try
             {
-                var imageBefore = Image.Load(image1temppath);
+                using (var imageBefore = Image.Load(image1temppath))
+                {
+                    var oldRotation = await ExifImageRotator.UnrotateImageAsync(image1temppath);
 
-                var oldRotation = await ExifImageRotator.UnrotateImageAsync(image1temppath);
+                    using (var imageAfterUnrotate = Image.Load(image1temppath))
+                    {
+                        await ExifImageRotator.RerotateImageAsync(image1temppath, oldRotation);
 
-                var imageAfterUnrotate = Image.Load(image1temppath);
+                        using (var imageAfter = Image.Load(image1temppath))
+                        {
+                            var rotBefore = imageBefore.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
+                            var rotAfterUnrotate = imageAfterUnrotate.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
+                            var rotAfter = imageAfter.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
 
-                await ExifImageRotator.RerotateImageAsync(image1temppath, oldRotation);
-
-                var imageAfter = Image.Load(image1temppath);
-
-                var rotBefore = imageBefore.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                var rotAfterUnrotate = imageAfterUnrotate.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                var rotAfter = imageAfter.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-
-                Assert.True(rotBefore.ToString().Contains("270"));
-                Assert.True(rotAfterUnrotate.ToString().ToLowerInvariant().Contains("normal"));
-                Assert.Equal(rotBefore, rotAfter);
+                            Assert.True(rotBefore.ToString().Contains("270"));
+                            Assert.True(rotAfterUnrotate.ToString().ToLowerInvariant().Contains("normal"));
+                            Assert.Equal(rotBefore, rotAfter);
+                        }
+                    }
+                }
             }
             finally
             {

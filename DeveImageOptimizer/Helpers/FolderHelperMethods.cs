@@ -6,9 +6,9 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class FolderHelperMethods
     {
-        public static Lazy<string> AssemblyDirectory { get; private set; } = new Lazy<string>(() => CreateAssemblyDirectory());
+        public static Lazy<string> EntryAssemblyDirectory { get; private set; } = new Lazy<string>(() => CreateEntryAssemblyDirectory());
 
-        private static string CreateAssemblyDirectory()
+        private static string CreateEntryAssemblyDirectory()
         {
             string codeBase = Assembly.GetEntryAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
@@ -16,11 +16,11 @@ namespace DeveImageOptimizer.Helpers
             return Path.GetDirectoryName(path);
         }
 
-        public static Lazy<string> TempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value, Constants.TempDirectoryName));
+        public static Lazy<string> EntryTempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(EntryAssemblyDirectory.Value, Constants.TempDirectoryName));
 
-        public static Lazy<string> AssemblyDirectoryForTests { get; private set; } = new Lazy<string>(() => CreateAssemblyDirectoryForTests());
+        public static Lazy<string> LocationOfImageProcessorDllAssemblyDirectory { get; private set; } = new Lazy<string>(() => CreateLocationOfImageProcessorAssemblyDirectory());
 
-        private static string CreateAssemblyDirectoryForTests()
+        private static string CreateLocationOfImageProcessorAssemblyDirectory()
         {
             var startupAssembly = typeof(FolderHelperMethods).GetTypeInfo().Assembly;
             var cb = startupAssembly.CodeBase;
@@ -32,6 +32,6 @@ namespace DeveImageOptimizer.Helpers
             return assemblyDir;
         }
 
-        public static Lazy<string> TempDirectoryForTests { get; private set; } = new Lazy<string>(() => Path.Combine(AssemblyDirectoryForTests.Value, Constants.TempDirectoryName));
+        public static Lazy<string> LocationOfImageProcessorAssemblyTempDirectory { get; private set; } = new Lazy<string>(() => Path.Combine(LocationOfImageProcessorDllAssemblyDirectory.Value, Constants.TempDirectoryName));
     }
 }
