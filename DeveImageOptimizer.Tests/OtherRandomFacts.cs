@@ -48,9 +48,9 @@ namespace DeveImageOptimizer.Tests
         [Fact]
         public async Task CanReadThisPngCorrectly()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "vim16x16output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "vim16x16output.png");
 
             try
             {
@@ -85,9 +85,9 @@ namespace DeveImageOptimizer.Tests
         [Fact]
         public async Task LoadAndSaveThisImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "versioning-1_2_output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "versioning-1_2_output.png");
 
             try
             {
@@ -125,9 +125,9 @@ namespace DeveImageOptimizer.Tests
         [SkippableFact]
         public async Task LoadAndSaveSnakeImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "snake.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "snake_output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "snake_output.png");
 
             try
             {
@@ -168,9 +168,9 @@ namespace DeveImageOptimizer.Tests
         [Fact]
         public async Task LoadAndSaveImageSharpImage2()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "Imagesharp2.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "Imagesharp2.png");
 
             try
             {
@@ -210,7 +210,7 @@ namespace DeveImageOptimizer.Tests
         {
             var fileName = "Image2A.JPG";
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "TempForTest");
+            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -243,6 +243,6 @@ namespace DeveImageOptimizer.Tests
             {
                 File.Delete(image1temppath);
             }
-        }
+        }        
     }
 }

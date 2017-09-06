@@ -19,7 +19,7 @@ namespace DeveImageOptimizer.Tests.State
             const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
             Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
 
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "TempForTest");
+            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "SampleDirToOptimize");
             var sampleDirToOptimize = Path.Combine(tempfortestdir, "SampleDirToOptimize");
 
@@ -41,7 +41,7 @@ namespace DeveImageOptimizer.Tests.State
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
@@ -58,7 +58,7 @@ namespace DeveImageOptimizer.Tests.State
 
             //Optimize second time
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 

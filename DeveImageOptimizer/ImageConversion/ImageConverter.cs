@@ -10,7 +10,7 @@ namespace DeveImageOptimizer.ImageConversion
         {
             //i_view32.exe "C:\drawing*.png" /convert="C:\Converted\$N.jpg"
 
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
             var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
             //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -18,7 +18,7 @@ namespace DeveImageOptimizer.ImageConversion
             string pathIrfanView = @"C:\Program Files (x86)\IrfanView\i_view32.exe";
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
+            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"\"{inputPath}\" /convert=\"{outPath}\"";
 
             var psi = new ProcessStartInfo(pathIrfanView, args);
@@ -33,14 +33,14 @@ namespace DeveImageOptimizer.ImageConversion
 
         public static string ConvertJpgToPng(string inputPath)
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
             var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
             //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
+            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"COPY \"{inputPath}\" \"{outPath}\"";
 
             var psi = new ProcessStartInfo(pathVips, args);
@@ -54,14 +54,14 @@ namespace DeveImageOptimizer.ImageConversion
 
         public static string ConvertJpgToPngWithAutoRotate(string inputPath)
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
             var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
             //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
+            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"COPY \"{inputPath}\"[autorotate] \"{outPath}\"";
 
             var psi = new ProcessStartInfo(pathVips, args);
@@ -75,14 +75,14 @@ namespace DeveImageOptimizer.ImageConversion
 
         public static string ConvertJpgToPngWithRotation(string inputPath, string rotation)
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
             var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
             //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
+            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"ROT \"{inputPath}\" \"{outPath}\" d{rotation}";
 
             var psi = new ProcessStartInfo(pathVips, args);

@@ -104,9 +104,9 @@ namespace DeveImageOptimizer.Tests
             const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
             Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
 
-            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value);
+            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorAssemblyTempDirectory.Value, "TempForTest");
+            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);
