@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
-using ImageSharp;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.MetaData.Profiles.Exif;
 using System;
 using System.IO;
 using System.Reflection;
@@ -10,7 +11,7 @@ namespace DeveImageOptimizer.Tests
 {
     public class OtherRandomFacts
     {
-        [SkippableFact]
+        [Fact]
         public void ReproducesJpgDecoderBug()
         {
             var startupAssembly = typeof(FileOptimizerProcessorFacts).GetTypeInfo().Assembly;
@@ -30,7 +31,7 @@ namespace DeveImageOptimizer.Tests
                 int x = 5990;
                 int y = 3992;
 
-                var thePixel = img.Pixels[y * width + x];
+                var thePixel = img[x, y];
 
                 Skip.If(thePixel.R == 36 && thePixel.G == 15 && thePixel.B == 10, "Test skipped but actual decoding has failed. This should be fixed once ImageSharp fixes their JPG decoder.");
 
@@ -69,7 +70,7 @@ namespace DeveImageOptimizer.Tests
                     }
 
                     //I'll just check the pixel by hand.
-                    var pixel = img.Pixels[1];
+                    var pixel = img[1, 0];
                     Skip.If(pixel.A != 0, "Pixel at X: 1 and Y: 0 should be transparent.");
                 }
             }
@@ -106,7 +107,7 @@ namespace DeveImageOptimizer.Tests
                     }
 
                     //I'll just check the pixel by hand.
-                    var pixel = img.Pixels[0];
+                    var pixel = img[0, 0];
                     if (pixel.A != 0)
                     {
                         throw new Exception("Pixel at X: 0 and Y: 0 should be transparent.");
@@ -122,7 +123,7 @@ namespace DeveImageOptimizer.Tests
             }
         }
 
-        [SkippableFact]
+        [Fact]
         public async Task LoadAndSaveSnakeImage()
         {
             Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
@@ -146,7 +147,7 @@ namespace DeveImageOptimizer.Tests
                     }
 
                     //I'll just check the pixel by hand.
-                    var pixel = img.Pixels[0];
+                    var pixel = img[0, 0];
 
                     Skip.If(pixel.A != 0, "This test should not be skipped but yeah, temporary workarounds are needed till ImageSharp fixes this bug");
 
@@ -189,7 +190,7 @@ namespace DeveImageOptimizer.Tests
                     }
 
                     //I'll just check the pixel by hand.
-                    var pixel = img.Pixels[0];
+                    var pixel = img[0, 0];
                     if (pixel.A != 0)
                     {
                         throw new Exception("Pixel at X: 0 and Y: 0 should be transparent.");
@@ -243,6 +244,6 @@ namespace DeveImageOptimizer.Tests
             {
                 File.Delete(image1temppath);
             }
-        }        
+        }
     }
 }
