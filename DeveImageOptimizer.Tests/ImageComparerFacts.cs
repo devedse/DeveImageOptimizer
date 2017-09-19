@@ -106,7 +106,7 @@ namespace DeveImageOptimizer.Tests
 
             var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
 
-            Skip.If(areEqual == false, "This should also not fail I think.");
+            Skip.If(areEqual == false, "This should also not fail I think. Currently it fails though, so this needs fixes in the FileOpitmizerFull.");
             //Assert.True(areEqual);
         }
 
