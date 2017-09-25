@@ -128,12 +128,12 @@ namespace DeveImageOptimizer.Helpers
 
                         ImageFrame<Rgba32> frame1 = image1.Frames[0];
                         ImageFrame<Rgba32> frame2 = image2.Frames[0];
-                        
+
                         //TODO: Fix uncomment top line when ImageSharp fixes bug where FrameDelay of frame[0] is always 0
-                        //int delay1 = frame1.MetaData.FrameDelay;
-                        //int delay2 = frame2.MetaData.FrameDelay;
-                        int delay1 = image1.MetaData.FrameDelay;
-                        int delay2 = image2.MetaData.FrameDelay;
+                        int delay1 = frame1.MetaData.FrameDelay;
+                        int delay2 = frame2.MetaData.FrameDelay;
+                        //int delay1 = image1.MetaData.FrameDelay;
+                        //int delay2 = image2.MetaData.FrameDelay;
 
                         while (true)
                         {
@@ -210,7 +210,7 @@ namespace DeveImageOptimizer.Helpers
 
                     else
                     {
-                        pixelsWrong = FindWrongPixels(image1, image2);
+                        pixelsWrong = FindWrongPixels(image1.Frames[0], image2.Frames[0]);
                     }
 
                     Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}");
