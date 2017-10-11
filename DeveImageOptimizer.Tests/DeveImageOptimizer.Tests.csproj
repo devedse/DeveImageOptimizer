@@ -107,6 +107,9 @@
     <None Update="TestImages\SampleDirToOptimize\TestImagePNG.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\SmileFaceBmp.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\snake.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
