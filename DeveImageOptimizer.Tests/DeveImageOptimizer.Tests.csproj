@@ -92,6 +92,9 @@
     <None Update="TestImages\pitch_2.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\SampleDirToOptimize\TestImageBMP.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\SampleDirToOptimize\TestImageGIF.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

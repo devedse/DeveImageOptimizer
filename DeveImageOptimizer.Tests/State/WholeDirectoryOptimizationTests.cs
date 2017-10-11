@@ -1,20 +1,17 @@
 ﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests.State
 {
-    public class FileOptimizationStuff
+    public class WholeDirectoryOptimizationTests
     {
         [SkippableFact]
-        public async Task CorrectlyOptimizesCompleteDirectory()
+        public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
             const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
             Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
@@ -47,7 +44,7 @@ namespace DeveImageOptimizer.Tests.State
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
-                Assert.Equal(3, results.Count);
+                Assert.Equal(4, results.Count);
                 foreach (var result in results)
                 {
                     Assert.True(result.Successful);
@@ -64,7 +61,7 @@ namespace DeveImageOptimizer.Tests.State
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
-                Assert.Equal(3, results.Count);
+                Assert.Equal(4, results.Count);
                 foreach (var result in results)
                 {
                     Assert.True(result.Successful);
