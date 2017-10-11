@@ -52,7 +52,7 @@ namespace DeveImageOptimizer.State
                 {
                     foreach (var curhash in _fullyOptimizedFileHashes)
                     {
-                        streamWriter.WriteLineAsync(curhash);
+                        streamWriter.WriteLine(curhash);
                     }
                 }
             });

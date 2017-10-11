@@ -97,7 +97,13 @@ namespace DeveImageOptimizer.Tests
         public async Task CorrectlyOptimizesIconImage()
         {
             await OptimizeFileTest("icon_1.png");
-        }       
+        }
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesGoProImage()
+        {
+            await OptimizeFileTest("GoProBison.JPG");
+        }
 
         private async Task OptimizeFileTest(string fileName)
         {

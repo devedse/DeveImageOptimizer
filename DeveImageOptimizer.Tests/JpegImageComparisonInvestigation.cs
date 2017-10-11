@@ -1,8 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.ImageConversion;
-using ImageSharp;
+using SixLabors.ImageSharp;
 using System;
-using System.Diagnostics;
 using System.IO;
 using Xunit;
 

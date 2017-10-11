@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.ImageConversion;
-using ImageSharp;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.MetaData.Profiles.Exif;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,12 +67,12 @@ namespace DeveImageOptimizer.Helpers
                 using (var image1 = LoadImageHelper(image1Path, tempFiles, useImageSharpBugWorkaround))
                 using (var image2 = LoadImageHelper(image2Path, tempFiles, useImageSharpBugWorkaround))
                 {
-                    image1.AutoOrient();
-                    image2.AutoOrient();
+                    image1.Mutate(t => t.AutoOrient());
+                    image2.Mutate(t => t.AutoOrient());
 
                     long pixelsWrong = 0;
 
-                    if (image1.Frames.Any())
+                    if (image1.Frames.Count > 1)
                     {
                         Console.WriteLine("Image with multiple frames detected.");
                         Console.WriteLine($"Comparing all {image1.Frames.Count} frames...");
@@ -79,129 +80,137 @@ namespace DeveImageOptimizer.Helpers
                         int pointer1 = 0;
                         int pointer2 = 0;
 
-                        using (ImageFrame<Rgba32> frame1FromImage = new ImageFrame<Rgba32>(image1))
-                        using (ImageFrame<Rgba32> frame2FromImage = new ImageFrame<Rgba32>(image2))
+                        //using (ImageFrame<Rgba32> frame1FromImage = new ImageFrame<Rgba32>(image1))
+                        //using (ImageFrame<Rgba32> frame2FromImage = new ImageFrame<Rgba32>(image2))
+                        //{
+                        //var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
+                        //var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
+
+                        //frame1FromImage.MetaData.FrameDelay = image1.MetaData.FrameDelay;
+                        //frame2FromImage.MetaData.FrameDelay = image2.MetaData.FrameDelay;
+
+                        //imageFrames1[0] = frame1FromImage;
+                        //imageFrames2[0] = frame2FromImage;
+
+                        //for (int i = 0; i < image1.Frames.Count; i++)
+                        //{
+                        //    imageFrames1[i + 1] = image1.Frames[i];
+                        //}
+                        //for (int i = 0; i < image2.Frames.Count; i++)
+                        //{
+                        //    imageFrames2[i + 1] = image2.Frames[i];
+                        //}
+
+                        //This code outputs all gif frames as png images
+                        //for (int i = 0; i < imageFrames1.Length; i++)
+                        //{
+                        //    using (var im = new Image<Rgba32>(imageFrames1[i]))
+                        //    {
+                        //        using (var fs = new FileStream($"1_{i}.png", FileMode.Create))
+                        //        {
+                        //            im.SaveAsPng(fs);
+                        //        }
+                        //    }
+                        //}
+
+                        //for (int i = 0; i < imageFrames2.Length; i++)
+                        //{
+                        //    using (var im = new Image<Rgba32>(imageFrames2[i]))
+                        //    {
+                        //        using (var fs = new FileStream($"2_{i}.png", FileMode.Create))
+                        //        {
+                        //            im.SaveAsPng(fs);
+                        //        }
+                        //    }
+                        //}
+
+
+
+                        ImageFrame<Rgba32> frame1 = image1.Frames[0];
+                        ImageFrame<Rgba32> frame2 = image2.Frames[0];
+
+                        //TODO: Fix uncomment top line when ImageSharp fixes bug where FrameDelay of frame[0] is always 0
+                        int delay1 = frame1.MetaData.FrameDelay;
+                        int delay2 = frame2.MetaData.FrameDelay;
+                        //int delay1 = image1.MetaData.FrameDelay;
+                        //int delay2 = image2.MetaData.FrameDelay;
+
+                        while (true)
                         {
-                            var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
-                            var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
+                            pixelsWrong += FindWrongPixels(frame1, frame2);
 
-                            frame1FromImage.MetaData.FrameDelay = image1.MetaData.FrameDelay;
-                            frame2FromImage.MetaData.FrameDelay = image2.MetaData.FrameDelay;
-
-                            imageFrames1[0] = frame1FromImage;
-                            imageFrames2[0] = frame2FromImage;
-
-                            for (int i = 0; i < image1.Frames.Count; i++)
+                            //This code outputs the incorrect frames as an image
+                            if (pixelsWrong != 0)
                             {
-                                imageFrames1[i + 1] = image1.Frames[i];
+                                //Currently disabled
+                                //TODO: When image sharp implements this again, fix it.
+
+                                //using (var im = new Image<Rgba32>(frame1))
+                                //{
+                                //    using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
+                                //    {
+                                //        im.SaveAsPng(fs);
+                                //    }
+                                //}
+                                //using (var im = new Image<Rgba32>(frame2))
+                                //{
+                                //    using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
+                                //    {
+                                //        im.SaveAsPng(fs);
+                                //    }
+                                //}
                             }
-                            for (int i = 0; i < image2.Frames.Count; i++)
+
+                            var min = Math.Min(delay1, delay2);
+                            delay1 -= min;
+                            delay2 -= min;
+
+                            if (delay1 == 0)
                             {
-                                imageFrames2[i + 1] = image2.Frames[i];
+                                pointer1++;
+
+                                if (pointer1 < image1.Frames.Count)
+                                {
+                                    frame1 = image1.Frames[pointer1];
+                                    delay1 += frame1.MetaData.FrameDelay;
+                                }
+                            }
+                            if (delay2 == 0)
+                            {
+                                pointer2++;
+
+                                if (pointer2 < image2.Frames.Count)
+                                {
+                                    frame2 = image2.Frames[pointer2];
+                                    delay2 += frame2.MetaData.FrameDelay;
+                                }
                             }
 
-                            //This code outputs all gif frames as png images
-                            //for (int i = 0; i < imageFrames1.Length; i++)
-                            //{
-                            //    using (var im = new Image<Rgba32>(imageFrames1[i]))
-                            //    {
-                            //        using (var fs = new FileStream($"1_{i}.png", FileMode.Create))
-                            //        {
-                            //            im.SaveAsPng(fs);
-                            //        }
-                            //    }
-                            //}
-
-                            //for (int i = 0; i < imageFrames2.Length; i++)
-                            //{
-                            //    using (var im = new Image<Rgba32>(imageFrames2[i]))
-                            //    {
-                            //        using (var fs = new FileStream($"2_{i}.png", FileMode.Create))
-                            //        {
-                            //            im.SaveAsPng(fs);
-                            //        }
-                            //    }
-                            //}
-
-                            int delay1 = frame1FromImage.MetaData.FrameDelay;
-                            int delay2 = frame2FromImage.MetaData.FrameDelay;
-
-                            ImageFrame<Rgba32> frame1 = imageFrames1[0];
-                            ImageFrame<Rgba32> frame2 = imageFrames2[0];
-
-                            while (true)
+                            if (pointer1 > image1.Frames.Count && pointer2 > image2.Frames.Count)
                             {
-                                pixelsWrong += FindWrongPixels(frame1, frame2);
-
-                                //This code outputs the incorrect frames as an image
-                                if (pixelsWrong != 0)
+                                //Same number of frames
+                                break;
+                            }
+                            else if (pointer1 <= image1.Frames.Count && pointer2 <= image2.Frames.Count)
+                            {
+                                //Just continue;
+                            }
+                            else
+                            {
+                                //Incorrect frame number
+                                Console.WriteLine("Number of frames is not correct");
+                                if (pixelsWrong == 0)
                                 {
-                                    using (var im = new Image<Rgba32>(frame1))
-                                    {
-                                        using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
-                                        {
-                                            im.SaveAsPng(fs);
-                                        }
-                                    }
-                                    using (var im = new Image<Rgba32>(frame2))
-                                    {
-                                        using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
-                                        {
-                                            im.SaveAsPng(fs);
-                                        }
-                                    }
+                                    pixelsWrong += 1; //Just to be sure it fails
                                 }
-
-                                var min = Math.Min(delay1, delay2);
-                                delay1 -= min;
-                                delay2 -= min;
-
-                                if (delay1 == 0)
-                                {
-                                    pointer1++;
-
-                                    if (pointer1 <= image1.Frames.Count)
-                                    {
-                                        frame1 = imageFrames1[pointer1];
-                                        delay1 += frame1.MetaData.FrameDelay;
-                                    }
-                                }
-                                if (delay2 == 0)
-                                {
-                                    pointer2++;
-
-                                    if (pointer2 <= image2.Frames.Count)
-                                    {
-                                        frame2 = imageFrames2[pointer2];
-                                        delay2 += frame2.MetaData.FrameDelay;
-                                    }
-                                }
-
-                                if (pointer1 > image1.Frames.Count && pointer2 > image2.Frames.Count)
-                                {
-                                    //Same number of frames
-                                    break;
-                                }
-                                else if (pointer1 <= image1.Frames.Count && pointer2 <= image2.Frames.Count)
-                                {
-                                    //Just continue;
-                                }
-                                else
-                                {
-                                    //Incorrect frame number
-                                    Console.WriteLine("Number of frames is not correct");
-                                    if (pixelsWrong == 0)
-                                    {
-                                        pixelsWrong += 1; //Just to be sure it fails
-                                    }
-                                    break;
-                                }
+                                break;
                             }
                         }
                     }
+
                     else
                     {
-                        pixelsWrong = FindWrongPixels(image1, image2);
+                        pixelsWrong = FindWrongPixels(image1.Frames[0], image2.Frames[0]);
                     }
 
                     Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}");
@@ -222,7 +231,7 @@ namespace DeveImageOptimizer.Helpers
             }
         }
 
-        private static long FindWrongPixels(ImageBase<Rgba32> image1, ImageBase<Rgba32> image2)
+        private static long FindWrongPixels(ImageFrame<Rgba32> image1, ImageFrame<Rgba32> image2)
         {
             if (image1.Width != image2.Width || image1.Height != image2.Height)
             {
@@ -238,8 +247,8 @@ namespace DeveImageOptimizer.Helpers
             {
                 for (int x = 0; x < width; x++)
                 {
-                    var pixel1 = image1.Pixels[y * width + x];
-                    var pixel2 = image2.Pixels[y * width + x];
+                    var pixel1 = image1[x, y];
+                    var pixel2 = image2[x, y];
 
                     if (pixel1 != pixel2)
                     {
