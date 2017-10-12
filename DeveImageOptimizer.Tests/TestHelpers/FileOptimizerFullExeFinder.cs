@@ -12,8 +12,12 @@ namespace DeveImageOptimizer.Tests.TestHelpers
 
             possiblePaths.Add(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe");
 
+            //Maybe this can be improved, but just to test I'll have it like this for now. (It's just for unit testing anyway)
             var extractedPathForAppVeyor = Path.GetFullPath(@"..\..\..\..\..\DeveImageOptimizer\Scripts\FileOptimizer\FileOptimizer64.exe");
             possiblePaths.Add(extractedPathForAppVeyor);
+
+            var extractedPathForAppVeyor2 = Path.GetFullPath(@"..\..\..\..\DeveImageOptimizer\Scripts\FileOptimizer\FileOptimizer64.exe");
+            possiblePaths.Add(extractedPathForAppVeyor2);
 
             foreach (var possiblePath in possiblePaths)
             {
