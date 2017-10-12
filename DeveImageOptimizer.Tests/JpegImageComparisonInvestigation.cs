@@ -204,7 +204,7 @@ namespace DeveImageOptimizer.Tests
                 }
             }
 
-            Console.WriteLine($"Pixels wrong: {pixelsWrong}");
+            Console.WriteLine($"Jpeg Image Comparison: Compared: {image1} to {image2} Pixels wrong: {pixelsWrong}");
             return pixelsWrong;
         }
     }
