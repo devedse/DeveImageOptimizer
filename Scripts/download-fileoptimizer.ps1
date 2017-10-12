@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
-$url = 'https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/11.10.2015/FileOptimizerFull.7z.exe'
+$url = 'https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/11.20.2033/FileOptimizerFull.7z.exe'
 $path = Join-Path $scriptPath 'FileOptimizerFull.7z.exe'
 $extractPath = Join-path $scriptPath 'FileOptimizer'
 
