@@ -6,8 +6,11 @@ $path = '.\FileOptimizerFull.7z.exe'
 
 Invoke-WebRequest -Uri $url -OutFile $path -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
 
-Start-Process $path '-o".\FileOptimizer" -y' -NoNewWindow -Wait
-if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
+$p = Start-Process $path '-o".\FileOptimizer" -y' -NoNewWindow -Wait
+$p.WaitForExit()
+if ($p.ExitCode -ne 0) {
+    $host.SetShouldExit($p.ExitCode)
+}
 
 $iniFile = Join-Path $scriptPath 'FileOptimizer64.ini'
 cp $iniFile .\FileOptimizer\FileOptimizer64.ini
