@@ -16,7 +16,7 @@ build_script:
   - cmd: dotnet build -c Release
 
 test_script:
-  - cmd: dotnet test -c release DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
+  - cmd: dotnet test -c release -p:ParallelizeTestCollections=false DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
 
 after_test:
   - cmd: dotnet pack -c Release DeveImageOptimizer\
