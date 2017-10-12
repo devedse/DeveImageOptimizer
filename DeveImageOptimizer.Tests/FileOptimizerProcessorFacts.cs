@@ -106,6 +106,12 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("GoProBison.JPG");
         }
 
+        [SkippableFact]
+        public async Task CorrectlyOptimizesSmileFaceBmpImage()
+        {
+            await OptimizeFileTest("SmileFaceBmp.bmp");
+        }
+
         private async Task OptimizeFileTest(string fileName)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
