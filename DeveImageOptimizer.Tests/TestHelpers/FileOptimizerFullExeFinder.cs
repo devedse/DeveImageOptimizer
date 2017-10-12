@@ -16,9 +16,6 @@ namespace DeveImageOptimizer.Tests.TestHelpers
             var extractedPathForAppVeyor = Path.GetFullPath(@"..\..\..\..\..\DeveImageOptimizer\Scripts\FileOptimizer\FileOptimizer64.exe");
             possiblePaths.Add(extractedPathForAppVeyor);
 
-            var extractedPathForAppVeyor2 = Path.GetFullPath(@"..\..\..\..\DeveImageOptimizer\Scripts\FileOptimizer\FileOptimizer64.exe");
-            possiblePaths.Add(extractedPathForAppVeyor2);
-
             foreach (var possiblePath in possiblePaths)
             {
                 if (File.Exists(possiblePath))
