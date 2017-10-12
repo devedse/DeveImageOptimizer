@@ -250,3 +250,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Ignored FileOptimizerFiles just incase
+/Scripts/FileOptimizerFull.7z.exe
+/Scripts/FileOptimizer
