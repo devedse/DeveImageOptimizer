@@ -1,5 +1,6 @@
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.Tests.TestHelpers;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
@@ -107,8 +108,7 @@ namespace DeveImageOptimizer.Tests
 
         private async Task OptimizeFileTest(string fileName)
         {
-            const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
-            Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);

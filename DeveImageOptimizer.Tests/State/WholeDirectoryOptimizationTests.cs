@@ -1,6 +1,7 @@
 ﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
+using DeveImageOptimizer.Tests.TestHelpers;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,7 @@ namespace DeveImageOptimizer.Tests.State
         [SkippableFact]
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
-            const string fileOptimizerPath = @"C:\Program Files\FileOptimizer\FileOptimizer64.exe";
-            Skip.IfNot(File.Exists(fileOptimizerPath), $"FileOptimizerFull exe file can't be found. Expected location: {fileOptimizerPath}");
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "SampleDirToOptimize");
