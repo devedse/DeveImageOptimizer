@@ -213,7 +213,7 @@ namespace DeveImageOptimizer.Helpers
                         pixelsWrong = FindWrongPixels(image1.Frames[0], image2.Frames[0]);
                     }
 
-                    Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}");
+                    Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}. SourceFile: {image1Path}. ResultFile: {image2Path}.");
                     if (pixelsWrong > 0)
                     {
                         return false;
