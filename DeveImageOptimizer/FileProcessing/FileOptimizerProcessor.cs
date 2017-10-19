@@ -30,7 +30,6 @@ namespace DeveImageOptimizer.FileProcessing
             long originalFileSize = new FileInfo(fileToOptimize).Length;
 
             var tempFiles = new List<string>();
-            bool imagesEqual = false;
 
             var errors = new List<string>();
 
@@ -66,16 +65,25 @@ namespace DeveImageOptimizer.FileProcessing
                     await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
                 }
 
-                imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
+                var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
-                if (imagesEqual)
+                if (!imagesEqual)
+                {
+                    errors.Add("Optimized image isn't equal to source image.");
+                }
+
+                var newSize = new FileInfo(tempFilePath).Length;
+                if (newSize > originalFileSize)
+                {
+                    errors.Add("Result image size is bigger then original.");
+                }
+
+                if (errors.Count == 0 && newSize < originalFileSize)
                 {
                     await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
                 }
-                else
+                else if (errors.Count != 0)
                 {
-                    errors.Add("Optimized image isn't equal to source image.");
-
                     if (saveFailedOptimizedFile)
                     {
                         var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
@@ -88,6 +96,10 @@ namespace DeveImageOptimizer.FileProcessing
                         //Write a file as Blah_FAILED.png
                         await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Image could not be further optimized.");
                 }
             }
             catch (Exception ex)
@@ -106,7 +118,7 @@ namespace DeveImageOptimizer.FileProcessing
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
             long optimizedFileSize = new FileInfo(fileToOptimize).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, imagesEqual, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, errors.Count == 0, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
 
             if (errors.Any())
             {
@@ -116,7 +128,7 @@ namespace DeveImageOptimizer.FileProcessing
                     Console.WriteLine($"\tError: {error}");
                 }
             }
-            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {imagesEqual}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
+            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {optimizedFileResult.Successful}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
 
             return optimizedFileResult;
         }

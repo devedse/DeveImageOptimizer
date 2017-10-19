@@ -115,6 +115,12 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
+        public async Task CorrectlyOptimizedPezImage()
+        {
+            await OptimizeFileTest("pez.jpg");
+        }
+
+        [SkippableFact]
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
