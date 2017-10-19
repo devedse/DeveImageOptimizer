@@ -51,14 +51,19 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, tempFilePath)
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $"\"{tempFilePath}\"")
                 {
                     CreateNoWindow = true,
                 };
                 //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 //processStartInfo.CreateNoWindow = true;
 
-                await ProcessRunner.RunProcessAsync(processStartInfo);
+                var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
+
+                if (exitCode != 0)
+                {
+                    errors.Add($"Error when running FileOptimizer, Exit code: {exitCode}");
+                }
 
                 if (shouldUseJpgWorkaround)
                 {

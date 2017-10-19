@@ -115,9 +115,9 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedPezImage()
+        public async Task CorrectlyOptimizedPezImageWithSpaceInName()
         {
-            await OptimizeFileTest("pez.jpg");
+            await OptimizeFileTest("pez image with space.jpg");
         }
 
         [SkippableFact]

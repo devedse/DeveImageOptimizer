@@ -107,7 +107,7 @@
     <None Update="TestImages\pexels-photo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestImages\pez.jpg">
+    <None Update="TestImages\pez image with space.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestImages\pitch_1.gif">

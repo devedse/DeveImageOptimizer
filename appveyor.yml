@@ -8,7 +8,7 @@ install:
 
 before_build:
   - ps: .\scripts\set-version.ps1
-  - ps: .\scripts\download-fileoptimizer.ps1
+  #- ps: .\scripts\download-fileoptimizer.ps1
   - cmd: dotnet --info
   - cmd: dotnet restore --verbosity n
 
