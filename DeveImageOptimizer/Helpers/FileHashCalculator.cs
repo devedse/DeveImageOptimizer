@@ -10,7 +10,7 @@ namespace DeveImageOptimizer.Helpers
     {
         public static string CalculateFileHash(string filePath)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
