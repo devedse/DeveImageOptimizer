@@ -11,6 +11,9 @@
     <Description>A library to more easily control image optimization from C# using https://encode.ru/threads/1589-FileOptimizer</Description>
     <PackageProjectUrl>https://github.com/devedse/DeveImageOptimizer</PackageProjectUrl>
     <PackageTags>image;drawing;optimization</PackageTags>
+    
+    <!-- Workaround to get Code Coverage working, see: https://github.com/Microsoft/vstest-docs/blob/master/docs/analyze.md#coverage -->
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
