@@ -24,13 +24,13 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedPexelsPhoto()
+        public async Task CorrectlyOptimizesPexelsPhoto()
         {
             await OptimizeFileTest("pexels-photo.jpg");
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedVimPicture()
+        public async Task CorrectlyOptimizesVimPicture()
         {
             await OptimizeFileTest("vim16x16_1.png");
         }
@@ -60,31 +60,31 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedDevtoolsSidePaneImage()
+        public async Task CorrectlyOptimizesDevtoolsSidePaneImage()
         {
             await OptimizeFileTest("devtools-side-pane_1.gif");
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedImageSharpImage1()
+        public async Task CorrectlyOptimizesImageSharpImage1()
         {
             await OptimizeFileTest("Imagesharp/Resize_IsAppliedToAllFrames_Rgba32_giphy.gif");
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedImageSharpImage2()
+        public async Task CorrectlyOptimizesImageSharpImage2()
         {
             await OptimizeFileTest("Imagesharp/ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedImageSharpImage3()
+        public async Task CorrectlyOptimizesImageSharpImage3()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithBoxPadMode_Rgba32_CalliphoraPartial.png");
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedImageSharpImage4()
+        public async Task CorrectlyOptimizesImageSharpImage4()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithPadMode_Rgba32_CalliphoraPartial.png");
         }
@@ -115,9 +115,15 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
-        public async Task CorrectlyOptimizedPezImageWithSpaceInName()
+        public async Task CorrectlyOptimizesPezImageWithSpaceInName()
         {
             await OptimizeFileTest("pez image with space.jpg");
+        }
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesAfterJpgImage()
+        {
+            await OptimizeFileTest("After.JPG");
         }
 
         [SkippableFact]
