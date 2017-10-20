@@ -10,14 +10,19 @@ before_build:
   - ps: .\scripts\set-version.ps1
   #- ps: .\scripts\download-fileoptimizer.ps1
   - cmd: dotnet --info
-  - cmd: dotnet restore --verbosity n
+  - cmd: dotnet restore --verbosity n  
+  - choco install opencover.portable
+  - choco install codecov
+  - choco install xunit
 
 build_script:
   - cmd: dotnet build -c Release
 
 test_script:
   - cmd: dotnet test -c release -p:ParallelizeTestCollections=false DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
-
+  - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\DeveImageOptimizer.Tests\bin\Debug\netcoreapp2.0\DeveImageOptimizer.Tests.dll -noshadow" -output:".\MyProject_coverage.xml"
+  - codecov -f "MyProject_coverage.xml"
+  
 after_test:
   - cmd: dotnet pack -c Release DeveImageOptimizer\
 
