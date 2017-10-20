@@ -28,23 +28,55 @@ namespace DeveImageOptimizer.Tests
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "GifInvest", "Source-Gifcicle.gif");
 
             var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            //Assert.True(areEqual);
+
 
             if (!areEqual)
             {
                 var sb = new StringBuilder();
                 sb.AppendLine("This test shouldn't fail but for some reason it does sometimes.");
                 using (var img1 = Image.Load(imageApath))
-                {
-                    sb.AppendLine($"Frames Image a: {img1.Frames.Count}");
-                }
                 using (var img2 = Image.Load(imageBpath))
                 {
+                    sb.AppendLine($"Frames Image a: {img1.Frames.Count}");
                     sb.AppendLine($"Frames Image a: {img2.Frames.Count}");
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        var frame1 = img1.Frames[i];
+                        var frame2 = img2.Frames[i];
+
+                        int pixelsWrong = 0;
+                        for (int y = 0; y < frame1.Height; y++)
+                        {
+                            for (int x = 0; x < frame1.Width; x++)
+                            {
+                                var pixel1 = frame1[x, y];
+                                var pixel2 = frame2[x, y];
+
+                                if (pixel1 != pixel2)
+                                {
+                                    if (pixel1.A == 0 && pixel2.A == 0)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        sb.AppendLine($"Pixel Wrong in Frame {i}: Pixel1: {pixel1.R},{pixel1.G},{pixel1.B},{pixel1.A} Pixel2: {pixel2.R},{pixel2.G},{pixel2.B},{pixel2.A}");
+                                        pixelsWrong++;
+                                    }
+                                }
+                            }
+                        }
+
+                        sb.AppendLine($">>> Frame: {i} has {pixelsWrong} wrong pixels.");
+                    }
                 }
+
+
 
                 throw new SkipException(sb.ToString());
             }
-            //Assert.True(areEqual);
+
         }
 
         //[SkippableFact]
