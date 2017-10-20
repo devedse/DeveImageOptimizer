@@ -1,6 +1,7 @@
 ﻿using ExifLibrary;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,11 +19,11 @@ namespace DeveImageOptimizer.Helpers
 
         private static Orientation? UnrotateImage(string path)
         {
-            var file = ExifFile.Read(path);
+            var file = JPEGFile.FromFile(path);
 
-            ExifProperty orientationExif;
+            ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
-            if (file.Properties.TryGetValue(ExifTag.Orientation, out orientationExif))
+            if (orientationExif != null)
             {
                 var retval = (Orientation)orientationExif.Value;
                 orientationExif.Value = Orientation.Normal;
@@ -49,11 +50,11 @@ namespace DeveImageOptimizer.Helpers
         {
             if (newOrientation != null)
             {
-                var file = ExifFile.Read(path);
+                var file = JPEGFile.FromFile(path);
 
-                ExifProperty orientationExif;
+                ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
-                if (file.Properties.TryGetValue(ExifTag.Orientation, out orientationExif))
+                if (orientationExif != null)
                 {
                     orientationExif.Value = newOrientation;
                 }

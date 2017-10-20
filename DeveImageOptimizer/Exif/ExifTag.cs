@@ -2,59 +2,101 @@
 namespace ExifLibrary
 {
     /// <summary>
-    /// Represents the IFD section containing exif tags.
-    /// </summary>
-    public enum IFD : int
-    {
-        Unknown = 0,
-        Zeroth = 100000,
-        EXIF = 200000,
-        GPS = 300000,
-        Interop = 400000,
-        First = 500000,
-        MakerNote = 600000,
-    }
-
-    /// <summary>
     /// Represents the tags associated with exif fields.
     /// </summary>
     public enum ExifTag : int
     {
         // ****************************
-        // TIFF Tags
+        // Zeroth IFD
         // ****************************
+        NewSubfileType = IFD.Zeroth + 254,
+        SubfileType = IFD.Zeroth + 255,
         ImageWidth = IFD.Zeroth + 256,
         ImageLength = IFD.Zeroth + 257,
         BitsPerSample = IFD.Zeroth + 258,
         Compression = IFD.Zeroth + 259,
         PhotometricInterpretation = IFD.Zeroth + 262,
-        Orientation = IFD.Zeroth + 274,
-        SamplesPerPixel = IFD.Zeroth + 277,
-        PlanarConfiguration = IFD.Zeroth + 284,
-        YCbCrSubSampling = IFD.Zeroth + 530,
-        YCbCrPositioning = IFD.Zeroth + 531,
-        XResolution = IFD.Zeroth + 282,
-        YResolution = IFD.Zeroth + 283,
-        ResolutionUnit = IFD.Zeroth + 296,
-        StripOffsets = IFD.Zeroth + 273,
-        RowsPerStrip = IFD.Zeroth + 278,
-        StripByteCounts = IFD.Zeroth + 279,
-        JPEGInterchangeFormat = IFD.Zeroth + 513,
-        JPEGInterchangeFormatLength = IFD.Zeroth + 514,
-        TransferFunction = IFD.Zeroth + 301,
-        WhitePoint = IFD.Zeroth + 318,
-        PrimaryChromaticities = IFD.Zeroth + 319,
-        YCbCrCoefficients = IFD.Zeroth + 529,
-        ReferenceBlackWhite = IFD.Zeroth + 532,
-        DateTime = IFD.Zeroth + 306,
+        Threshholding = IFD.Zeroth + 263,
+        CellWidth = IFD.Zeroth + 264,
+        CellLength = IFD.Zeroth + 265,
+        FillOrder = IFD.Zeroth + 266,
+        DocumentName = IFD.Zeroth + 269,
         ImageDescription = IFD.Zeroth + 270,
         Make = IFD.Zeroth + 271,
         Model = IFD.Zeroth + 272,
+        StripOffsets = IFD.Zeroth + 273,
+        Orientation = IFD.Zeroth + 274,
+        SamplesPerPixel = IFD.Zeroth + 277,
+        RowsPerStrip = IFD.Zeroth + 278,
+        StripByteCounts = IFD.Zeroth + 279,
+        MinSampleValue = IFD.Zeroth + 280,
+        MaxSampleValue = IFD.Zeroth + 281,
+        XResolution = IFD.Zeroth + 282,
+        YResolution = IFD.Zeroth + 283,
+        PlanarConfiguration = IFD.Zeroth + 284,
+        PageName = IFD.Zeroth + 285,
+        XPosition = IFD.Zeroth + 286,
+        YPosition = IFD.Zeroth + 287,
+        FreeOffsets = IFD.Zeroth + 288,
+        FreeByteCounts = IFD.Zeroth + 289,
+        GrayResponseUnit = IFD.Zeroth + 290,
+        GrayResponseCurve = IFD.Zeroth + 291,
+        T4Options = IFD.Zeroth + 292,
+        T6Options = IFD.Zeroth + 293,
+        ResolutionUnit = IFD.Zeroth + 296,
+        PageNumber = IFD.Zeroth + 297,
+        TransferFunction = IFD.Zeroth + 301,
         Software = IFD.Zeroth + 305,
+        DateTime = IFD.Zeroth + 306,
         Artist = IFD.Zeroth + 315,
+        HostComputer = IFD.Zeroth + 316,
+        Predictor = IFD.Zeroth + 317,
+        WhitePoint = IFD.Zeroth + 318,
+        PrimaryChromaticities = IFD.Zeroth + 319,
+        ColorMap = IFD.Zeroth + 320,
+        HalftoneHints = IFD.Zeroth + 321,
+        TileWidth = IFD.Zeroth + 322,
+        TileLength = IFD.Zeroth + 323,
+        TileOffsets = IFD.Zeroth + 324,
+        TileByteCounts = IFD.Zeroth + 325,
+        InkSet = IFD.Zeroth + 332,
+        InkNames = IFD.Zeroth + 333,
+        NumberOfInks = IFD.Zeroth + 334,
+        DotRange = IFD.Zeroth + 336,
+        TargetPrinter = IFD.Zeroth + 337,
+        ExtraSamples = IFD.Zeroth + 338,
+        SampleFormat = IFD.Zeroth + 339,
+        SMinSampleValue = IFD.Zeroth + 340,
+        SMaxSampleValue = IFD.Zeroth + 341,
+        TransferRange = IFD.Zeroth + 342,
+        JPEGProc = IFD.Zeroth + 512,
+        JPEGInterchangeFormat = IFD.Zeroth + 513,
+        JPEGInterchangeFormatLength = IFD.Zeroth + 514,
+        JPEGRestartInterval = IFD.Zeroth + 515,
+        JPEGLosslessPredictors = IFD.Zeroth + 517,
+        JPEGPointTransforms = IFD.Zeroth + 518,
+        JPEGQTables = IFD.Zeroth + 519,
+        JPEGDCTables = IFD.Zeroth + 520,
+        JPEGACTables = IFD.Zeroth + 521,
+        YCbCrCoefficients = IFD.Zeroth + 529,
+        YCbCrSubSampling = IFD.Zeroth + 530,
+        YCbCrPositioning = IFD.Zeroth + 531,
+        ReferenceBlackWhite = IFD.Zeroth + 532,
         Copyright = IFD.Zeroth + 33432,
+        // Pointers to other IFDs
         EXIFIFDPointer = IFD.Zeroth + 34665,
         GPSIFDPointer = IFD.Zeroth + 34853,
+        // Windows Tags
+        WindowsTitle = IFD.Zeroth + 0x9c9b,
+        WindowsComment = IFD.Zeroth + 0x9c9c,
+        WindowsAuthor = IFD.Zeroth + 0x9c9d,
+        WindowsKeywords = IFD.Zeroth + 0x9c9e,
+        WindowsSubject = IFD.Zeroth + 0x9c9f,
+        // Rating
+        Rating = IFD.Zeroth + 0x4746,
+        RatingPercent = IFD.Zeroth + 0x4749,
+        // Microsoft specifing padding and offset tags
+        ZerothIFDPadding = IFD.Zeroth + 0xea1c,
         // ****************************
         // EXIF Tags
         // ****************************
@@ -115,6 +157,9 @@ namespace ExifLibrary
         SubjectDistanceRange = IFD.EXIF + 41996,
         ImageUniqueID = IFD.EXIF + 42016,
         InteroperabilityIFDPointer = IFD.EXIF + 40965,
+        // Microsoft specifing padding and offset tags
+        ExifIFDPadding = IFD.EXIF + 0xea1c,
+        OffsetSchema = IFD.EXIF + 0xea1d,
         // ****************************
         // GPS Tags
         // ****************************
@@ -154,6 +199,8 @@ namespace ExifLibrary
         // ****************************
         InteroperabilityIndex = IFD.Interop + 1,
         InteroperabilityVersion = IFD.Interop + 2,
+        RelatedImageWidth = IFD.Interop + 0x1001,
+        RelatedImageHeight = IFD.Interop + 0x1002,
         // ****************************
         // First IFD TIFF Tags
         // ****************************
@@ -187,5 +234,108 @@ namespace ExifLibrary
         ThumbnailSoftware = IFD.First + 305,
         ThumbnailArtist = IFD.First + 315,
         ThumbnailCopyright = IFD.First + 33432,
+        // ****************************
+        // JFIF Tags
+        // ****************************
+        /// <summary>
+        /// Represents the JFIF version.
+        /// </summary>
+        JFIFVersion = IFD.JFIF + 1,
+        /// <summary>
+        /// Represents units for X and Y densities.
+        /// </summary>
+        JFIFUnits = IFD.JFIF + 101,
+        /// <summary>
+        /// Horizontal pixel density.
+        /// </summary>
+        XDensity = IFD.JFIF + 102,
+        /// <summary>
+        /// Vertical pixel density
+        /// </summary>
+        YDensity = IFD.JFIF + 103,
+        /// <summary>
+        /// Thumbnail horizontal pixel count.
+        /// </summary>
+        JFIFXThumbnail = IFD.JFIF + 201,
+        /// <summary>
+        /// Thumbnail vertical pixel count.
+        /// </summary>
+        JFIFYThumbnail = IFD.JFIF + 202,
+        /// <summary>
+        /// JFIF JPEG thumbnail.
+        /// </summary>
+        JFIFThumbnail = IFD.JFIF + 203,
+        /// <summary>
+        /// Code which identifies the JFIF extension.
+        /// </summary>
+        JFXXExtensionCode = IFD.JFXX + 1,
+        /// <summary>
+        /// Thumbnail horizontal pixel count.
+        /// </summary>
+        JFXXXThumbnail = IFD.JFXX + 101,
+        /// <summary>
+        /// Thumbnail vertical pixel count.
+        /// </summary>
+        JFXXYThumbnail = IFD.JFXX + 102,
+        /// <summary>
+        /// The 256-Color RGB palette.
+        /// </summary>
+        JFXXPalette = IFD.JFXX + 201,
+        /// <summary>
+        /// JFIF thumbnail. The thumbnail will be either a JPEG, 
+        /// a 256 color palette bitmap, or a 24-bit RGB bitmap.
+        /// </summary>
+        JFXXThumbnail = IFD.JFXX + 202,
+        // ****************************
+        // PNG Tags
+        // ****************************
+        /// <summary>
+        /// Short (one line) title or caption for image
+        /// </summary>
+        PNGTitle = IFD.PNG + 0,
+        /// <summary>
+        /// Name of image's creator
+        /// </summary>
+        PNGAuthor = IFD.PNG + 1,
+        /// <summary>
+        /// Description of image (possibly long)
+        /// </summary>
+        PNGDescription = IFD.PNG + 2,
+        /// <summary>
+        /// Copyright notice
+        /// </summary>
+        PNGCopyright = IFD.PNG + 3,
+        /// <summary>
+        /// Time of original image creation
+        /// </summary>
+        PNGCreationTime = IFD.PNG + 4,
+        /// <summary>
+        /// Software used to create the image
+        /// </summary>
+        PNGSoftware = IFD.PNG + 5,
+        /// <summary>
+        /// Legal disclaimer
+        /// </summary>
+        PNGDisclaimer = IFD.PNG + 6,
+        /// <summary>
+        /// Warning of nature of content
+        /// </summary>
+        PNGWarning = IFD.PNG + 7,
+        /// <summary>
+        /// Device used to create the image
+        /// </summary>
+        PNGSource = IFD.PNG + 8,
+        /// <summary>
+        /// Miscellaneous comment
+        /// </summary>
+        PNGComment = IFD.PNG + 9,
+        /// <summary>
+        /// Generic text metadata
+        /// </summary>
+        PNGText = IFD.PNG + 100,
+        /// <summary>
+        /// The time of the last image modification
+        /// </summary>
+        PNGTimeStamp = IFD.PNG + 200,
     }
 }

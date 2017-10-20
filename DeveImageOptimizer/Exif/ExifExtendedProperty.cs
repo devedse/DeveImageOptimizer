@@ -61,7 +61,7 @@ namespace ExifLibrary
                 else if (basetype == typeof(ushort))
                 {
                     // SHORT
-                    return new ExifInterOperability(tagid, 3, 1, ExifBitConverter.GetBytes((ushort)((object)mValue), BitConverterEx.ByteOrder.System, BitConverterEx.ByteOrder.System));
+                    return new ExifInterOperability(tagid, 3, 1, ExifBitConverter.GetBytes((ushort)((object)mValue), BitConverterEx.SystemByteOrder, BitConverterEx.SystemByteOrder));
                 }
                 else
                     throw new UnknownEnumTypeException();
@@ -212,6 +212,12 @@ namespace ExifLibrary
         {
             ;
         }
+
+        public ExifPointSubjectArea(ExifTag tag, ushort x, ushort y)
+            : base(tag, new ushort[] { x, y })
+        {
+            ;
+        }
     }
 
     /// <summary>
@@ -232,6 +238,12 @@ namespace ExifLibrary
 
         public ExifCircularSubjectArea(ExifTag tag, ushort[] value)
             : base(tag, value)
+        {
+            ;
+        }
+
+        public ExifCircularSubjectArea(ExifTag tag, ushort x, ushort y, ushort d)
+            : base(tag, new ushort[] { x, y, d })
         {
             ;
         }
@@ -256,6 +268,12 @@ namespace ExifLibrary
 
         public ExifRectangularSubjectArea(ExifTag tag, ushort[] value)
             : base(tag, value)
+        {
+            ;
+        }
+
+        public ExifRectangularSubjectArea(ExifTag tag, ushort x, ushort y, ushort w, ushort h)
+            : base(tag, new ushort[] { x, y, w, h })
         {
             ;
         }
@@ -287,6 +305,12 @@ namespace ExifLibrary
         {
             ;
         }
+
+        public GPSLatitudeLongitude(ExifTag tag, float d, float m, float s)
+            : base(tag, new MathEx.UFraction32[] { new MathEx.UFraction32(d), new MathEx.UFraction32(m), new MathEx.UFraction32(s) })
+        {
+            ;
+        }
     }
 
     /// <summary>
@@ -308,6 +332,42 @@ namespace ExifLibrary
             : base(tag, value)
         {
             ;
+        }
+
+        public GPSTimeStamp(ExifTag tag, float h, float m, float s)
+            : base(tag, new MathEx.UFraction32[] { new MathEx.UFraction32(h), new MathEx.UFraction32(m), new MathEx.UFraction32(s) })
+        {
+            ;
+        }
+    }
+
+    /// <summary>
+    /// Represents an ASCII string. (EXIF Specification: BYTE) 
+    /// Used by Windows XP.
+    /// </summary>
+    public class WindowsByteString : ExifProperty
+    {
+        protected string mValue;
+        protected override object _Value { get { return Value; } set { Value = (string)value; } }
+        public new string Value { get { return mValue; } set { mValue = value; } }
+
+        static public implicit operator string(WindowsByteString obj) { return obj.mValue; }
+
+        public override string ToString() { return mValue; }
+
+        public WindowsByteString(ExifTag tag, string value)
+            : base(tag)
+        {
+            mValue = value;
+        }
+
+        public override ExifInterOperability Interoperability
+        {
+            get
+            {
+                byte[] data = Encoding.Unicode.GetBytes(mValue);
+                return new ExifInterOperability(ExifTagFactory.GetTagID(mTag), 1, (uint)data.Length, data);
+            }
         }
     }
 }

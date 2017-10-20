@@ -11,6 +11,8 @@ namespace ExifLibrary
         /// <summary>
         /// Returns the greatest common divisor of two numbers.
         /// </summary>
+        /// <param name="a">First number.</param>
+        /// <param name="b">Second number.</param>
         public static uint GCD(uint a, uint b)
         {
             while (b != 0)
@@ -24,18 +26,36 @@ namespace ExifLibrary
         }
 
         /// <summary>
+        /// Returns the greatest common divisor of two numbers.
+        /// </summary>
+        /// <param name="a">First number.</param>
+        /// <param name="b">Second number.</param>
+        public static ulong GCD(ulong a, ulong b)
+        {
+            while (b != 0)
+            {
+                ulong rem = a % b;
+                a = b;
+                b = rem;
+            }
+
+            return a;
+        }
+
+        /// <summary>
         /// Represents a generic rational number represented by 32-bit signed numerator and denominator.
         /// </summary>
         public struct Fraction32 : IComparable, IFormattable, IComparable<Fraction32>, IEquatable<Fraction32>
         {
+            #region Constants
+            private const uint MaximumIterations = 10000000;
+            #endregion
+
             #region Member Variables
             private bool mIsNegative;
             private int mNumerator;
             private int mDenominator;
-            #endregion
-
-            #region Constants
-            private const int DefaultPrecision = 8;
+            private double mError;
             #endregion
 
             #region Properties
@@ -76,6 +96,17 @@ namespace ExifLibrary
                 {
                     mDenominator = System.Math.Abs(value);
                     Reduce(ref mNumerator, ref mDenominator);
+                }
+            }
+
+            /// <summary>
+            /// Gets the error term.
+            /// </summary>
+            public double Error
+            {
+                get
+                {
+                    return mError;
                 }
             }
 
@@ -264,7 +295,7 @@ namespace ExifLibrary
             }
             public static Fraction32 operator +(Fraction32 f1, Fraction32 f2)
             {
-                int n1 = f1.Numerator, d1 = f2.Denominator;
+                int n1 = f1.Numerator, d1 = f1.Denominator;
                 int n2 = f2.Numerator, d2 = f2.Denominator;
 
                 return new Fraction32(n1 * d2 + n2 * d1, d1 * d2);
@@ -296,7 +327,7 @@ namespace ExifLibrary
             }
             public static Fraction32 operator -(Fraction32 f1, Fraction32 f2)
             {
-                int n1 = f1.Numerator, d1 = f2.Denominator;
+                int n1 = f1.Numerator, d1 = f1.Denominator;
                 int n2 = f2.Numerator, d2 = f2.Denominator;
 
                 return new Fraction32(n1 * d2 - n2 * d1, d1 * d2);
@@ -347,7 +378,7 @@ namespace ExifLibrary
             #endregion
 
             #region Constructors
-            public Fraction32(int numerator, int denominator)
+            private Fraction32(int numerator, int denominator, double error)
             {
                 mIsNegative = false;
                 if (numerator < 0)
@@ -360,10 +391,19 @@ namespace ExifLibrary
                     denominator = -denominator;
                     mIsNegative = !mIsNegative;
                 }
+
                 mNumerator = numerator;
                 mDenominator = denominator;
+                mError = error;
+
                 if (mDenominator != 0)
                     Reduce(ref mNumerator, ref mDenominator);
+            }
+
+            public Fraction32(int numerator, int denominator)
+                : this(numerator, denominator, 0)
+            {
+                ;
             }
 
             public Fraction32(int numerator)
@@ -373,7 +413,7 @@ namespace ExifLibrary
             }
 
             public Fraction32(Fraction32 f)
-                : this(f.Numerator, f.Denominator)
+                : this(f.Numerator, f.Denominator, f.Error)
             {
                 ;
             }
@@ -385,7 +425,7 @@ namespace ExifLibrary
             }
 
             public Fraction32(double value)
-                : this(FromDouble(value, DefaultPrecision))
+                : this(FromDouble(value))
             {
                 ;
             }
@@ -417,9 +457,12 @@ namespace ExifLibrary
                     mIsNegative = !mIsNegative;
                     denominator = -denominator;
                 }
+
                 mNumerator = numerator;
                 mDenominator = denominator;
-                Reduce(ref mNumerator, ref mDenominator);
+
+                if (mDenominator != 0)
+                    Reduce(ref mNumerator, ref mDenominator);
             }
 
             /// <summary>
@@ -447,9 +490,6 @@ namespace ExifLibrary
             /// otherwise, false.</returns>
             public bool Equals(Fraction32 obj)
             {
-                if (obj == null)
-                    return false;
-
                 return (mIsNegative == obj.IsNegative) && (mNumerator == obj.Numerator) && (mDenominator == obj.Denominator);
             }
 
@@ -572,8 +612,6 @@ namespace ExifLibrary
             /// </returns>
             public int CompareTo(Fraction32 obj)
             {
-                if (obj == null)
-                    return 1;
                 if (this < obj)
                     return -1;
                 else if (this > obj)
@@ -587,9 +625,8 @@ namespace ExifLibrary
             /// Converts the given floating-point number to its rational representation.
             /// </summary>
             /// <param name="value">The floating-point number to be converted.</param>
-            /// <param name="precision">Number of digits to consider.</param>
             /// <returns>The rational representation of value.</returns>
-            private static Fraction32 FromDouble(double value, int precision)
+            private static Fraction32 FromDouble(double value)
             {
                 if (double.IsNaN(value))
                     return Fraction32.NaN;
@@ -601,21 +638,47 @@ namespace ExifLibrary
                 bool isneg = (value < 0);
                 if (isneg) value = -value;
 
-                // The precision of the resulting fraction
-                int maxden = (int)System.Math.Pow(10.0, precision);
+                double f = value;
+                double forg = f;
+                int lnum = 0;
+                int lden = 1;
+                int num = 1;
+                int den = 0;
+                double lasterr = 1.0;
+                int a = 0;
+                int currIteration = 0;
+                while (true)
+                {
+                    if (++currIteration > MaximumIterations) break;
 
-                // Input value is truncated at this many digits
-                int num = (int)(value * (double)maxden);
-                int den = maxden;
+                    a = (int)Math.Floor(f);
+                    f = f - (double)a;
+                    if (Math.Abs(f) < double.Epsilon)
+                        break;
+                    f = 1.0 / f;
+                    if (double.IsInfinity(f))
+                        break;
+                    int cnum = num * a + lnum;
+                    int cden = den * a + lden;
+                    if (Math.Abs((double)cnum / (double)cden - forg) < double.Epsilon)
+                        break;
+                    double err = ((double)cnum / (double)cden - (double)num / (double)den) / ((double)num / (double)den);
+                    // Are we converging?
+                    if (err >= lasterr)
+                        break;
+                    lasterr = err;
+                    lnum = num;
+                    lden = den;
+                    num = cnum;
+                    den = cden;
+                }
 
-                // Find the GCD of numerator and denumerator
-                int gcd = (int)MathEx.GCD((uint)num, (uint)den);
+                if (den > 0)
+                    lasterr = value - ((double)num / (double)den);
+                else
+                    lasterr = double.PositiveInfinity;
 
-                // Reduce the fraction by the GCD
-                num /= gcd;
-                den /= gcd;
-
-                return new Fraction32((isneg ? -1 : 1) * num, den);
+                return new Fraction32((isneg ? -1 : 1) * num, den, lasterr);
             }
 
             /// <summary>Converts the string representation of a fraction to a Fraction type.</summary>
@@ -646,7 +709,7 @@ namespace ExifLibrary
                     {
                         // Parse as double
                         double dval = double.Parse(sa[0]);
-                        return FromDouble(dval, DefaultPrecision);
+                        return FromDouble(dval);
                     }
                 }
                 else if (sa.Length == 2)
@@ -681,13 +744,14 @@ namespace ExifLibrary
         /// </summary>
         public struct UFraction32 : IComparable, IFormattable, IComparable<UFraction32>, IEquatable<UFraction32>
         {
+            #region Constants
+            private const uint MaximumIterations = 10000000;
+            #endregion
+
             #region Member Variables
             private uint mNumerator;
             private uint mDenominator;
-            #endregion
-
-            #region Constants
-            private const int DefaultPrecision = 8;
+            private double mError;
             #endregion
 
             #region Properties
@@ -719,6 +783,18 @@ namespace ExifLibrary
                 {
                     mDenominator = value;
                     Reduce(ref mNumerator, ref mDenominator);
+                }
+            }
+
+
+            /// <summary>
+            /// Gets the error term.
+            /// </summary>
+            public double Error
+            {
+                get
+                {
+                    return mError;
                 }
             }
             #endregion
@@ -861,7 +937,7 @@ namespace ExifLibrary
             }
             public static UFraction32 operator +(UFraction32 f1, UFraction32 f2)
             {
-                uint n1 = f1.Numerator, d1 = f2.Denominator;
+                uint n1 = f1.Numerator, d1 = f1.Denominator;
                 uint n2 = f2.Numerator, d2 = f2.Denominator;
 
                 return new UFraction32(n1 * d2 + n2 * d1, d1 * d2);
@@ -893,7 +969,7 @@ namespace ExifLibrary
             }
             public static UFraction32 operator -(UFraction32 f1, UFraction32 f2)
             {
-                uint n1 = f1.Numerator, d1 = f2.Denominator;
+                uint n1 = f1.Numerator, d1 = f1.Denominator;
                 uint n2 = f2.Numerator, d2 = f2.Denominator;
 
                 return new UFraction32(n1 * d2 - n2 * d1, d1 * d2);
@@ -944,12 +1020,20 @@ namespace ExifLibrary
             #endregion
 
             #region Constructors
-            public UFraction32(uint numerator, uint denominator)
+            public UFraction32(uint numerator, uint denominator, double error)
             {
                 mNumerator = numerator;
                 mDenominator = denominator;
+                mError = error;
+
                 if (mDenominator != 0)
                     Reduce(ref mNumerator, ref mDenominator);
+            }
+
+            public UFraction32(uint numerator, uint denominator)
+                : this(numerator, denominator, 0)
+            {
+                ;
             }
 
             public UFraction32(uint numerator)
@@ -959,7 +1043,7 @@ namespace ExifLibrary
             }
 
             public UFraction32(UFraction32 f)
-                : this(f.Numerator, f.Denominator)
+                : this(f.Numerator, f.Denominator, f.Error)
             {
                 ;
             }
@@ -971,7 +1055,7 @@ namespace ExifLibrary
             }
 
             public UFraction32(double value)
-                : this(FromDouble(value, DefaultPrecision))
+                : this(FromDouble(value))
             {
                 ;
             }
@@ -994,7 +1078,9 @@ namespace ExifLibrary
             {
                 mNumerator = numerator;
                 mDenominator = denominator;
-                Reduce(ref mNumerator, ref mDenominator);
+
+                if (mDenominator != 0)
+                    Reduce(ref mNumerator, ref mDenominator);
             }
 
             /// <summary>
@@ -1032,9 +1118,6 @@ namespace ExifLibrary
             /// otherwise, false.</returns>
             public bool Equals(UFraction32 obj)
             {
-                if (obj == null)
-                    return false;
-
                 return (mNumerator == obj.Numerator) && (mDenominator == obj.Denominator);
             }
 
@@ -1157,8 +1240,6 @@ namespace ExifLibrary
             /// </returns>
             public int CompareTo(UFraction32 obj)
             {
-                if (obj == null)
-                    return 1;
                 if (this < obj)
                     return -1;
                 else if (this > obj)
@@ -1172,9 +1253,8 @@ namespace ExifLibrary
             /// Converts the given floating-point number to its rational representation.
             /// </summary>
             /// <param name="value">The floating-point number to be converted.</param>
-            /// <param name="precision">Number of digits of value to consider.</param>
             /// <returns>The rational representation of value.</returns>
-            private static UFraction32 FromDouble(double value, int precision)
+            private static UFraction32 FromDouble(double value)
             {
                 if (value < 0)
                     throw new ArgumentException("value cannot be negative.", "value");
@@ -1184,21 +1264,49 @@ namespace ExifLibrary
                 else if (double.IsInfinity(value))
                     return UFraction32.Infinity;
 
-                // The precision of the resulting fraction
-                uint maxden = (uint)System.Math.Pow(10.0, precision);
+                double f = value;
+                double forg = f;
+                uint lnum = 0;
+                uint lden = 1;
+                uint num = 1;
+                uint den = 0;
+                double lasterr = 1.0;
+                uint a = 0;
+                int currIteration = 0;
+                while (true)
+                {
+                    if (++currIteration > MaximumIterations) break;
 
-                // Input value is truncated at this many digits
-                uint num = (uint)(value * (double)maxden);
-                uint den = maxden;
+                    a = (uint)Math.Floor(f);
+                    f = f - (double)a;
+                    if (Math.Abs(f) < double.Epsilon)
+                        break;
+                    f = 1.0 / f;
+                    if (double.IsInfinity(f))
+                        break;
+                    uint cnum = num * a + lnum;
+                    uint cden = den * a + lden;
+                    if (Math.Abs((double)cnum / (double)cden - forg) < double.Epsilon)
+                        break;
+                    double err = ((double)cnum / (double)cden - (double)num / (double)den) / ((double)num / (double)den);
+                    // Are we converging?
+                    if (err >= lasterr)
+                        break;
+                    lasterr = err;
+                    lnum = num;
+                    lden = den;
+                    num = cnum;
+                    den = cden;
+                }
+                uint fnum = num * a + lnum;
+                uint fden = den * a + lden;
 
-                // Find the GCD of numerator and denumerator
-                uint gcd = MathEx.GCD((uint)num, (uint)den);
+                if (fden > 0)
+                    lasterr = value - ((double)fnum / (double)fden);
+                else
+                    lasterr = double.PositiveInfinity;
 
-                // Reduce the fraction by the GCD
-                num /= gcd;
-                den /= gcd;
-
-                return new UFraction32(num, den);
+                return new UFraction32(fnum, fden, lasterr);
             }
 
             /// <summary>Converts the string representation of a fraction to a Fraction type.</summary>
@@ -1229,7 +1337,7 @@ namespace ExifLibrary
                     {
                         // Parse as double
                         double dval = double.Parse(sa[0]);
-                        return FromDouble(dval, DefaultPrecision);
+                        return FromDouble(dval);
                     }
                 }
                 else if (sa.Length == 2)
@@ -1252,14 +1360,10 @@ namespace ExifLibrary
             private static void Reduce(ref uint numerator, ref uint denominator)
             {
                 uint gcd = MathEx.GCD(numerator, denominator);
-                if (gcd > 1)
-                {
-                    numerator = numerator / gcd;
-                    denominator = denominator / gcd;
-                }
+                numerator = numerator / gcd;
+                denominator = denominator / gcd;
             }
             #endregion
         }
-
     }
 }

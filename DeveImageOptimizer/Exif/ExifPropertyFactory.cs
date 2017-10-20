@@ -8,19 +8,7 @@ namespace ExifLibrary
     /// </summary>
     public static class ExifPropertyFactory
     {
-        #region "Static Methods"
-        /// <summary>
-        /// Creates an ExifProperty from the given interoperability parameters.
-        /// </summary>
-        /// <param name="interOperability">Property data.</param>
-        /// <param name="byteOrder">Byte order of the source data.</param>
-        /// <param name="ifd">IFD section containing this propery.</param>
-        /// <returns>an ExifProperty initialized from the interoperability parameters.</returns>
-        public static ExifProperty Get(ExifInterOperability interOperability, BitConverterEx.ByteOrder byteOrder, IFD ifd)
-        {
-            return Get(interOperability.TagID, interOperability.TypeID, interOperability.Count, interOperability.Data, byteOrder, ifd);
-        }
-
+        #region Static Methods
         /// <summary>
         /// Creates an ExifProperty from the given interoperability parameters.
         /// </summary>
@@ -30,10 +18,13 @@ namespace ExifLibrary
         /// <param name="value">Field data as an array of bytes.</param>
         /// <param name="byteOrder">Byte order of value.</param>
         /// <param name="ifd">IFD section containing this propery.</param>
+        /// <param name="encoding">The encoding to be used for text metadata when the source encoding is unknown.</param>
         /// <returns>an ExifProperty initialized from the interoperability parameters.</returns>
-        public static ExifProperty Get(ushort tag, ushort type, uint count, byte[] value, BitConverterEx.ByteOrder byteOrder, IFD ifd)
+        public static ExifProperty Get(ushort tag, ushort type, uint count, byte[] value, BitConverterEx.ByteOrder byteOrder, IFD ifd, Encoding encoding)
         {
-            BitConverterEx conv = new BitConverterEx(byteOrder, BitConverterEx.ByteOrder.System);
+            BitConverterEx conv = new BitConverterEx(byteOrder, BitConverterEx.SystemByteOrder);
+            // Find the exif tag corresponding to given tag id
+            ExifTag etag = ExifTagFactory.GetExifTag(ifd, tag);
 
             if (ifd == IFD.Zeroth)
             {
@@ -51,35 +42,42 @@ namespace ExifLibrary
                     return new ExifEnumProperty<ResolutionUnit>(ExifTag.ResolutionUnit, (ResolutionUnit)conv.ToUInt16(value, 0));
                 else if (tag == 0x132) // DateTime
                     return new ExifDateTime(ExifTag.DateTime, ExifBitConverter.ToDateTime(value));
+                else if (tag == 0x9c9b || tag == 0x9c9c ||  // Windows tags
+                    tag == 0x9c9d || tag == 0x9c9e || tag == 0x9c9f)
+                    return new WindowsByteString(etag, Encoding.Unicode.GetString(value).TrimEnd('\0'));
             }
             else if (ifd == IFD.EXIF)
             {
                 if (tag == 0x9000) // ExifVersion
-                    return new ExifVersion(ExifTag.ExifVersion, ExifBitConverter.ToAscii(value));
+                    return new ExifVersion(ExifTag.ExifVersion, ExifBitConverter.ToAscii(value, Encoding.ASCII));
                 else if (tag == 0xa000) // FlashpixVersion
-                    return new ExifVersion(ExifTag.FlashpixVersion, ExifBitConverter.ToAscii(value));
+                    return new ExifVersion(ExifTag.FlashpixVersion, ExifBitConverter.ToAscii(value, Encoding.ASCII));
                 else if (tag == 0xa001) // ColorSpace
                     return new ExifEnumProperty<ColorSpace>(ExifTag.ColorSpace, (ColorSpace)conv.ToUInt16(value, 0));
                 else if (tag == 0x9286) // UserComment
                 {
-                    byte[] encbytes = new byte[8];
-                    byte[] strbytes = new byte[value.Length - 8];
-                    Array.Copy(value, encbytes, 8);
-                    Array.Copy(value, 8, strbytes, 0, value.Length - 8);
+                    // Default to ASCII
                     Encoding enc = Encoding.ASCII;
-                    string encstr = enc.GetString(encbytes);
-                    if (encstr == "ASCII\0\0\0")
-                        enc = Encoding.ASCII;
-                    else if (encstr == "JIS\0\0\0\0\0")
-                        enc = Encoding.GetEncoding("Japanese (JIS 0208-1990 and 0212-1990)");
-                    else if (encstr == "Unicode\0")
-                        enc = Encoding.Unicode;
+                    bool hasenc;
+                    if (value.Length < 8)
+                        hasenc = false;
                     else
-                        enc = null;
+                    {
+                        hasenc = true;
+                        string encstr = enc.GetString(value, 0, 8);
+                        if (string.Compare(encstr, "ASCII\0\0\0", StringComparison.OrdinalIgnoreCase) == 0)
+                            enc = Encoding.ASCII;
+                        else if (string.Compare(encstr, "JIS\0\0\0\0\0", StringComparison.OrdinalIgnoreCase) == 0)
+                            enc = Encoding.GetEncoding("Japanese (JIS 0208-1990 and 0212-1990)");
+                        else if (string.Compare(encstr, "Unicode\0", StringComparison.OrdinalIgnoreCase) == 0)
+                            enc = Encoding.Unicode;
+                        else
+                            hasenc = false;
+                    }
 
-                    int len = Array.IndexOf(strbytes, (byte)0);
-                    if (len == -1) len = strbytes.Length;
-                    return new ExifEncodedString(ExifTag.UserComment, (enc == null ? Encoding.ASCII.GetString(strbytes, 0, len) : enc.GetString(strbytes, 0, len)), enc);
+                    string val = (hasenc ? enc.GetString(value, 8, value.Length - 8) : enc.GetString(value)).Trim('\0');
+
+                    return new ExifEncodedString(ExifTag.UserComment, val, enc);
                 }
                 else if (tag == 0x9003) // DateTimeOriginal
                     return new ExifDateTime(ExifTag.DateTimeOriginal, ExifBitConverter.ToDateTime(value));
@@ -177,9 +175,9 @@ namespace ExifLibrary
             else if (ifd == IFD.Interop)
             {
                 if (tag == 1) // InteroperabilityIndex
-                    return new ExifAscii(ExifTag.InteroperabilityIndex, ExifBitConverter.ToAscii(value));
+                    return new ExifAscii(ExifTag.InteroperabilityIndex, ExifBitConverter.ToAscii(value, Encoding.ASCII), Encoding.ASCII);
                 else if (tag == 2) // InteroperabilityVersion
-                    return new ExifVersion(ExifTag.InteroperabilityVersion, ExifBitConverter.ToAscii(value));
+                    return new ExifVersion(ExifTag.InteroperabilityVersion, ExifBitConverter.ToAscii(value, Encoding.ASCII));
             }
             else if (ifd == IFD.First)
             {
@@ -199,9 +197,6 @@ namespace ExifLibrary
                     return new ExifDateTime(ExifTag.ThumbnailDateTime, ExifBitConverter.ToDateTime(value));
             }
 
-            // Find the exif tag corresponding to given tag id
-            ExifTag etag = ExifTagFactory.GetExifTag(ifd, tag);
-
             if (type == 1) // 1 = BYTE An 8-bit unsigned integer.
             {
                 if (count == 1)
@@ -211,7 +206,7 @@ namespace ExifLibrary
             }
             else if (type == 2) // 2 = ASCII An 8-bit byte containing one 7-bit ASCII code. 
             {
-                return new ExifAscii(etag, ExifBitConverter.ToAscii(value));
+                return new ExifAscii(etag, ExifBitConverter.ToAscii(value, encoding), encoding);
             }
             else if (type == 3) // 3 = SHORT A 16-bit (2-byte) unsigned integer.
             {

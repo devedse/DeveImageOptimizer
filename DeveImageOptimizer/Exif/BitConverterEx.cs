@@ -14,7 +14,6 @@ namespace ExifLibrary
         /// </summary>
         public enum ByteOrder
         {
-            System = 0,
             LittleEndian = 1,
             BigEndian = 2,
         }
@@ -53,7 +52,7 @@ namespace ExifLibrary
         {
             get
             {
-                return new BitConverterEx(ByteOrder.LittleEndian, ByteOrder.System);
+                return new BitConverterEx(ByteOrder.LittleEndian, BitConverterEx.SystemByteOrder);
             }
         }
 
@@ -64,7 +63,7 @@ namespace ExifLibrary
         {
             get
             {
-                return new BitConverterEx(ByteOrder.BigEndian, ByteOrder.System);
+                return new BitConverterEx(ByteOrder.BigEndian, BitConverterEx.SystemByteOrder);
             }
         }
 
@@ -75,7 +74,7 @@ namespace ExifLibrary
         {
             get
             {
-                return new BitConverterEx(ByteOrder.System, ByteOrder.System);
+                return new BitConverterEx(BitConverterEx.SystemByteOrder, BitConverterEx.SystemByteOrder);
             }
         }
         #endregion
@@ -84,7 +83,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a Unicode character.
         /// </summary>
-        public static char ToChar(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static char ToChar(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 2, from, to);
             return BitConverter.ToChar(data, 0);
@@ -93,7 +92,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 16-bit unsigned integer.
         /// </summary>
-        public static ushort ToUInt16(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static ushort ToUInt16(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 2, from, to);
             return BitConverter.ToUInt16(data, 0);
@@ -102,7 +101,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 32-bit unsigned integer.
         /// </summary>
-        public static uint ToUInt32(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static uint ToUInt32(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 4, from, to);
             return BitConverter.ToUInt32(data, 0);
@@ -111,7 +110,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 64-bit unsigned integer.
         /// </summary>
-        public static ulong ToUInt64(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static ulong ToUInt64(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 8, from, to);
             return BitConverter.ToUInt64(data, 0);
@@ -120,7 +119,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 16-bit signed integer.
         /// </summary>
-        public static short ToInt16(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static short ToInt16(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 2, from, to);
             return BitConverter.ToInt16(data, 0);
@@ -129,7 +128,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 32-bit signed integer.
         /// </summary>
-        public static int ToInt32(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static int ToInt32(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 4, from, to);
             return BitConverter.ToInt32(data, 0);
@@ -138,7 +137,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 64-bit signed integer.
         /// </summary>
-        public static long ToInt64(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static long ToInt64(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 8, from, to);
             return BitConverter.ToInt64(data, 0);
@@ -147,7 +146,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a single precision floating number.
         /// </summary>
-        public static float ToSingle(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static float ToSingle(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 4, from, to);
             return BitConverter.ToSingle(data, 0);
@@ -156,7 +155,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a double precision floating number.
         /// </summary>
-        public static double ToDouble(byte[] value, int startIndex, ByteOrder from, ByteOrder to)
+        public static double ToDouble(byte[] value, long startIndex, ByteOrder from, ByteOrder to)
         {
             byte[] data = CheckData(value, startIndex, 8, from, to);
             return BitConverter.ToDouble(data, 0);
@@ -247,15 +246,15 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 16-bit unsigned integer.
         /// </summary>
-        public char ToChar(byte[] value, int startIndex)
+        public char ToChar(byte[] value, long startIndex)
         {
             return BitConverterEx.ToChar(value, startIndex, mFrom, mTo);
         }
-        
+
         /// <summary>
         /// Converts the given array of bytes to a 16-bit unsigned integer.
         /// </summary>
-        public ushort ToUInt16(byte[] value, int startIndex)
+        public ushort ToUInt16(byte[] value, long startIndex)
         {
             return BitConverterEx.ToUInt16(value, startIndex, mFrom, mTo);
         }
@@ -263,7 +262,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 32-bit unsigned integer.
         /// </summary>
-        public uint ToUInt32(byte[] value, int startIndex)
+        public uint ToUInt32(byte[] value, long startIndex)
         {
             return BitConverterEx.ToUInt32(value, startIndex, mFrom, mTo);
         }
@@ -271,7 +270,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 64-bit unsigned integer.
         /// </summary>
-        public ulong ToUInt64(byte[] value, int startIndex)
+        public ulong ToUInt64(byte[] value, long startIndex)
         {
             return BitConverterEx.ToUInt64(value, startIndex, mFrom, mTo);
         }
@@ -279,7 +278,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 16-bit signed integer.
         /// </summary>
-        public short ToInt16(byte[] value, int startIndex)
+        public short ToInt16(byte[] value, long startIndex)
         {
             return BitConverterEx.ToInt16(value, startIndex, mFrom, mTo);
         }
@@ -287,7 +286,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 32-bit signed integer.
         /// </summary>
-        public int ToInt32(byte[] value, int startIndex)
+        public int ToInt32(byte[] value, long startIndex)
         {
             return BitConverterEx.ToInt32(value, startIndex, mFrom, mTo);
         }
@@ -295,7 +294,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a 64-bit signed integer.
         /// </summary>
-        public long ToInt64(byte[] value, int startIndex)
+        public long ToInt64(byte[] value, long startIndex)
         {
             return BitConverterEx.ToInt64(value, startIndex, mFrom, mTo);
         }
@@ -303,7 +302,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a single precision floating number.
         /// </summary>
-        public float ToSingle(byte[] value, int startIndex)
+        public float ToSingle(byte[] value, long startIndex)
         {
             return BitConverterEx.ToSingle(value, startIndex, mFrom, mTo);
         }
@@ -311,7 +310,7 @@ namespace ExifLibrary
         /// <summary>
         /// Converts the given array of bytes to a double precision floating number.
         /// </summary>
-        public double ToDouble(byte[] value, int startIndex)
+        public double ToDouble(byte[] value, long startIndex)
         {
             return BitConverterEx.ToDouble(value, startIndex, mFrom, mTo);
         }
@@ -385,12 +384,10 @@ namespace ExifLibrary
         /// <summary>
         /// Reverse the array of bytes as needed.
         /// </summary>
-        private static byte[] CheckData(byte[] value, int startIndex, int length, ByteOrder from, ByteOrder to)
+        private static byte[] CheckData(byte[] value, long startIndex, long length, ByteOrder from, ByteOrder to)
         {
-            from = CheckByteOrder(from);
-            to = CheckByteOrder(to);
             byte[] data = new byte[length];
-            Array.Copy(value, startIndex, data, 0, length);
+            Array.Copy(value, (int)startIndex, data, 0, (int)length);
             if (from != to)
                 Array.Reverse(data);
             return data;
@@ -402,22 +399,6 @@ namespace ExifLibrary
         private static byte[] CheckData(byte[] value, ByteOrder from, ByteOrder to)
         {
             return CheckData(value, 0, value.Length, from, to);
-        }
-
-        /// <summary>
-        /// Decodes the ByteOrder.System value for this platform.
-        /// </summary>
-        private static ByteOrder CheckByteOrder(ByteOrder order)
-        {
-            if (order == ByteOrder.System)
-            {
-                if (BitConverter.IsLittleEndian)
-                    return ByteOrder.LittleEndian;
-                else
-                    return ByteOrder.BigEndian;
-            }
-            else
-                return order;
         }
         #endregion
     }
