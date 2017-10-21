@@ -7,6 +7,12 @@ This tool uses FileOptimizer to recompress images: http://nikkhokkho.sourceforge
 |:------------------------:|
 | [![Build status](https://ci.appveyor.com/api/projects/status/qo0hx7i9j2hrlmpr?svg=true)](https://ci.appveyor.com/project/devedse/deveimageoptimizer) |
 
+## Code Coverage status
+
+| CodeCov |
+|:-------:|
+| [![codecov](https://codecov.io/gh/devedse/DeveImageOptimizer/branch/master/graph/badge.svg)](https://codecov.io/gh/devedse/DeveImageOptimizer) |
+
 ## More information
 
 This tool has some advantages/differences over the GUI for FileOptimizer:
