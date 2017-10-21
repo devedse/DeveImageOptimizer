@@ -1,5 +1,7 @@
 # DeveImageOptimizer
-This tool uses FileOptimizer to recompress images: http://nikkhokkho.sourceforge.net/static.php?page=FileOptimizer
+This tool uses FileOptimizer to recompress images: [FileOptimizer](http://nikkhokkho.sourceforge.net/static.php?page=FileOptimizer). After this it does a Pixel by Pixel comparison to verify if the images are still equal. If they are, they can then be used by other projects.
+
+This project is the source for the github package [DeveImageOptimizer](https://www.nuget.org/packages/DeveImageOptimizer/). It's currently being used in my [WebOptimizationProject](https://github.com/devedse/WebOptimizationProject/) and [DeveImageOptimizerWPF](https://github.com/devedse/DeveImageOptimizerWPF/)
 
 ## Build status
 
@@ -15,9 +17,7 @@ This tool uses FileOptimizer to recompress images: http://nikkhokkho.sourceforge
 
 (Reason why Coverage is quite low is because a lot of tests can't run on the Build Server)
 
-## More information
-
-This project is the source for the github package [DeveImageOptimizer](https://www.nuget.org/packages/DeveImageOptimizer/). It's currently being used in my [WebOptimizationProject](https://github.com/devedse/WebOptimizationProject/) and [DeveImageOptimizerWPF](https://github.com/devedse/DeveImageOptimizerWPF/)
+## Current Implementation status
 
 | Number | Description | Implementation progress |
 | --- | --- | --- |
