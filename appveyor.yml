@@ -21,8 +21,8 @@ build_script:
 test_script:
   #- cmd: dotnet test -c release -p:ParallelizeTestCollections=false DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj
   #- OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\DeveImageOptimizer.Tests\bin\release\netcoreapp2.0\DeveImageOptimizer.Tests.dll -noshadow" -filter:"+[DeveImageOptimizer*]*" -output:".\DeveImageOptimizer.Coverage.xml"
-  - OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test .\DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj -c Release" -oldStyle -output:.\TestResults\DeveImageOptimizer.Coverage.xml -filter:"+[DeveImageOptimizer*]*" 
-  - codecov -f "TestResults\DeveImageOptimizer.Coverage.xml"
+  - OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test .\DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj -c Release" -oldStyle -output:.\DeveImageOptimizer.Coverage.xml -filter:"+[DeveImageOptimizer*]*" 
+  - codecov -f "DeveImageOptimizer.Coverage.xml"
   
 after_test:
   - cmd: dotnet pack -c Release DeveImageOptimizer\
