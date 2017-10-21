@@ -13,6 +13,8 @@ This tool uses FileOptimizer to recompress images: http://nikkhokkho.sourceforge
 |:-------:|
 | [![codecov](https://codecov.io/gh/devedse/DeveImageOptimizer/branch/master/graph/badge.svg)](https://codecov.io/gh/devedse/DeveImageOptimizer) |
 
+(Reason why Coverage is quite low is because a lot of tests can't run on the Build Server)
+
 ## More information
 
 This tool has some advantages/differences over the GUI for FileOptimizer:
