@@ -61,7 +61,7 @@ namespace DeveImageOptimizer.Tests
                                     }
                                     else
                                     {
-                                        sb.AppendLine($"Pixel Wrong in Frame {i}: Pixel1: {pixel1.R},{pixel1.G},{pixel1.B},{pixel1.A} Pixel2: {pixel2.R},{pixel2.G},{pixel2.B},{pixel2.A}");
+                                        //sb.AppendLine($"Pixel Wrong in Frame {i}>({x},{y}) Pixel1: {pixel1.R},{pixel1.G},{pixel1.B},{pixel1.A} Pixel2: {pixel2.R},{pixel2.G},{pixel2.B},{pixel2.A}");
                                         pixelsWrong++;
                                     }
                                 }
