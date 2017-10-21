@@ -17,7 +17,7 @@ This tool uses FileOptimizer to recompress images: http://nikkhokkho.sourceforge
 
 ## More information
 
-This project is the source for the github package [DeveImageOptimizer](https://www.nuget.org/packages/DeveImageOptimizer/). It's currently being used in my [WebOptimizationProject](devedse/WebOptimizationProject) and [DeveImageOptimizerWPF](devedse/DeveImageOptimizerWPF)
+This project is the source for the github package [DeveImageOptimizer](https://www.nuget.org/packages/DeveImageOptimizer/). It's currently being used in my [WebOptimizationProject](https://github.com/devedse/WebOptimizationProject/) and [DeveImageOptimizerWPF](https://github.com/devedse/DeveImageOptimizerWPF/)
 
 | Number | Description | Implementation progress |
 | --- | --- | --- |
