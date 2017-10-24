@@ -200,7 +200,7 @@ namespace DeveImageOptimizer.Tests
 
             try
             {
-                var worked = await fop.OptimizeFile(image1temppath);
+                var worked = await fop.OptimizeFile(image1temppath, null);
 
                 Assert.True(worked.Successful);
 
