@@ -23,7 +23,7 @@ namespace DeveImageOptimizer.FileProcessing
             Directory.CreateDirectory(tempDirectory);
         }
 
-        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, bool saveFailedOptimizedFile = false)
+        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, string originDirectory, bool saveFailedOptimizedFile = false)
         {
             var w = Stopwatch.StartNew();
 
@@ -123,7 +123,7 @@ namespace DeveImageOptimizer.FileProcessing
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
             long optimizedFileSize = new FileInfo(fileToOptimize).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, errors.Count == 0, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, RelativePathFinderHelper.GetRelativePath(originDirectory, fileToOptimize), errors.Count == 0, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
 
             if (errors.Any())
             {
