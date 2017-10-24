@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DeveImageOptimizer.Helpers
 {
-    internal static class ValuesToStringHelper
+    public static class ValuesToStringHelper
     {
         public static String BytesToString(long byteCount)
         {
