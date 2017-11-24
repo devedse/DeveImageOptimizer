@@ -131,5 +131,20 @@ namespace DeveImageOptimizer.Tests
 
             Assert.True(areEqual);
         }
+
+        [Fact]
+        public async Task AreImagesEqualChatApp()
+        {
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-1.png");
+            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-2.png");
+            var image3path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-3.png");
+            var image4path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-4.png");
+
+            var areEqual1 = await ImageComparer2.AreImagesEqualAsync(image1path, image2path);
+            var areEqual2 = await ImageComparer2.AreImagesEqualAsync(image3path, image4path);
+
+            Assert.True(areEqual1);
+            Assert.True(areEqual2);
+        }
     }
 }
