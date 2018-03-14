@@ -101,9 +101,9 @@ namespace DeveImageOptimizer.State
             var hash = FileHashCalculator.CalculateFileHash(path);
             if (!_fullyOptimizedFileHashes.ContainsKey(hash))
             {
-                Console.WriteLine($"File hash of file that is already optimized: {hash}");
                 return true;
             }
+            Console.WriteLine($"File {path} is already optimized. File hash: {hash}");
             return false;
         }
     }
