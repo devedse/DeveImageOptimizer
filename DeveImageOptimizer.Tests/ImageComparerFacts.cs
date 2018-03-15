@@ -132,6 +132,18 @@ namespace DeveImageOptimizer.Tests
             Assert.True(areEqual);
         }
 
+        //This test fails due to FileOptimizer making some pixels transparent for some reason
+        //[Fact]
+        //public async Task AreImagesEqualRuthImage()
+        //{
+        //    var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "baberuth_1.png");
+        //    var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "baberuth_2.png");
+
+        //    var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+
+        //    Assert.True(areEqual);
+        //}
+
         [Fact]
         public async Task AreImagesEqualChatApp()
         {

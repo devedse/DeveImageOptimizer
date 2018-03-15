@@ -127,6 +127,12 @@ namespace DeveImageOptimizer.Tests
         }
 
         [SkippableFact]
+        public async Task CorrectlyOptimizesRuthImage()
+        {
+            await OptimizeFileTest("baberuth_1.png");
+        }
+
+        [SkippableFact]
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
