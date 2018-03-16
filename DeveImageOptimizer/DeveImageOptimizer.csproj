@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ExifLibNet" Version="1.0.8" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev000823" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Memory" Version="4.4.0-preview2-25405-01" />
