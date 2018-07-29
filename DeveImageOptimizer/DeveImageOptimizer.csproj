@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="ExifLibNet" Version="1.1.18" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev001535" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev001714" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Memory" Version="4.5.1" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
