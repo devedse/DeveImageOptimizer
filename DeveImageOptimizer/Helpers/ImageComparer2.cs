@@ -3,7 +3,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.MetaData.Profiles.Exif;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Transforms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
