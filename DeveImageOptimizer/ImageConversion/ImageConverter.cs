@@ -21,35 +21,17 @@ namespace DeveImageOptimizer.ImageConversion
             var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"\"{inputPath}\" /convert=\"{outPath}\"";
 
-            var psi = new ProcessStartInfo(pathIrfanView, args);
+            var processStartInfo = new ProcessStartInfo(pathIrfanView, args);
 
-            var proc = Process.Start(psi);
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.CreateNoWindow = false;
 
-            proc.WaitForExit();
-
-            return outPath;
-        }
-
-
-        public static string ConvertJpgToPng(string inputPath)
-        {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-
-            var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
-            //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
-
-            var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
-            string args = $"COPY \"{inputPath}\" \"{outPath}\"";
-
-            var psi = new ProcessStartInfo(pathVips, args);
-
-            var proc = Process.Start(psi);
-
-            proc.WaitForExit();
-
-            return outPath;
+            using (var proc = Process.Start(processStartInfo))
+            {
+                proc.WaitForExit();
+                return outPath;
+            }
         }
 
         public static string ConvertJpgToPngWithAutoRotate(string inputPath)
@@ -64,34 +46,17 @@ namespace DeveImageOptimizer.ImageConversion
             var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"COPY \"{inputPath}\"[autorotate] \"{outPath}\"";
 
-            var psi = new ProcessStartInfo(pathVips, args);
+            var processStartInfo = new ProcessStartInfo(pathVips, args);
 
-            var proc = Process.Start(psi);
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.CreateNoWindow = false;
 
-            proc.WaitForExit();
-
-            return outPath;
-        }
-
-        public static string ConvertJpgToPngWithRotation(string inputPath, string rotation)
-        {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-
-            var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
-            //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
-
-            var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
-            string args = $"ROT \"{inputPath}\" \"{outPath}\" d{rotation}";
-
-            var psi = new ProcessStartInfo(pathVips, args);
-
-            var proc = Process.Start(psi);
-
-            proc.WaitForExit();
-
-            return outPath;
+            using (var proc = Process.Start(processStartInfo))
+            {
+                proc.WaitForExit();
+                return outPath;
+            }
         }
     }
 }

@@ -12,14 +12,15 @@ namespace DeveImageOptimizer.FileProcessing
 {
     public class FileOptimizerProcessor
     {
-        private string _pathToFileOptimizer;
-        private string _tempDirectory;
+        private readonly string _pathToFileOptimizer;
+        private readonly string _tempDirectory;
+        private readonly bool _shouldShowFileOptimizerWindow;
 
-        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory)
+        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow)
         {
             _pathToFileOptimizer = pathToFileOptimizer;
             _tempDirectory = tempDirectory;
-
+            _shouldShowFileOptimizerWindow = shouldShowFileOptimizerWindow;
             Directory.CreateDirectory(tempDirectory);
         }
 
@@ -50,13 +51,15 @@ namespace DeveImageOptimizer.FileProcessing
                 {
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
-                
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {Constants.OptimizerOptions} \"{tempFilePath}\"")
+
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {Constants.OptimizerOptions} \"{tempFilePath}\"");
+
+                if (!_shouldShowFileOptimizerWindow)
                 {
-                    CreateNoWindow = true,
-                };
-                //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                //processStartInfo.CreateNoWindow = true;
+                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    processStartInfo.UseShellExecute = true;
+                    processStartInfo.CreateNoWindow = false;
+                }
 
                 var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
 

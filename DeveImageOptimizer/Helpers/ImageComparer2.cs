@@ -22,24 +22,6 @@ namespace DeveImageOptimizer.Helpers
             });
         }
 
-        private static string GetRotatedAmount(Image<Rgba32> source)
-        {
-            var blah = source?.MetaData?.ExifProfile?.GetValue(ExifTag.Orientation);
-            if (blah == null)
-            {
-                return "0";
-            }
-
-            var blahString = blah.ToString();
-
-            var digits = blahString.Where(t => char.IsDigit(t)).ToArray();
-            if (!digits.Any())
-            {
-                return "0";
-            }
-            return new string(digits);
-        }
-
         private static Image<Rgba32> LoadImageHelper(string imagePath, List<string> tempFiles, bool useImageSharpBugWorkaround)
         {
             if (useImageSharpBugWorkaround && FileTypeHelper.IsJpgFile(imagePath))
