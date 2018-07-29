@@ -50,8 +50,8 @@ namespace DeveImageOptimizer.FileProcessing
                 {
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
-
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $"\"{tempFilePath}\"")
+                
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {Constants.OptimizerOptions} \"{tempFilePath}\"")
                 {
                     CreateNoWindow = true,
                 };
