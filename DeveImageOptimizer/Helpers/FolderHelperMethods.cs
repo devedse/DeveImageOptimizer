@@ -10,10 +10,9 @@ namespace DeveImageOptimizer.Helpers
 
         private static string CreateEntryAssemblyDirectory()
         {
-            string codeBase = Assembly.GetEntryAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
+            var assembly = Assembly.GetEntryAssembly();
+            var assemblyDir = Path.GetDirectoryName(assembly.Location);
+            return assemblyDir;
         }
 
         public static Lazy<string> EntryTempDirectory { get; } = new Lazy<string>(() => Path.Combine(EntryAssemblyDirectory.Value, Constants.TempDirectoryName));
@@ -22,13 +21,8 @@ namespace DeveImageOptimizer.Helpers
 
         private static string CreateLocationOfImageProcessorAssemblyDirectory()
         {
-            var startupAssembly = typeof(FolderHelperMethods).GetTypeInfo().Assembly;
-            var cb = startupAssembly.CodeBase;
-
-            UriBuilder uri = new UriBuilder(cb);
-            string path = Uri.UnescapeDataString(uri.Path);
-            var assemblyDir = Path.GetDirectoryName(path);
-
+            var assembly = typeof(FolderHelperMethods).GetTypeInfo().Assembly;
+            var assemblyDir = Path.GetDirectoryName(assembly.Location);
             return assemblyDir;
         }
 
