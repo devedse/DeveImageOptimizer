@@ -40,7 +40,7 @@ namespace DeveImageOptimizer.ImageConversion
 
             var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
             //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
+            string pathVips = DeveLibVipsNuget.LibVipsManager.ExtractAndGetVipsExeFile();
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
             var outPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
