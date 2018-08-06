@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeveLibVipsNuget" Version="1.0.0" />
+    <PackageReference Include="DeveLibVipsNuget" Version="1.0.7" />
     <PackageReference Include="ExifLibNet" Version="1.1.18" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev001749" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
