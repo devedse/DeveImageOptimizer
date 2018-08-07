@@ -62,12 +62,16 @@ namespace DeveImageOptimizer.FileProcessing
             {
                 var optimizedFileResult = await _fileOptimizer.OptimizeFile(file, originDirectory);
 
-                await _fileProcessedState.AddFullyOptimizedFile(optimizedFileResult.Path);
+                //If the file is successfully optimized add it to the list of optimized files so it can be skipped next time
+                if (optimizedFileResult.OptimizationResult == OptimizationResult.Success)
+                {
+                    await _fileProcessedState.AddFullyOptimizedFile(optimizedFileResult.Path);
+                }
 
                 return optimizedFileResult;
             }
             else
-            {                
+            {
                 Console.WriteLine($"=== Skipping because already optimized: {file} ===");
 
                 var fileSize = new FileInfo(file).Length;
