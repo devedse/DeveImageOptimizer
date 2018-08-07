@@ -17,6 +17,18 @@ This project is the source for the github package [DeveImageOptimizer](https://w
 
 (Reason why Coverage is quite low is because a lot of tests can't run on the Build Server)
 
+## Code Quality Status
+
+| SonarQube |
+|:---------:|
+| [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=DeveImageOptimizer&metric=alert_status)](https://sonarcloud.io/dashboard?id=DeveImageOptimizer) |
+
+## Package
+
+| NuGet |
+|:-----:|
+| [![NuGet](https://img.shields.io/nuget/v/DeveImageOptimizer.svg)](https://www.nuget.org/packages/DeveImageOptimizer/) |
+
 ## Current Implementation status
 
 | Number | Description | Implementation progress |
