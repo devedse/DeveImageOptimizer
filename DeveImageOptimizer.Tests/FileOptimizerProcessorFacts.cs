@@ -168,8 +168,7 @@ namespace DeveImageOptimizer.Tests
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
                 {
-                    Assert.True(result.Successful);
-                    Assert.False(result.SkippedBecausePreviouslyOptimized);
+                    Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
                     Assert.True(result.OriginalSize > result.OptimizedSize);
                 }
             }
@@ -185,8 +184,7 @@ namespace DeveImageOptimizer.Tests
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
                 {
-                    Assert.True(result.Successful);
-                    Assert.True(result.SkippedBecausePreviouslyOptimized);
+                    Assert.Equal(OptimizationResult.Skipped, result.OptimizationResult);
                     Assert.True(result.OriginalSize == result.OptimizedSize);
                 }
             }
@@ -206,9 +204,9 @@ namespace DeveImageOptimizer.Tests
 
             try
             {
-                var worked = await fop.OptimizeFile(image1temppath, null);
+                var result = await fop.OptimizeFile(image1temppath, null);
 
-                Assert.True(worked.Successful);
+                Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
 
                 var fileOptimized = new FileInfo(image1temppath);
                 var fileUnoptimized = new FileInfo(image1path);
