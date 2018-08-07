@@ -18,10 +18,6 @@ if ($p.ExitCode -ne 0) {
     $host.SetShouldExit($p.ExitCode)
 }
 
-Write-Host "Extraction completed, copying ini file."
-
-$iniFile = Join-Path $scriptPath 'FileOptimizer64.ini'
-$iniFileDest = Join-Path $extractPath 'FileOptimizer64.ini'
-cp $iniFile $iniFileDest
+Write-Host "Extraction completed"
 
 Write-Host "Script completed, extracted path: $extractPath"
