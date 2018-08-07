@@ -83,6 +83,29 @@ namespace DeveImageOptimizer.Tests
             }
         }
 
+        [Fact]
+        public async Task Testje()
+        {
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
+
+            //Optimize first time                
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(4, results.Count);
+                foreach (var result in results)
+                {
+                    Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
+                    Assert.True(result.OriginalSize > result.OptimizedSize);
+                }
+            }
+        }
+
         private static string PrepareTestOptimizeDir(string dirToOptimize)
         {
             var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
