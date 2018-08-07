@@ -36,7 +36,6 @@ namespace DeveImageOptimizer.FileProcessing
 
             try
             {
-                Console.WriteLine();
                 Console.WriteLine($"=== Optimizing image: {fileToOptimize} ===");
 
                 var fileName = Path.GetFileName(fileToOptimize);
@@ -126,7 +125,7 @@ namespace DeveImageOptimizer.FileProcessing
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
             long optimizedFileSize = new FileInfo(fileToOptimize).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, RelativePathFinderHelper.GetRelativePath(originDirectory, fileToOptimize), errors.Count == 0, false, originalFileSize, optimizedFileSize, w.Elapsed, errors);
+            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, RelativePathFinderHelper.GetRelativePath(originDirectory, fileToOptimize), errors.Count == 0 ? OptimizationResult.Success : OptimizationResult.Failed, originalFileSize, optimizedFileSize, w.Elapsed, errors);
 
             if (errors.Any())
             {
@@ -136,7 +135,7 @@ namespace DeveImageOptimizer.FileProcessing
                     Console.WriteLine($"\tError: {error}");
                 }
             }
-            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {optimizedFileResult.Successful}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
+            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {optimizedFileResult.OptimizationResult}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
 
             return optimizedFileResult;
         }

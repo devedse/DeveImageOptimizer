@@ -33,25 +33,13 @@ namespace DeveImageOptimizer.FileProcessing
                 var extension = Path.GetExtension(file).ToUpperInvariant();
                 if (Constants.ValidExtensions.Contains(extension))
                 {
-                    if (_fileProcessedState.ShouldOptimizeFile(file))
+                    var optimizedFileResult = await ProcessFile(file, directory);
+                    if (_fileProcessedListener != null)
                     {
-                        var optimizedFileResult = await ProcessFile(file, directory);
-                        optimizedFileResultsForThisDirectory.Add(optimizedFileResult);
-
-                        if (optimizedFileResult.Successful)
-                        {
-                            await _fileProcessedState.AddFullyOptimizedFile(optimizedFileResult.Path);
-                        }
+                        _fileProcessedListener.AddProcessedFile(optimizedFileResult);
                     }
-                    else
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"=== Skipping because already optimized: {file} ===");
 
-                        var fileSize = new FileInfo(file).Length;
-                        var skippedFile = new OptimizedFileResult(file, RelativePathFinderHelper.GetRelativePath(directory, file), true, true, fileSize, fileSize, TimeSpan.Zero, new List<string>());
-                        optimizedFileResultsForThisDirectory.Add(skippedFile);
-                    }
+                    optimizedFileResultsForThisDirectory.Add(optimizedFileResult);
                 }
             }
 
@@ -69,13 +57,23 @@ namespace DeveImageOptimizer.FileProcessing
 
         private async Task<OptimizedFileResult> ProcessFile(string file, string originDirectory)
         {
-            var optimizedFileResult = await _fileOptimizer.OptimizeFile(file, originDirectory);
-            if (_fileProcessedListener != null)
+            Console.WriteLine();
+            if (_fileProcessedState.ShouldOptimizeFile(file))
             {
-                _fileProcessedListener.AddProcessedFile(optimizedFileResult);
-            }
+                var optimizedFileResult = await _fileOptimizer.OptimizeFile(file, originDirectory);
 
-            return optimizedFileResult;
+                await _fileProcessedState.AddFullyOptimizedFile(optimizedFileResult.Path);
+
+                return optimizedFileResult;
+            }
+            else
+            {                
+                Console.WriteLine($"=== Skipping because already optimized: {file} ===");
+
+                var fileSize = new FileInfo(file).Length;
+                var skippedFile = new OptimizedFileResult(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), OptimizationResult.Skipped, fileSize, fileSize, TimeSpan.Zero, new List<string>());
+                return skippedFile;
+            }
         }
     }
 }

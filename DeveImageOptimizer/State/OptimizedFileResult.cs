@@ -8,8 +8,7 @@ namespace DeveImageOptimizer.State
         public string Path { get; }
         public string RelativePath { get; }
 
-        public bool Successful { get; }
-        public bool SkippedBecausePreviouslyOptimized { get; }
+        public OptimizationResult OptimizationResult { get; }
 
         public long OriginalSize { get; }
         public long OptimizedSize { get; }
@@ -18,12 +17,11 @@ namespace DeveImageOptimizer.State
 
         public IEnumerable<string> Errors { get; }
 
-        public OptimizedFileResult(string path, string relativepath, bool successful, bool skippedBecausePreviouslyOptimized, long originalSize, long optimizedSize, TimeSpan duration, List<string> errors)
+        public OptimizedFileResult(string path, string relativepath, OptimizationResult optimizationResult, long originalSize, long optimizedSize, TimeSpan duration, List<string> errors)
         {
             Path = path;
             RelativePath = relativepath;
-            Successful = successful;
-            SkippedBecausePreviouslyOptimized = skippedBecausePreviouslyOptimized;
+            OptimizationResult = optimizationResult;
             OriginalSize = originalSize;
             OptimizedSize = optimizedSize;
             Duration = duration;
