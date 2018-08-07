@@ -233,8 +233,8 @@ namespace DeveImageOptimizer.Tests
                             var rotAfterUnrotate = imageAfterUnrotate.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
                             var rotAfter = imageAfter.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
 
-                            Assert.True(rotBefore.ToString().Contains("270"));
-                            Assert.True(rotAfterUnrotate.ToString().ToLowerInvariant().Contains("normal"));
+                            Assert.Contains("270", rotBefore.ToString());
+                            Assert.Contains("normal", rotAfterUnrotate.ToString().ToLowerInvariant());
                             Assert.Equal(rotBefore, rotAfter);
                         }
                     }
