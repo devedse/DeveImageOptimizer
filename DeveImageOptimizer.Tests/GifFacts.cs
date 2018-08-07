@@ -28,7 +28,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "GifInvest", "Source.gif");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "GifInvest", "Source-Gifcicle.gif");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
             //Assert.True(areEqual);
 
             var sb = new StringBuilder();

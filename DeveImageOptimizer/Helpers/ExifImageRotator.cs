@@ -1,8 +1,6 @@
 ﻿using ExifLibrary;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.Helpers
@@ -50,7 +48,7 @@ namespace DeveImageOptimizer.Helpers
         {
             if (newOrientation != null)
             {
-                var file = JPEGFile.FromFile(path);
+                var file = ImageFile.FromFile(path);
 
                 ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
@@ -60,7 +58,7 @@ namespace DeveImageOptimizer.Helpers
                 }
                 else
                 {
-                    throw new Exception("MetaData is not kept equal");
+                    throw new InvalidOperationException("MetaData is not kept equal");
                 }
 
                 file.Save(path);

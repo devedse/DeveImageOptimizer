@@ -1,110 +1,251 @@
-﻿//using System;
-//using System.Diagnostics;
-//using System.Drawing;
-//using System.Drawing.Imaging;
-//using System.IO;
-//using System.Threading.Tasks;
+﻿using DeveImageOptimizer.ImageConversion;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
-//namespace DeveImageOptimizer.Helpers
-//{
-//    public static class ImageComparer
-//    {
-//        public static async Task<bool> AreImagesEqualAsync(string image1Path, string image2Path)
-//        {
-//            return await Task.Run(() =>
-//            {
-//                return AreImagesEqual(image1Path, image2Path);
-//            });
-//        }
+namespace DeveImageOptimizer.Helpers
+{
+    public static class ImageComparer
+    {
+        public static Task<bool> AreImagesEqualAsync(string image1Path, string image2Path, bool useImageSharpBugWorkaround = true)
+        {
+            return Task.Run(() =>
+            {
+                return AreImagesEqual(image1Path, image2Path, useImageSharpBugWorkaround);
+            });
+        }
 
-//        public static async Task<bool> AreImagesEqualAsync2(string image1Path, string image2Path)
-//        {
-//            return await Task.Run(() =>
-//            {
-//                return AreImagesEqual2(image1Path, image2Path);
-//            });
-//        }
+        private static Image<Rgba32> LoadImageHelper(string imagePath, List<string> tempFiles, bool useImageSharpBugWorkaround)
+        {
+            if (useImageSharpBugWorkaround && FileTypeHelper.IsJpgFile(imagePath))
+            {
+                var imageAsPngPath = ImageConverter.ConvertJpgToPngWithAutoRotate(imagePath);
+                tempFiles.Add(imageAsPngPath);
+                return Image.Load(imageAsPngPath);
+            }
+            else
+            {
+                return Image.Load(imagePath);
+            }
+        }
 
-//        public static bool AreImagesEqual(string image1Path, string image2Path)
-//        {
-//            var w = Stopwatch.StartNew();
+        private static bool AreImagesEqual(string image1Path, string image2Path, bool useImageSharpBugWorkaround)
+        {
+            if (!File.Exists(image1Path)) throw new FileNotFoundException("Could not find Image1", image1Path);
+            if (!File.Exists(image2Path)) throw new FileNotFoundException("Could not find Image2", image2Path);
 
-//            using (var image1 = new Bitmap(image1Path))
-//            {
-//                using (var image2 = new Bitmap(image2Path))
-//                {
-//                    if (image1.Size != image2.Size)
-//                    {
-//                        return false;
-//                    }
+            var w = Stopwatch.StartNew();
 
-//                    for (int y = 0; y < image1.Height; y++)
-//                    {
-//                        for (int x = 0; x < image1.Width; x++)
-//                        {
-//                            var pixel1 = image1.GetPixel(x, y);
-//                            var pixel2 = image2.GetPixel(x, y);
+            var tempFiles = new List<string>();
 
-//                            if (pixel1 != pixel2)
-//                            {
-//                                if (pixel1.A == 0 && pixel2.A == 0)
-//                                {
-//                                    //Optimization that happens to better be able to compress png's sometimes
-//                                }
-//                                return false;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            try
+            {
+                using (var image1 = LoadImageHelper(image1Path, tempFiles, useImageSharpBugWorkaround))
+                using (var image2 = LoadImageHelper(image2Path, tempFiles, useImageSharpBugWorkaround))
+                {
+                    image1.Mutate(t => t.AutoOrient());
+                    image2.Mutate(t => t.AutoOrient());
 
-//            Console.WriteLine($"Elapsed for Equal1: " + w.Elapsed.TotalSeconds);
+                    long pixelsWrong = 0;
 
-//            return true;
-//        }
+                    if (image1.Frames.Count > 1)
+                    {
+                        Console.WriteLine("Image with multiple frames detected.");
+                        Console.WriteLine($"Comparing all {image1.Frames.Count} frames...");
 
-//        public static bool AreImagesEqual2(string image1Path, string image2Path)
-//        {
-//            var w = Stopwatch.StartNew();
+                        int pointer1 = 0;
+                        int pointer2 = 0;
 
-//            using (var image1 = new Bitmap(image1Path))
-//            {
-//                using (var image2 = new Bitmap(image2Path))
-//                {
-//                    if (image1.Size != image2.Size)
-//                    {
-//                        return false;
-//                    }
+                        //using (ImageFrame<Rgba32> frame1FromImage = new ImageFrame<Rgba32>(image1))
+                        //using (ImageFrame<Rgba32> frame2FromImage = new ImageFrame<Rgba32>(image2))
+                        //{
+                        //var imageFrames1 = new ImageFrame<Rgba32>[image1.Frames.Count + 1];
+                        //var imageFrames2 = new ImageFrame<Rgba32>[image2.Frames.Count + 1];
 
-//                    var lockImage1 = new LockBitmap(image1);
-//                    var lockImage2 = new LockBitmap(image2);
+                        //frame1FromImage.MetaData.FrameDelay = image1.MetaData.FrameDelay;
+                        //frame2FromImage.MetaData.FrameDelay = image2.MetaData.FrameDelay;
 
-//                    lockImage1.LockBits();
-//                    lockImage2.LockBits();
+                        //imageFrames1[0] = frame1FromImage;
+                        //imageFrames2[0] = frame2FromImage;
 
-//                    for (int y = 0; y < lockImage1.Height; y++)
-//                    {
-//                        for (int x = 0; x < lockImage2.Width; x++)
-//                        {
-//                            var pixel1 = lockImage1.GetPixel(x, y);
-//                            var pixel2 = lockImage2.GetPixel(x, y);
+                        //for (int i = 0; i < image1.Frames.Count; i++)
+                        //{
+                        //    imageFrames1[i + 1] = image1.Frames[i];
+                        //}
+                        //for (int i = 0; i < image2.Frames.Count; i++)
+                        //{
+                        //    imageFrames2[i + 1] = image2.Frames[i];
+                        //}
 
-//                            if (pixel1 != pixel2)
-//                            {
-//                                if (pixel1.A == 0 && pixel2.A == 0)
-//                                {
-//                                    //Optimization that happens to better be able to compress png's sometimes
-//                                }
-//                                return false;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+                        //This code outputs all gif frames as png images
+                        //for (int i = 0; i < imageFrames1.Length; i++)
+                        //{
+                        //    using (var im = new Image<Rgba32>(imageFrames1[i]))
+                        //    {
+                        //        using (var fs = new FileStream($"1_{i}.png", FileMode.Create))
+                        //        {
+                        //            im.SaveAsPng(fs);
+                        //        }
+                        //    }
+                        //}
 
-//            Console.WriteLine($"Elapsed for Equal2: " + w.Elapsed.TotalSeconds);
+                        //for (int i = 0; i < imageFrames2.Length; i++)
+                        //{
+                        //    using (var im = new Image<Rgba32>(imageFrames2[i]))
+                        //    {
+                        //        using (var fs = new FileStream($"2_{i}.png", FileMode.Create))
+                        //        {
+                        //            im.SaveAsPng(fs);
+                        //        }
+                        //    }
+                        //}
 
-//            return true;
-//        }
-//    }
-//}
+
+
+                        ImageFrame<Rgba32> frame1 = image1.Frames[0];
+                        ImageFrame<Rgba32> frame2 = image2.Frames[0];
+
+                        int delay1 = frame1.MetaData.FrameDelay;
+                        int delay2 = frame2.MetaData.FrameDelay;
+
+                        while (true)
+                        {
+                            pixelsWrong += FindWrongPixels(frame1, frame2);
+
+                            //This code outputs the incorrect frames as an image
+                            if (pixelsWrong != 0)
+                            {
+                                //Currently disabled
+                                //TODO: When image sharp implements this again, fix it.
+
+                                //using (var im = new Image<Rgba32>(frame1))
+                                //{
+                                //    using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
+                                //    {
+                                //        im.SaveAsPng(fs);
+                                //    }
+                                //}
+                                //using (var im = new Image<Rgba32>(frame2))
+                                //{
+                                //    using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
+                                //    {
+                                //        im.SaveAsPng(fs);
+                                //    }
+                                //}
+                            }
+
+                            var min = Math.Min(delay1, delay2);
+                            delay1 -= min;
+                            delay2 -= min;
+
+                            if (delay1 == 0)
+                            {
+                                pointer1++;
+
+                                if (pointer1 < image1.Frames.Count)
+                                {
+                                    frame1 = image1.Frames[pointer1];
+                                    delay1 += frame1.MetaData.FrameDelay;
+                                }
+                            }
+                            if (delay2 == 0)
+                            {
+                                pointer2++;
+
+                                if (pointer2 < image2.Frames.Count)
+                                {
+                                    frame2 = image2.Frames[pointer2];
+                                    delay2 += frame2.MetaData.FrameDelay;
+                                }
+                            }
+
+                            if (pointer1 > image1.Frames.Count && pointer2 > image2.Frames.Count)
+                            {
+                                //Same number of frames
+                                break;
+                            }
+                            else if (pointer1 <= image1.Frames.Count && pointer2 <= image2.Frames.Count)
+                            {
+                                //Just continue
+                            }
+                            else
+                            {
+                                //Incorrect frame number
+                                Console.WriteLine("Number of frames is not correct");
+                                if (pixelsWrong == 0)
+                                {
+                                    pixelsWrong += 1; //Just to be sure it fails
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        pixelsWrong = FindWrongPixels(image1.Frames[0], image2.Frames[0]);
+                    }
+
+                    Console.WriteLine($"Image comparison done in: {w.Elapsed}. Wrong pixels: {pixelsWrong}. SourceFile: {image1Path}. ResultFile: {image2Path}.");
+                    if (pixelsWrong > 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+            finally
+            {
+                foreach (var tempFile in tempFiles)
+                {
+                    FileHelperMethods.SafeDeleteTempFile(tempFile);
+                }
+            }
+        }
+
+        private static long FindWrongPixels(ImageFrame<Rgba32> image1, ImageFrame<Rgba32> image2)
+        {
+            if (image1.Width != image2.Width || image1.Height != image2.Height)
+            {
+                return image1.Width * image1.Height;
+            }
+
+            int width = image1.Width;
+            int height = image1.Height;
+
+            long pixelsWrong = 0;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    var pixel1 = image1[x, y];
+                    var pixel2 = image2[x, y];
+
+                    if (pixel1 != pixel2)
+                    {
+                        if (pixel1.A == 0 && pixel2.A == 0)
+                        {
+                            //Optimization that happens to better be able to compress png's sometimes
+                            //Fully transparent pixel so the pixel is still the same no matter what the RGB values
+                        }
+                        else
+                        {
+                            //Console.WriteLine($"Failed, elapsed time: {w.Elapsed}");
+                            //return false;
+                            pixelsWrong++;
+                        }
+                    }
+                }
+            }
+
+            return pixelsWrong;
+        }
+    }
+}

@@ -72,7 +72,7 @@ namespace DeveImageOptimizer.FileProcessing
                     await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
                 }
 
-                var imagesEqual = await ImageComparer2.AreImagesEqualAsync(fileToOptimize, tempFilePath);
+                var imagesEqual = await ImageComparer.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
                 if (!imagesEqual)
                 {

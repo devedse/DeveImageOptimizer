@@ -65,7 +65,7 @@ namespace DeveImageOptimizer.Tests
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
                     using (var outputtedImage = Image.Load(outputImage))
                     {
-                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
                         Assert.True(result);
                     }
 
@@ -102,7 +102,7 @@ namespace DeveImageOptimizer.Tests
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
                     using (var outputtedImage = Image.Load(outputImage))
                     {
-                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
                         Assert.True(result);
                     }
 
@@ -142,7 +142,7 @@ namespace DeveImageOptimizer.Tests
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
                     using (var outputtedImage = Image.Load(outputImage))
                     {
-                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
                         Assert.True(result);
                     }
 
@@ -185,7 +185,7 @@ namespace DeveImageOptimizer.Tests
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
                     using (var outputtedImage = Image.Load(outputImage))
                     {
-                        var result = await ImageComparer2.AreImagesEqualAsync(image1path, outputImage);
+                        var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
                         Assert.True(result);
                     }
 

@@ -13,7 +13,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1B.JPG");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -26,7 +26,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1B.JPG");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath, false);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath, false);
 
             Skip.IfNot(areEqual, "This test should not be skipped anymore once ImageSharp correctly decodes JPG files");
         }
@@ -49,7 +49,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image3A.JPG");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image3B.JPG");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -60,7 +60,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_2.png");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -71,7 +71,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "devtools-full_1.gif");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "devtools-full_2.gif");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -82,7 +82,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "pitch_1.gif");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "pitch_2.gif");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -93,7 +93,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "versioning-1_1.png");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -104,7 +104,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "cra-dynamic-import_1.gif");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "cra-dynamic-import_2.gif");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Skip.If(areEqual == false, "This should also not fail I think. Currently it fails though, so this needs fixes in the FileOpitmizerFull.");
             //Assert.True(areEqual);
@@ -116,7 +116,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "devtools-side-pane_1.gif");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "devtools-side-pane_2.gif");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -127,7 +127,7 @@ namespace DeveImageOptimizer.Tests
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "icon_1.png");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "icon_2.png");
 
-            var areEqual = await ImageComparer2.AreImagesEqualAsync(imageApath, imageBpath);
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
 
             Assert.True(areEqual);
         }
@@ -152,8 +152,8 @@ namespace DeveImageOptimizer.Tests
             var image3path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-3.png");
             var image4path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "chatapp-4.png");
 
-            var areEqual1 = await ImageComparer2.AreImagesEqualAsync(image1path, image2path);
-            var areEqual2 = await ImageComparer2.AreImagesEqualAsync(image3path, image4path);
+            var areEqual1 = await ImageComparer.AreImagesEqualAsync(image1path, image2path);
+            var areEqual2 = await ImageComparer.AreImagesEqualAsync(image3path, image4path);
 
             Assert.True(areEqual1);
             Assert.True(areEqual2);

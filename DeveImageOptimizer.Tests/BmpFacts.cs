@@ -30,7 +30,7 @@ namespace DeveImageOptimizer.Tests
 
                 using (var image2 = Image.Load(imageTempPath))
                 {
-                    var result = await ImageComparer2.AreImagesEqualAsync(imagePath, imageTempPath);
+                    var result = await ImageComparer.AreImagesEqualAsync(imagePath, imageTempPath);
                     Assert.True(result);
                 }
             }
@@ -62,7 +62,7 @@ namespace DeveImageOptimizer.Tests
 
                 using (var image2 = Image.Load(imageTempPath))
                 {
-                    var result = await ImageComparer2.AreImagesEqualAsync(imagePath, imageTempPath);
+                    var result = await ImageComparer.AreImagesEqualAsync(imagePath, imageTempPath);
                     Assert.True(result);
                 }
             }

@@ -12,9 +12,6 @@ namespace DeveImageOptimizer.ImageConversion
 
             Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
-            var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
-            //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            //string pathVips = Path.Combine(userProfileDir, Constants.VipsDir, "vips.exe");
             string pathIrfanView = @"C:\Program Files (x86)\IrfanView\i_view32.exe";
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
@@ -38,8 +35,6 @@ namespace DeveImageOptimizer.ImageConversion
         {
             Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
 
-            var userProfileDir = System.Environment.GetEnvironmentVariable("USERPROFILE");
-            //var userProfileDir2 = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathVips = DeveLibVipsNuget.LibVipsManager.ExtractAndGetVipsExeFile();
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
