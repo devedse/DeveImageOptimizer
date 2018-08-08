@@ -94,16 +94,23 @@ namespace DeveImageOptimizer.FileProcessing
 
             });
 
+            var aaa = SynchronizationContext.Current;
+            var execcutionDataBlockOptionsForWritingBackMaybeToUiThread = new ExecutionDataflowBlockOptions()
+            {
+
+            };
+            if (SynchronizationContext.Current != null)
+            {
+                execcutionDataBlockOptionsForWritingBackMaybeToUiThread.TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            }
+
             var putInListBlock = new ActionBlock<OptimizedFileResult>(t =>
             {
                 Console.WriteLine($"Ik ga een file in dit block stoppen: {t}");
                 optimizedFileResultsForThisDirectory.Add(t);
                 //Thread.Sleep(5000);
                 Console.WriteLine($"Done: {t}");
-            }, new ExecutionDataflowBlockOptions()
-            {
-                TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext()
-            });
+            }, execcutionDataBlockOptionsForWritingBackMaybeToUiThread);
 
             extractIenumerableBlock.LinkTo(bufferBlock, new DataflowLinkOptions() { PropagateCompletion = true });
             bufferBlock.LinkTo(processFileBlock, new DataflowLinkOptions() { PropagateCompletion = true });
@@ -135,7 +142,7 @@ namespace DeveImageOptimizer.FileProcessing
                     }
                 });
             }
-            
+
             Console.WriteLine("Completing");
             extractIenumerableBlock.Complete();
             await putInListBlock.Completion;
