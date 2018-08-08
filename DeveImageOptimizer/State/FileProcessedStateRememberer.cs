@@ -1,9 +1,8 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.Helpers.Concurrent;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
@@ -12,7 +11,7 @@ namespace DeveImageOptimizer.State
     {
         public bool ShouldAlwaysOptimize { get; }
 
-        private readonly Dictionary<string, HashSet<string>> _fullyOptimizedFileHashes = new Dictionary<string, HashSet<string>>();
+        private readonly ConcurrentDictionary<string, ConcurrentHashSet<string>> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, ConcurrentHashSet<string>>();
         private readonly string _filePath;
 
         public const string FileNameHashesStorage = "ProcessedFiles.txt";
@@ -31,7 +30,7 @@ namespace DeveImageOptimizer.State
                     {
                         if (!string.IsNullOrWhiteSpace(line))
                         {
-                            var listOfFiles = new HashSet<string>();
+                            var listOfFiles = new ConcurrentHashSet<string>();
 
                             var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                             string hash = splitted[0];
@@ -41,9 +40,9 @@ namespace DeveImageOptimizer.State
                                 var files = splitted[1];
 
                                 var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                                listOfFiles = new HashSet<string>(splittedFiles);
+                                listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
                             }
-                            _fullyOptimizedFileHashes.Add(hash, listOfFiles);
+                            _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
                         }
                     }
                     catch (Exception ex)
@@ -58,34 +57,41 @@ namespace DeveImageOptimizer.State
         {
             var hash = FileHashCalculator.CalculateFileHash(path);
             var fileName = Path.GetFileName(path);
-            HashSet<string> fileList;
 
-            if (_fullyOptimizedFileHashes.TryGetValue(hash, out fileList))
+            var itemAlreadyExisted = _fullyOptimizedFileHashes.TryAdd(hash, new ConcurrentHashSet<string>() { fileName });
+            if (itemAlreadyExisted)
             {
-                bool shouldSave = fileList.Add(fileName);
-                if (shouldSave)
+                if (_fullyOptimizedFileHashes.TryGetValue(hash, out ConcurrentHashSet<string> fileList))
                 {
-                    await SaveToFile();
+                    bool shouldSave = fileList.Add(fileName);
+                    if (shouldSave)
+                    {
+                        await SaveToFile();
+                    }
                 }
             }
             else
             {
-                _fullyOptimizedFileHashes.Add(hash, new HashSet<string>() { fileName });
                 await SaveToFile();
             }
         }
+
+        private object _saveFileLockject = new object();
 
         private Task SaveToFile()
         {
             return Task.Run(() =>
             {
-                using (var streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
+                lock (_saveFileLockject)
                 {
-                    foreach (var curhash in _fullyOptimizedFileHashes)
+                    using (var streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
                     {
-                        var combinedFileNames = String.Join(":", curhash.Value.AsEnumerable());
-                        var stringToWrite = $"{curhash.Key}|{combinedFileNames}";
-                        streamWriter.WriteLine(stringToWrite);
+                        foreach (var curhash in _fullyOptimizedFileHashes)
+                        {
+                            var combinedFileNames = String.Join(":", curhash.Value);
+                            var stringToWrite = $"{curhash.Key}|{combinedFileNames}";
+                            streamWriter.WriteLine(stringToWrite);
+                        }
                     }
                 }
             });

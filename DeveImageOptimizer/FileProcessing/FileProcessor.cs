@@ -1,11 +1,10 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.Helpers.Concurrent;
 using DeveImageOptimizer.State;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -24,16 +23,27 @@ namespace DeveImageOptimizer.FileProcessing
             _fileProcessedState = fileProcessedState;
         }
 
-        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory)
+        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory, bool processParallel)
+        {
+            if (!processParallel)
+            {
+                return await ProcessDirectorySingleThreaded(directory);
+            }
+            else
+            {
+                return await ProcessDirectoryParallel(directory);
+            }
+        }
+
+        private async Task<IEnumerable<OptimizedFileResult>> ProcessDirectorySingleThreaded(string directory)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
 
-            var files = Directory.GetFiles(directory);
+            var files = FileHelperMethods.RecurseFiles(directory);
 
             foreach (var file in files)
             {
-                var extension = Path.GetExtension(file).ToUpperInvariant();
-                if (Constants.ValidExtensions.Contains(extension))
+                if (Constants.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                 {
                     var optimizedFileResult = await ProcessFile(file, directory);
                     if (_fileProcessedListener != null)
@@ -45,139 +55,61 @@ namespace DeveImageOptimizer.FileProcessing
                 }
             }
 
-            IEnumerable<OptimizedFileResult> concattedRetVal = optimizedFileResultsForThisDirectory;
-
-            var directories = Directory.GetDirectories(directory);
-            foreach (var subDirectory in directories)
-            {
-                var results = await ProcessDirectory(subDirectory);
-                concattedRetVal = concattedRetVal.Concat(results);
-            }
-
-            return concattedRetVal;
+            return optimizedFileResultsForThisDirectory;
         }
 
-        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectoryParallel(string directory)
+        private async Task<IEnumerable<OptimizedFileResult>> ProcessDirectoryParallel(string directory)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
 
-
-
-            var lockject = new object();
-
-            var extractIenumerableBlock = new TransformManyBlock<IEnumerable<string>, string>(t => t);
-
-            var bufferBlock = new BufferBlock<string>(new DataflowBlockOptions()
-            {
-                BoundedCapacity = 10
-            });
-
-            //System.Threading.Tasks.Dataflow.
-
             var processFileBlock = new TransformBlock<string, OptimizedFileResult>(async file =>
             {
-                var optimizedFileResult = new OptimizedFileResult(file, file, OptimizationResult.Success, 1, 1, TimeSpan.FromSeconds(1), new List<string>());
-                //var optimizedFileResult = await ProcessFile(file, directory);
-                if (_fileProcessedListener != null)
-                {
-                    //lock (lockject)
-                    //{
-                    await Task.Delay(2000);
-                    _fileProcessedListener.AddProcessedFile(optimizedFileResult);
-                    //}
-                }
+                var optimizedFileResult = await ProcessFile(file, directory);
                 return optimizedFileResult;
             }, new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = 4,
                 BoundedCapacity = 10
-
             });
-
-            var aaa = SynchronizationContext.Current;
-            var execcutionDataBlockOptionsForWritingBackMaybeToUiThread = new ExecutionDataflowBlockOptions()
-            {
-
-            };
-            if (SynchronizationContext.Current != null)
-            {
-                execcutionDataBlockOptionsForWritingBackMaybeToUiThread.TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            }
 
             var putInListBlock = new ActionBlock<OptimizedFileResult>(t =>
             {
-                Console.WriteLine($"Ik ga een file in dit block stoppen: {t}");
+                if (_fileProcessedListener != null)
+                {
+                    _fileProcessedListener.AddProcessedFile(t);
+                }
                 optimizedFileResultsForThisDirectory.Add(t);
-                //Thread.Sleep(5000);
-                Console.WriteLine($"Done: {t}");
-            }, execcutionDataBlockOptionsForWritingBackMaybeToUiThread);
+            }, ExecutionDataflowBlockOptionsCreator.SynchronizeForUiThread(new ExecutionDataflowBlockOptions()
+            {
 
-            extractIenumerableBlock.LinkTo(bufferBlock, new DataflowLinkOptions() { PropagateCompletion = true });
-            bufferBlock.LinkTo(processFileBlock, new DataflowLinkOptions() { PropagateCompletion = true });
+            }));
+
             processFileBlock.LinkTo(putInListBlock, new DataflowLinkOptions() { PropagateCompletion = true });
 
-            var files = RecurseFiles(directory).Where(t => Constants.ValidExtensions.Contains(Path.GetExtension(t).ToUpperInvariant()));
 
-
-
-            if (false)
+            var files = FileHelperMethods.RecurseFiles(directory);
+            await Task.Run(async () =>
             {
-                var result = await extractIenumerableBlock.SendAsync(files.Take(100));
-                Console.WriteLine($"Posting complete: {result}");
-            }
-            else
-            {
-                await Task.Run(async () =>
+                foreach (var file in files)
                 {
-                    foreach (var item in files.Take(100))
+                    if (Constants.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                     {
-                        Console.WriteLine($"Posting: {Path.GetFileName(item)}");
-                        var result = await bufferBlock.SendAsync(item);
+                        Console.WriteLine($"Posting: {Path.GetFileName(file)}");
+                        var result = await processFileBlock.SendAsync(file);
 
                         if (!result)
                         {
                             Console.WriteLine("Result is false!!!");
                         }
-                        Thread.Sleep(100);
                     }
-                });
-            }
+                }
+            });
 
             Console.WriteLine("Completing");
-            extractIenumerableBlock.Complete();
+            processFileBlock.Complete();
             await putInListBlock.Completion;
 
-            //IEnumerable<OptimizedFileResult> concattedRetVal = optimizedFileResultsForThisDirectory;
-
-            //var directories = Directory.GetDirectories(directory);
-            //foreach (var subDirectory in directories)
-            //{
-            //    var results = await ProcessDirectoryParallel(subDirectory);
-            //    concattedRetVal = concattedRetVal.Concat(results);
-            //}
-
             return optimizedFileResultsForThisDirectory;
-        }
-
-        public IEnumerable<string> RecurseFiles(string directory)
-        {
-            var files = Directory.GetFiles(directory);
-
-            foreach (var file in files)
-            {
-                Console.WriteLine($"Returning file from RecurseFiles: {file}");
-                yield return file;
-            }
-
-            var directories = Directory.GetDirectories(directory);
-            foreach (var subDirectory in directories)
-            {
-                var recursedFIles = RecurseFiles(subDirectory);
-                foreach (var subFile in recursedFIles)
-                {
-                    yield return subFile;
-                }
-            }
         }
 
         private async Task<OptimizedFileResult> ProcessFile(string file, string originDirectory)
