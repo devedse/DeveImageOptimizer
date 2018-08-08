@@ -57,7 +57,8 @@ namespace DeveImageOptimizer.FileProcessing
             }, new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = maxDegreeOfParallelism,
-                BoundedCapacity = 10
+                BoundedCapacity = 10,
+                EnsureOrdered = false
             });
 
             var putInListBlock = new ActionBlock<OptimizedFileResult>(t =>
@@ -69,7 +70,7 @@ namespace DeveImageOptimizer.FileProcessing
                 optimizedFileResultsForThisDirectory.Add(t);
             }, ExecutionDataflowBlockOptionsCreator.SynchronizeForUiThread(new ExecutionDataflowBlockOptions()
             {
-
+                EnsureOrdered = false
             }));
 
             processFileBlock.LinkTo(putInListBlock, new DataflowLinkOptions() { PropagateCompletion = true });
