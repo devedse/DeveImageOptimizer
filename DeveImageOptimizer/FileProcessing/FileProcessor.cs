@@ -65,10 +65,14 @@ namespace DeveImageOptimizer.FileProcessing
 
             var lockject = new object();
 
+            var extractIenumerableBlock = new TransformManyBlock<IEnumerable<string>, string>(t => t);
+
             var bufferBlock = new BufferBlock<string>(new DataflowBlockOptions()
             {
                 BoundedCapacity = 10
             });
+
+            //System.Threading.Tasks.Dataflow.
 
             var processFileBlock = new TransformBlock<string, OptimizedFileResult>(async file =>
             {
@@ -85,7 +89,9 @@ namespace DeveImageOptimizer.FileProcessing
                 return optimizedFileResult;
             }, new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = 8
+                MaxDegreeOfParallelism = 4,
+                BoundedCapacity = 10
+
             });
 
             var putInListBlock = new ActionBlock<OptimizedFileResult>(t =>
@@ -96,22 +102,42 @@ namespace DeveImageOptimizer.FileProcessing
                 Console.WriteLine($"Done: {t}");
             }, new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = 1
+                TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext()
             });
 
-
+            extractIenumerableBlock.LinkTo(bufferBlock, new DataflowLinkOptions() { PropagateCompletion = true });
             bufferBlock.LinkTo(processFileBlock, new DataflowLinkOptions() { PropagateCompletion = true });
             processFileBlock.LinkTo(putInListBlock, new DataflowLinkOptions() { PropagateCompletion = true });
 
             var files = RecurseFiles(directory).Where(t => Constants.ValidExtensions.Contains(Path.GetExtension(t).ToUpperInvariant()));
-            foreach (var item in files)
-            {
-                Console.WriteLine($"Posting: {Path.GetFileName(item)}");
-                bufferBlock.Post(item);
-            }
 
+
+
+            if (false)
+            {
+                var result = await extractIenumerableBlock.SendAsync(files.Take(100));
+                Console.WriteLine($"Posting complete: {result}");
+            }
+            else
+            {
+                await Task.Run(async () =>
+                {
+                    foreach (var item in files.Take(100))
+                    {
+                        Console.WriteLine($"Posting: {Path.GetFileName(item)}");
+                        var result = await bufferBlock.SendAsync(item);
+
+                        if (!result)
+                        {
+                            Console.WriteLine("Result is false!!!");
+                        }
+                        Thread.Sleep(100);
+                    }
+                });
+            }
+            
             Console.WriteLine("Completing");
-            bufferBlock.Complete();
+            extractIenumerableBlock.Complete();
             await putInListBlock.Completion;
 
             //IEnumerable<OptimizedFileResult> concattedRetVal = optimizedFileResultsForThisDirectory;
@@ -132,6 +158,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             foreach (var file in files)
             {
+                Console.WriteLine($"Returning file from RecurseFiles: {file}");
                 yield return file;
             }
 

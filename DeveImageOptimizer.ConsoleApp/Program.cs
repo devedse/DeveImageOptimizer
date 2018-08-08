@@ -1,6 +1,7 @@
 ﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.State;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.ConsoleApp
@@ -9,6 +10,7 @@ namespace DeveImageOptimizer.ConsoleApp
     {
         static void Main(string[] args)
         {
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             MainAsync(args).GetAwaiter().GetResult();
 
             Console.WriteLine("Application done press any key to exit");
