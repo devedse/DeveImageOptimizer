@@ -83,7 +83,7 @@ namespace DeveImageOptimizer.Tests
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ProcessSampleDirInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
