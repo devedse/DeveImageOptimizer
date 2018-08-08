@@ -25,7 +25,7 @@ namespace DeveImageOptimizer.ConsoleApp
             var rememberer = new FileProcessedStateRememberer(true);
             var fp = new FileProcessor(fop, fileProcessedListener, rememberer);
 
-            await fp.ProcessDirectory(dirrr, true);
+            await fp.ProcessDirectoryParallel(dirrr, 4);
         }
     }
 }

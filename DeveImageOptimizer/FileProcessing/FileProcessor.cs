@@ -23,19 +23,7 @@ namespace DeveImageOptimizer.FileProcessing
             _fileProcessedState = fileProcessedState;
         }
 
-        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory, bool processParallel)
-        {
-            if (!processParallel)
-            {
-                return await ProcessDirectorySingleThreaded(directory);
-            }
-            else
-            {
-                return await ProcessDirectoryParallel(directory);
-            }
-        }
-
-        private async Task<IEnumerable<OptimizedFileResult>> ProcessDirectorySingleThreaded(string directory)
+        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
 
@@ -58,7 +46,7 @@ namespace DeveImageOptimizer.FileProcessing
             return optimizedFileResultsForThisDirectory;
         }
 
-        private async Task<IEnumerable<OptimizedFileResult>> ProcessDirectoryParallel(string directory)
+        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectoryParallel(string directory, int maxDegreeOfParallelism = 4)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
 
@@ -68,7 +56,7 @@ namespace DeveImageOptimizer.FileProcessing
                 return optimizedFileResult;
             }, new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = 4,
+                MaxDegreeOfParallelism = maxDegreeOfParallelism,
                 BoundedCapacity = 10
             });
 
