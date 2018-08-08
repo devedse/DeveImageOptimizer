@@ -58,8 +58,8 @@ namespace DeveImageOptimizer.State
             var hash = FileHashCalculator.CalculateFileHash(path);
             var fileName = Path.GetFileName(path);
 
-            var itemAlreadyExisted = _fullyOptimizedFileHashes.TryAdd(hash, new ConcurrentHashSet<string>() { fileName });
-            if (itemAlreadyExisted)
+            var itemNewlyCreated = _fullyOptimizedFileHashes.TryAdd(hash, new ConcurrentHashSet<string>() { fileName });
+            if (!itemNewlyCreated)
             {
                 if (_fullyOptimizedFileHashes.TryGetValue(hash, out ConcurrentHashSet<string> fileList))
                 {

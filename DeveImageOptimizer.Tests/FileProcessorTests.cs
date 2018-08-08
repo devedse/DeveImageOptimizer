@@ -23,7 +23,7 @@ namespace DeveImageOptimizer.Tests
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
-                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, false)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -39,7 +39,7 @@ namespace DeveImageOptimizer.Tests
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
-                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, false)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -62,7 +62,7 @@ namespace DeveImageOptimizer.Tests
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
-                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, false)).ToList();
 
                 Assert.Equal(2, results.Count);
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
@@ -75,7 +75,7 @@ namespace DeveImageOptimizer.Tests
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
-                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, false)).ToList();
 
                 Assert.Equal(2, results.Count);
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));
@@ -84,7 +84,7 @@ namespace DeveImageOptimizer.Tests
         }
 
         [Fact]
-        public async Task Testje()
+        public async Task ProcessSampleDirInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
             string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
@@ -95,7 +95,7 @@ namespace DeveImageOptimizer.Tests
                 var rememberer = new FileProcessedStateRememberer(false);
                 var fp = new FileProcessor(fop, null, rememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, true)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -103,6 +103,78 @@ namespace DeveImageOptimizer.Tests
                     Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
                     Assert.True(result.OriginalSize > result.OptimizedSize);
                 }
+            }
+        }
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTimeInParallel()
+        {
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
+
+            //Optimize first time                
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, true)).ToList();
+
+                Assert.Equal(4, results.Count);
+                foreach (var result in results)
+                {
+                    Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
+                    Assert.True(result.OriginalSize > result.OptimizedSize);
+                }
+            }
+
+            //Optimize second time
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, true)).ToList();
+
+                Assert.Equal(4, results.Count);
+                foreach (var result in results)
+                {
+                    Assert.Equal(OptimizationResult.Skipped, result.OptimizationResult);
+                    Assert.True(result.OriginalSize == result.OptimizedSize);
+                }
+            }
+        }
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFilesInParallel()
+        {
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg");
+
+            //Optimize first time                
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, true)).ToList();
+
+                Assert.Equal(2, results.Count);
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Failed));
+            }
+
+            //Optimize second time
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize, true)).ToList();
+
+                Assert.Equal(2, results.Count);
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Failed));
             }
         }
 
