@@ -82,7 +82,7 @@ namespace DeveImageOptimizer.FileProcessing
                 var newSize = new FileInfo(tempFilePath).Length;
                 if (newSize > originalFileSize)
                 {
-                    errors.Add("Result image size is bigger then original.");
+                    errors.Add($"Result image size is bigger then original. Original: {originalFileSize}, NewSize: {newSize}");
                 }
 
                 if (errors.Count == 0 && newSize < originalFileSize)
