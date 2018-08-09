@@ -20,7 +20,7 @@ namespace DeveImageOptimizer.FileProcessing
 
         private readonly string _fileOptimizerOptions;
 
-        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow = true, int logLevel = 2, bool saveFailedOptimizedFile = false)
+        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow = false, int logLevel = 2, bool saveFailedOptimizedFile = false)
         {
             _pathToFileOptimizer = pathToFileOptimizer;
             _tempDirectory = tempDirectory;
