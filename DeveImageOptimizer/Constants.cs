@@ -1,11 +1,22 @@
-﻿namespace DeveImageOptimizer
+﻿using System;
+
+namespace DeveImageOptimizer
 {
     public static class Constants
     {
         public static string[] ValidExtensions { get; } = new string[] { ".PNG", ".JPG", ".JPEG", ".GIF", ".BMP" };
         public const string TempDirectoryName = "Temp";
 
-        public const string OptimizerOptions =
+        public static string GenerateOptimizerOptions(int logLevel)
+        {
+            if (logLevel < 0 || logLevel > 4)
+            {
+                throw new ArgumentException("LogLevel should be between 0 and 4", nameof(logLevel));
+            }
+            return OptimizerOptions.Replace("{LogLevel}", logLevel.ToString());
+        }
+
+        private const string OptimizerOptions =
             "/BMPCopyMetadata=true " +
             "/CSSEnableTidy=false " +
             "/CSSTemplate=low " +
@@ -48,7 +59,7 @@
             "/Level=9 " +
             "/ProcessPriority=16384 " +
             "/CheckForUpdates=1 " +
-            "/LogLevel=2 " +
+            "/LogLevel={LogLevel} " +
             "/FilenameFormat=0 " +
             "/LeanifyIterations=-1 " +
             "/Theme=Windows " +

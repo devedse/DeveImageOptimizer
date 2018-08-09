@@ -15,16 +15,25 @@ namespace DeveImageOptimizer.FileProcessing
         private readonly string _pathToFileOptimizer;
         private readonly string _tempDirectory;
         private readonly bool _shouldShowFileOptimizerWindow;
+        private readonly int _logLevel;
+        private readonly bool _saveFailedOptimizedFile;
 
-        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow)
+        private readonly string _fileOptimizerOptions;
+
+        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow = true, int logLevel = 2, bool saveFailedOptimizedFile = false)
         {
             _pathToFileOptimizer = pathToFileOptimizer;
             _tempDirectory = tempDirectory;
             _shouldShowFileOptimizerWindow = shouldShowFileOptimizerWindow;
+            _logLevel = logLevel;
+            _saveFailedOptimizedFile = saveFailedOptimizedFile;
+
+            _fileOptimizerOptions = Constants.GenerateOptimizerOptions(_logLevel);
+
             Directory.CreateDirectory(tempDirectory);
         }
 
-        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, string originDirectory, bool saveFailedOptimizedFile = false)
+        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, string originDirectory)
         {
             var w = Stopwatch.StartNew();
 
@@ -51,7 +60,7 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {Constants.OptimizerOptions} \"{tempFilePath}\"");
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {_fileOptimizerOptions} \"{tempFilePath}\"");
 
                 if (!_shouldShowFileOptimizerWindow)
                 {
@@ -91,7 +100,7 @@ namespace DeveImageOptimizer.FileProcessing
                 }
                 else if (errors.Count != 0)
                 {
-                    if (saveFailedOptimizedFile)
+                    if (_saveFailedOptimizedFile)
                     {
                         var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
                         var fileExtension = Path.GetExtension(fileToOptimize);
