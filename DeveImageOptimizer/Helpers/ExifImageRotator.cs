@@ -24,16 +24,16 @@ namespace DeveImageOptimizer.Helpers
             if (orientationExif != null)
             {
                 var retval = (Orientation)orientationExif.Value;
-                orientationExif.Value = Orientation.Normal;
+                if (retval != Orientation.Normal)
+                {
+                    orientationExif.Value = Orientation.Normal;
 
-                file.Save(path);
+                    file.Save(path);
 
-                return retval;
+                    return retval;
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public async static Task RerotateImageAsync(string path, Orientation? newOrientation)
