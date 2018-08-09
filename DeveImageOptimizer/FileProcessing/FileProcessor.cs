@@ -31,7 +31,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             foreach (var file in files)
             {
-                if (Constants.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
+                if (ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                 {
                     var optimizedFileResult = await ProcessFile(file, directory);
                     if (_fileProcessedListener != null)
@@ -81,7 +81,7 @@ namespace DeveImageOptimizer.FileProcessing
             {
                 foreach (var file in files)
                 {
-                    if (Constants.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
+                    if (ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                     {
                         Console.WriteLine($"Posting: {Path.GetFileName(file)}");
                         var result = await processFileBlock.SendAsync(file);

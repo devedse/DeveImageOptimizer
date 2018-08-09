@@ -28,7 +28,7 @@ namespace DeveImageOptimizer.FileProcessing
             _logLevel = logLevel;
             _saveFailedOptimizedFile = saveFailedOptimizedFile;
 
-            _fileOptimizerOptions = Constants.GenerateOptimizerOptions(_logLevel);
+            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(_logLevel);
 
             Directory.CreateDirectory(tempDirectory);
         }

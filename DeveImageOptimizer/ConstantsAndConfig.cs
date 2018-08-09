@@ -2,7 +2,7 @@
 
 namespace DeveImageOptimizer
 {
-    public static class Constants
+    public static class ConstantsAndConfig
     {
         public static string[] ValidExtensions { get; } = new string[] { ".PNG", ".JPG", ".JPEG", ".GIF", ".BMP" };
         public const string TempDirectoryName = "Temp";
@@ -70,7 +70,7 @@ namespace DeveImageOptimizer
             //"/Donation= " +
             "/ShowToolBar=true " +
             "/ClearWhenComplete=false " +
-            "/HideAds=false " +
+            "/HideAds=true " +
             "/Language=0 " +
             "/DoNotCreateBackups=true " +
             "/WAVCopyMetadata=false " +
