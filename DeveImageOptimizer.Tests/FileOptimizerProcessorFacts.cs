@@ -131,6 +131,12 @@ namespace DeveImageOptimizer.Tests
             await OptimizeFileTest("baberuth_1.png");
         }
 
+        [SkippableFact]
+        public async Task CorrectlyOptimizesAlreadyOptimizedOwl()
+        {
+            await OptimizeFileTest("AlreadyOptimizedOwl.jpg");
+        }
+
         private async Task OptimizeFileTest(string fileName)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
