@@ -70,7 +70,7 @@ namespace DeveImageOptimizer
             //"/Donation= " +
             "/ShowToolBar=true " +
             "/ClearWhenComplete=false " +
-            "/HideAds=true " +
+            "/HideAds=false " +
             "/Language=0 " +
             "/DoNotCreateBackups=true " +
             "/WAVCopyMetadata=false " +
