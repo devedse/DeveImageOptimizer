@@ -43,6 +43,8 @@ namespace DeveImageOptimizer.FileProcessing
                 }
             }
 
+            Console.WriteLine($"Optimization of directory {directory} completed.");
+
             return optimizedFileResultsForThisDirectory;
         }
 
@@ -97,6 +99,8 @@ namespace DeveImageOptimizer.FileProcessing
             Console.WriteLine("Completing");
             processFileBlock.Complete();
             await putInListBlock.Completion;
+
+            Console.WriteLine($"Optimization of directory {directory} completed.");
 
             return optimizedFileResultsForThisDirectory;
         }
