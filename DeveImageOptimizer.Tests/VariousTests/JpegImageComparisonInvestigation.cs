@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests
+namespace DeveImageOptimizer.Tests.VariousTests
 {
     public class JpegImageComparisonInvestigation
     {

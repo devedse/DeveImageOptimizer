@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests
+namespace DeveImageOptimizer.Tests.Helpers
 {
     public class ImageComparerFacts
     {

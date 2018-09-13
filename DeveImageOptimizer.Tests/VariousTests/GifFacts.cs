@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests
+namespace DeveImageOptimizer.Tests.VariousTests
 {
     public class GifFacts
     {

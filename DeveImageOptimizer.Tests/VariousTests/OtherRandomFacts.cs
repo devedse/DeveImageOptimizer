@@ -7,14 +7,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests
+namespace DeveImageOptimizer.Tests.VariousTests
 {
     public class OtherRandomFacts
     {
         [Fact]
         public void ReproducesJpgDecoderBug()
         {
-            var startupAssembly = typeof(FileOptimizerProcessorFacts).GetTypeInfo().Assembly;
+            var startupAssembly = typeof(OtherRandomFacts).GetTypeInfo().Assembly;
             var cb = startupAssembly.CodeBase;
 
             UriBuilder uri = new UriBuilder(cb);

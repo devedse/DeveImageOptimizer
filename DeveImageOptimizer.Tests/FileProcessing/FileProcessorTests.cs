@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests
+namespace DeveImageOptimizer.Tests.FileProcessing
 {
     public class FileProcessorTests
     {
