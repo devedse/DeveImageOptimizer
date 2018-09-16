@@ -32,6 +32,18 @@ namespace DeveImageOptimizer.Tests.Helpers
             Assert.Equal("1KB", result);
         }
 
+        [Fact]
+        public void Converts0BytesToB()
+        {
+            //Arrange
+
+            //Act
+            var result = ValuesToStringHelper.BytesToString(0L);
+
+            //Assert
+            Assert.Equal("0B", result);
+        }
+
 
         [Fact]
         public void ConvertsSecondsToHours()
@@ -67,6 +79,18 @@ namespace DeveImageOptimizer.Tests.Helpers
 
             //Assert
             Assert.Equal("2 Minutes", result);
+        }
+
+        [Fact]
+        public void Converts0SecondsToSeconds()
+        {
+            //Arrange
+
+            //Act
+            var result = ValuesToStringHelper.SecondsToString(0L);
+
+            //Assert
+            Assert.Equal("0 Seconds", result);
         }
     }
 }
