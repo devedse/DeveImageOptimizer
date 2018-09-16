@@ -14,7 +14,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.BytesToString(12345678L);
+            var result = ValuesToStringHelper.BytesToString(12345678L).Replace('.', ',');
 
             //Assert
             Assert.Equal("11,8MB", result);
@@ -26,7 +26,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.BytesToString(1024L);
+            var result = ValuesToStringHelper.BytesToString(1024L).Replace('.', ',');
 
             //Assert
             Assert.Equal("1KB", result);
@@ -38,7 +38,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.BytesToString(0L);
+            var result = ValuesToStringHelper.BytesToString(0L).Replace('.', ',');
 
             //Assert
             Assert.Equal("0B", result);
@@ -51,7 +51,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.SecondsToString(3800L);
+            var result = ValuesToStringHelper.SecondsToString(3800L).Replace('.', ',');
 
             //Assert
             Assert.Equal("1,1 Hours", result);
@@ -63,7 +63,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.SecondsToString(3600L);
+            var result = ValuesToStringHelper.SecondsToString(3600L).Replace('.', ',');
 
             //Assert
             Assert.Equal("1 Hour", result);
@@ -75,7 +75,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.SecondsToString(120L);
+            var result = ValuesToStringHelper.SecondsToString(120L).Replace('.', ',');
 
             //Assert
             Assert.Equal("2 Minutes", result);
@@ -87,7 +87,7 @@ namespace DeveImageOptimizer.Tests.Helpers
             //Arrange
 
             //Act
-            var result = ValuesToStringHelper.SecondsToString(0L);
+            var result = ValuesToStringHelper.SecondsToString(0L).Replace('.', ',');
 
             //Assert
             Assert.Equal("0 Seconds", result);
