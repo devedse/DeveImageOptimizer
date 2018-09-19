@@ -138,7 +138,11 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var pngEncoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha
+                        };
+                        img.SaveAsPng(fs, pngEncoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -178,7 +182,11 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var pngEncoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha
+                        };
+                        img.SaveAsPng(fs, pngEncoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -190,13 +198,10 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
                     //I'll just check the pixel by hand.
                     var pixel = img[0, 0];
-
-                    Skip.If(pixel.A != 0, "This test should not be skipped but yeah, temporary workarounds are needed till ImageSharp fixes this bug");
-
-                    //if (pixel.A != 0)
-                    //{
-                    //    throw new Exception("Pixel at X: 0 and Y: 0 should be transparent.");
-                    //}
+                    if (pixel.A != 0)
+                    {
+                        throw new Exception("Pixel at X: 0 and Y: 0 should be transparent.");
+                    }
                 }
             }
             finally
