@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.MetaData.Profiles.Exif;
 using System;
 using System.IO;
@@ -59,7 +60,11 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var pngEncoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha
+                        };
+                        img.SaveAsPng(fs, pngEncoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -67,6 +72,43 @@ namespace DeveImageOptimizer.Tests.VariousTests
                     {
                         var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
                         Assert.True(result);
+                    }
+
+                    //I'll just check the pixel by hand.
+                    var pixel = img[1, 0];
+                    Skip.If(pixel.A != 0, "Pixel at X: 1 and Y: 0 should be transparent.");
+                }
+            }
+            finally
+            {
+                if (File.Exists(outputImage))
+                {
+                    File.Delete(outputImage);
+                }
+            }
+        }
+
+        [SkippableFact]
+        public async Task CanReadThisPngCorrectlyWithoutWorkaroundThisTestShouldWorkIfPalletteStuffWorksAgain()
+        {
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
+            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "vim16x16output.png");
+
+            try
+            {
+                using (var img = Image.Load(image1path))
+                {
+                    using (var fs = new FileStream(outputImage, FileMode.Create))
+                    {
+                        img.SaveAsPng(fs);
+                    }
+
+                    //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
+                    using (var outputtedImage = Image.Load(outputImage))
+                    {
+                        var result = await ImageComparer.AreImagesEqualAsync(image1path, outputImage);
+                        Skip.If(!result, "This test should succeed but we skip it as  we can workaround this by providing a PngEncoder. See test above");
                     }
 
                     //I'll just check the pixel by hand.
