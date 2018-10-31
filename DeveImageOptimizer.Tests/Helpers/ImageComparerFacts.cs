@@ -18,10 +18,11 @@ namespace DeveImageOptimizer.Tests.Helpers
             Assert.True(areEqual);
         }
 
-        [SkippableFact]
+        [Fact]
         public async Task AreImagesEqual1WithoutWorkaround()
         {
             //This test will fail as long as the JPG decoding bug is not fixed. That's why I made it skippable for now.
+            //Update 31-10-2018: Apparently this was fixed :o
 
             var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             var imageBpath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1B.JPG");

@@ -128,6 +128,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         [SkippableFact]
         public async Task CorrectlyOptimizesRuthImage()
         {
+            //As of 31-10-2018: This is the only failing test
             await OptimizeFileTest("baberuth_1.png");
         }
 
@@ -159,7 +160,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var fileUnoptimized = new FileInfo(image1path);
 
                 //Verify that the new file is actually smaller
-                Assert.True(fileOptimized.Length == fileUnoptimized.Length);
+                Assert.True(fileOptimized.Length <= fileUnoptimized.Length);
             }
             finally
             {

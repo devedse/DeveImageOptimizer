@@ -21,7 +21,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         //    Assert.True(areEqual);
         //}
 
-        [SkippableFact]
+        [Fact]
         public async Task SourceEqualsSourceGifcicle()
         {
             //Gifcicle command: gifsicle.exe -b -w -j --no-conserve-memory -o result.gif -O3 source.gif
