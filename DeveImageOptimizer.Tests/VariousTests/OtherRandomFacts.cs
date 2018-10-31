@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.MetaData.Profiles.Exif;
 using System;
 using System.IO;
@@ -59,7 +60,12 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -96,7 +102,12 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -136,7 +147,12 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    
@@ -176,7 +192,12 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
-                        img.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
 
                     //Kinda hard to test this since this loads the same pixel data in an incorrect way.                    

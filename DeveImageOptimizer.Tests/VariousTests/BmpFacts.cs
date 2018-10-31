@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
@@ -20,11 +21,16 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var image = Image.Load(imagePath))
+                using (var img = Image.Load(imagePath))
                 {
                     using (var fs = new FileStream(imageTempPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
                     {
-                        image.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
                 }
 
@@ -52,11 +58,16 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var image = Image.Load(imagePath))
+                using (var img = Image.Load(imagePath))
                 {
                     using (var fs = new FileStream(imageTempPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
                     {
-                        image.SaveAsPng(fs);
+                        var encoder = new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha,
+                            BitDepth = PngBitDepth.Bit8
+                        };
+                        img.SaveAsPng(fs, encoder);
                     }
                 }
 
