@@ -2,6 +2,7 @@
 using DeveImageOptimizer.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,71 @@ namespace DeveImageOptimizer.Tests.VariousTests
             {
                 throw new SkipException("This test fails because of an issue in FileOptimizer");
             }
+        }
+        
+        [SkippableFact]
+        public async Task TestTruePngDirectly()
+        {
+            var bPNGCopyMetadata = true;
+            var bPNGAllowLossy = false;
+
+
+            var sFlags = "";
+            var iLevel = Math.Min(9 * 3 / 9, 3) + 1;
+            sFlags += "-o" + iLevel + " ";
+            if (bPNGCopyMetadata)
+            {
+                sFlags += "-md keep all ";
+            }
+            else
+            {
+                sFlags += "-tz -md remove all -g0 ";
+            }
+            if (bPNGAllowLossy)
+            {
+                sFlags += "-l ";
+            }
+
+            var fileOptimizerExe = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+            var rootDir = Path.GetDirectoryName(fileOptimizerExe);
+
+            var possiblePaths = new List<string>();
+
+            possiblePaths.Add(Path.Combine(rootDir, "Plugins64", "TruePNG.exe"));
+            possiblePaths.Add(Path.Combine(rootDir, "Plugins32", "TruePNG.exe"));
+
+            var existingTruePng = possiblePaths.FirstOrDefault(t => File.Exists(t));
+
+            if (existingTruePng == null)
+            {
+                throw new SkipException($"FileOptimizerFull exe file can't be found. Expected locations: " + string.Join(' ', possiblePaths));
+            }
+
+
+            var outputDir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TruePngInvestigation");
+            Directory.CreateDirectory(outputDir);
+
+            var tmpOutputFile = Path.Combine(outputDir, "truepnginvest.png");
+            if (File.Exists(tmpOutputFile))
+            {
+                File.Delete(tmpOutputFile);
+            }
+            var original = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
+            var arguments = $"{sFlags}/i0 /tz /quiet /y /out \"{tmpOutputFile}\" \"{original}\"";
+
+            var processStartInfo = new ProcessStartInfo(existingTruePng, arguments);
+            using (var proc = Process.Start(processStartInfo))
+            {
+                proc.WaitForExit();                
+            }
+            
+            var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(original, tmpOutputFile, BabeRuthInvestigationName, "TruePngDirectlyOutput");
+
+            //If this test fails, TruePNG still has a bug in it
+            //It is skipped on the build server though
+            Assert.Equal(0, result);
+            
+            //RunPlugin((unsigned int) iCount, "TruePNG (4/16)", (sPluginsDirectory + "truepng.exe " + ).c_str(), sInputFile, "", 0, 0);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                             var pixel1 = img1[x, y];
                             var pixel2 = img2[x, y];
 
-                            if (pixel1 != pixel2)
+                            if (pixel1 != pixel2 && (pixel1.A != 0 || pixel2.A != 0))
                             {
                                 outputImg[x, y] = new Rgba32(255, 0, 0);
                                 outputImg2[x, y] = new Rgba32(255, 0, 0);
@@ -74,3 +74,4 @@ namespace DeveImageOptimizer.Tests.TestHelpers
         }
     }
 }
+
