@@ -112,7 +112,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             //It is skipped on the build server though
             Assert.Equal(0, result);
 
-            //This should be fixed in next FileOptimizerFull: https://sourceforge.net/p/nikkhokkho/tickets/58/
+            //This should be fixed in next FileOptimizerFull (Basically still a workaround though for a bug in TruePNG): https://sourceforge.net/p/nikkhokkho/tickets/58/
             //I've also sent an email to the creator of TruePNG
 
             //RunPlugin((unsigned int) iCount, "TruePNG (4/16)", (sPluginsDirectory + "truepng.exe " + ).c_str(), sInputFile, "", 0, 0);
