@@ -13,7 +13,7 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class ImageComparer
     {
-        public static Task<bool> AreImagesEqualAsync(string image1Path, string image2Path, bool useImageSharpBugWorkaround = true)
+        public static Task<bool> AreImagesEqualAsync(string image1Path, string image2Path, bool useImageSharpBugWorkaround = false)
         {
             return Task.Run(() =>
             {

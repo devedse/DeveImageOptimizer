@@ -48,27 +48,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
 
-            CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_VIPS");
-        }
-
-        [Fact]
-        public void ImageSharpToPaint()
-        {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
-
-            CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_PAINT");
-        }
-
-        [Fact]
-        public void ImageSharpToPaintNET()
-        {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
-
-            CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_PaintNET");
+            var result = CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_VIPS");
+            //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
+            Assert.Equal(957775, result);
         }
 
         [Fact]
@@ -78,8 +60,36 @@ namespace DeveImageOptimizer.Tests.VariousTests
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
 
-            CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_IRFANVIEW");
+            var result = CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_IRFANVIEW");
+            //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
+            Assert.Equal(957775, result);
         }
+
+        [Fact]
+        public void ImageSharpToPaint()
+        {
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
+
+            var result = CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_PAINT");
+            //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
+            Assert.Equal(918501, result);
+        }
+
+        [Fact]
+        public void ImageSharpToPaintNET()
+        {
+            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+
+            var result = CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG_TO_PaintNET");
+            //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
+            Assert.Equal(918501, result);
+        }
+
+
 
 
 
