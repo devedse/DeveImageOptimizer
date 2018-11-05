@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System.IO;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         //    await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutput(image1path, image2path, "JPG1B_TO_VIPS");
         //}
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ImageSharpToLibVips()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
@@ -49,7 +50,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(957775, result);
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ImageSharpToIrfanView()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
@@ -60,7 +61,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(957775, result);
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ImageSharpToPaint()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
@@ -71,7 +72,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(918501, result);
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ImageSharpToPaintNET()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
@@ -87,7 +88,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
 
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task PaintToVips()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
@@ -97,7 +98,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINT_TO_VIPS"));
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task VipsToPaintNet()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
@@ -107,7 +108,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "VIPS_TO_PAINTNET"));
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task PaintNetToIrfanView()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
@@ -117,7 +118,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINTNET_TO_IRFANVIEW"));
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task IrfanViewToPaint()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
@@ -129,7 +130,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
 
         //Other 2
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task IrfanViewToVips()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
@@ -139,7 +140,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.Equal(0, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "IRFANVIEW_TO_VIPS"));
         }
 
-        [Fact]
+        [Fact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task PaintToPaintNET()
         {
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
