@@ -24,23 +24,26 @@ namespace DeveImageOptimizer.State
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate)))
             {
                 string line;
-                while (string.IsNullOrWhiteSpace(line = streamReader.ReadLine()))
+                while ((line = streamReader.ReadLine()) != null)
                 {
                     try
                     {
-                        var listOfFiles = new ConcurrentHashSet<string>();
-
-                        var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                        string hash = splitted[0];
-
-                        if (splitted.Length > 1)
+                        if (!string.IsNullOrWhiteSpace(line))
                         {
-                            var files = splitted[1];
+                            var listOfFiles = new ConcurrentHashSet<string>();
 
-                            var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                            listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
+                            var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                            string hash = splitted[0];
+
+                            if (splitted.Length > 1)
+                            {
+                                var files = splitted[1];
+
+                                var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                                listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
+                            }
+                            _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
                         }
-                        _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
                     }
                     catch (Exception ex)
                     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
 {
-    internal class FileProcessedStateRemembererNoFileName : IFileProcessedState
+    public class FileProcessedStateRemembererNoFileName : IFileProcessedState
     {
         public bool ShouldAlwaysOptimize { get; }
 
@@ -23,9 +23,12 @@ namespace DeveImageOptimizer.State
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate)))
             {
                 string line;
-                while (string.IsNullOrWhiteSpace(line = streamReader.ReadLine()))
+                while ((line = streamReader.ReadLine()) != null)
                 {
-                    _fullyOptimizedFileHashes.Add(line);
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        _fullyOptimizedFileHashes.Add(line);
+                    }
                 }
             }
         }
