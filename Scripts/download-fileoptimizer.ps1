@@ -34,13 +34,13 @@ $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 Add-Type -AssemblyName System.Net.Http
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+#Configure latest version from: https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/
 $url = "https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/13.30.2393/FileOptimizerFull.7z.exe"
 $path = Join-Path $scriptPath 'FileOptimizerFull.7z.exe'
 $extractPath = Join-path $scriptPath 'FileOptimizer'
 
 Write-Host "Downloading file..."
-$httpClient = Using-Object (New-Object System.Net.Http.Httpclient) {
-
+Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
     Using-Object ($result = $httpClient.GetAsync($url).Result) {
         Using-Object ($contentStream = $result.Content.ReadAsStreamAsync().Result) {
             Using-object ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
