@@ -1,20 +1,61 @@
 $ErrorActionPreference = "Stop"
+
+function Using-Object
+{
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [AllowEmptyCollection()]
+        [AllowNull()]
+        [Object]
+        $InputObject,
+
+        [Parameter(Mandatory = $true)]
+        [scriptblock]
+        $ScriptBlock
+    )
+
+    try
+    {
+        . $ScriptBlock
+    }
+    finally
+    {
+        if ($null -ne $InputObject -and $InputObject -is [System.IDisposable])
+        {
+            $InputObject.Dispose()
+        }
+    }
+}
+
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
-$url = 'https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/11.20.2033/FileOptimizerFull.7z.exe'
+Add-Type -AssemblyName System.Net.Http
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$url = "https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/13.30.2393/FileOptimizerFull.7z.exe"
 $path = Join-Path $scriptPath 'FileOptimizerFull.7z.exe'
 $extractPath = Join-path $scriptPath 'FileOptimizer'
 
 Write-Host "Downloading file..."
-#Invoke-WebRequest -Uri $url -OutFile $path -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
-$wc = New-Object net.webclient
-$wc.Downloadfile($url, $path)
+$httpClient = Using-Object (New-Object System.Net.Http.Httpclient) {
 
-Write-Host "File downloaded, extracting..."
+    Using-Object ($result = $httpClient.GetAsync($url).Result) {
+        Using-Object ($contentStream = $result.Content.ReadAsStreamAsync().Result) {
+            Using-object ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
+                $contentStream.CopyToAsync($fs).Wait()
+
+                Write-Host "File downloaded, extracting..."     
+            }
+        }
+    }
+}
+
 $p = Start-Process $path "-o""$extractPath"" -y" -Wait -Passthru
 $p.WaitForExit()
 if ($p.ExitCode -ne 0) {
-	Write-Host "Extraction failed, exiting."
+    Write-Host "Extraction failed, exiting."
     $host.SetShouldExit($p.ExitCode)
 }
 
