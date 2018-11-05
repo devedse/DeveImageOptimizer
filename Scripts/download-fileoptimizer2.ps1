@@ -1,7 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$url = "https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/13.30.2393/FileOptimizerFull.7z.exe"
-Write-Host "This script downloads a specific version of FileOptimizer and extracts it: $url"
+Write-Host "This script downloads the latest installer for FileOptimizer and installs it"
 
 function Using-Object
 {
@@ -38,9 +37,10 @@ Add-Type -AssemblyName System.Net.Http
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 #Configure latest version from: https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/
-
-$path = Join-Path $scriptPath 'FileOptimizerFull.7z.exe'
+$url = "https://sourceforge.net/projects/nikkhokkho/files/latest/download"
+$path = Join-Path $scriptPath 'FileOptimizerFull.exe'
 $extractPath = Join-path $scriptPath 'FileOptimizer'
+$logFile = Join-Path $scriptPath 'setuplog.txt'
 
 Write-Host "Downloading file..."
 Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
@@ -55,7 +55,8 @@ Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
     }
 }
 
-$p = Start-Process $path "-o""$extractPath"" -y" -Wait -Passthru
+#NSIS (nullsoft scriptable install system)
+$p = Start-Process $path "/S" -Wait -Passthru
 $p.WaitForExit()
 if ($p.ExitCode -ne 0) {
     Write-Host "Extraction failed, exiting."
