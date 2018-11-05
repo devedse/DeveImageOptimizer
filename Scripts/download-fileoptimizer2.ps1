@@ -38,7 +38,7 @@ Add-Type -AssemblyName System.Net.Http
 
 #Configure latest version from: https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/
 $url = "https://sourceforge.net/projects/nikkhokkho/files/latest/download"
-$path = Join-Path $scriptPath 'FileOptimizerFull.exe'
+$path = Join-Path $scriptPath 'FileOptimizerSetup.exe'
 $extractPath = Join-path $scriptPath 'FileOptimizer'
 $logFile = Join-Path $scriptPath 'setuplog.txt'
 
@@ -49,7 +49,7 @@ Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
             Using-object ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
                 $contentStream.CopyToAsync($fs).Wait()
 
-                Write-Host "File downloaded, extracting..."     
+                Write-Host "File downloaded, installing..."     
             }
         }
     }
