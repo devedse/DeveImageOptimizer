@@ -24,26 +24,23 @@ namespace DeveImageOptimizer.State
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate)))
             {
                 string line;
-                while ((line = streamReader.ReadLine()) != null)
+                while (string.IsNullOrWhiteSpace(line = streamReader.ReadLine()))
                 {
                     try
                     {
-                        if (!string.IsNullOrWhiteSpace(line))
+                        var listOfFiles = new ConcurrentHashSet<string>();
+
+                        var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                        string hash = splitted[0];
+
+                        if (splitted.Length > 1)
                         {
-                            var listOfFiles = new ConcurrentHashSet<string>();
+                            var files = splitted[1];
 
-                            var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                            string hash = splitted[0];
-
-                            if (splitted.Length > 1)
-                            {
-                                var files = splitted[1];
-
-                                var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                                listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
-                            }
-                            _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
+                            var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                            listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
                         }
+                        _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
                     }
                     catch (Exception ex)
                     {
@@ -76,7 +73,7 @@ namespace DeveImageOptimizer.State
             }
         }
 
-        private object _saveFileLockject = new object();
+        private readonly object _saveFileLockject = new object();
 
         private Task SaveToFile()
         {
@@ -88,7 +85,7 @@ namespace DeveImageOptimizer.State
                     {
                         foreach (var curhash in _fullyOptimizedFileHashes)
                         {
-                            var combinedFileNames = String.Join(":", curhash.Value);
+                            var combinedFileNames = string.Join(":", curhash.Value);
                             var stringToWrite = $"{curhash.Key}|{combinedFileNames}";
                             streamWriter.WriteLine(stringToWrite);
                         }

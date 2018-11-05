@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DeveImageOptimizer.Helpers.Concurrent
 {
     public class ConcurrentHashSet<T> : IEnumerable<T>
     {
-        private ConcurrentDictionary<T, byte> internalDict;
+        private readonly ConcurrentDictionary<T, byte> internalDict;
         private const byte DefaultDictValue = 0;
 
         public ConcurrentHashSet()

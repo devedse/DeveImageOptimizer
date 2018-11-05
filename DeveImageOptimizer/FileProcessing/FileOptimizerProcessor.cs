@@ -15,7 +15,6 @@ namespace DeveImageOptimizer.FileProcessing
         private readonly string _pathToFileOptimizer;
         private readonly string _tempDirectory;
         private readonly bool _shouldShowFileOptimizerWindow;
-        private readonly int _logLevel;
         private readonly bool _saveFailedOptimizedFile;
 
         private readonly string _fileOptimizerOptions;
@@ -25,10 +24,9 @@ namespace DeveImageOptimizer.FileProcessing
             _pathToFileOptimizer = pathToFileOptimizer;
             _tempDirectory = tempDirectory;
             _shouldShowFileOptimizerWindow = shouldShowFileOptimizerWindow;
-            _logLevel = logLevel;
             _saveFailedOptimizedFile = saveFailedOptimizedFile;
 
-            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(_logLevel);
+            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(logLevel);
 
             Directory.CreateDirectory(tempDirectory);
         }

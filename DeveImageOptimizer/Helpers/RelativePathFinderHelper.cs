@@ -12,7 +12,10 @@ namespace DeveImageOptimizer.Helpers
 
         public static string GetRelativePath(FileSystemInfo destinationPath, FileSystemInfo originPath)
         {
-            if (originPath == null) throw new ArgumentNullException(nameof(originPath));
+            if (originPath == null)
+            {
+                throw new ArgumentNullException(nameof(originPath));
+            }
 
             if (destinationPath == null)
             {
@@ -33,12 +36,9 @@ namespace DeveImageOptimizer.Helpers
         {
             string fullName = path.FullName;
 
-            if (path is DirectoryInfo)
+            if (path is DirectoryInfo && fullName[fullName.Length - 1] != Path.DirectorySeparatorChar)
             {
-                if (fullName[fullName.Length - 1] != Path.DirectorySeparatorChar)
-                {
-                    fullName += Path.DirectorySeparatorChar;
-                }
+                fullName += Path.DirectorySeparatorChar;
             }
             return fullName;
         }
