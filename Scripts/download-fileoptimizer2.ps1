@@ -39,7 +39,7 @@ Add-Type -AssemblyName System.Net.Http
 #Configure latest version from: https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer/
 $url = "https://sourceforge.net/projects/nikkhokkho/files/latest/download"
 $path = Join-Path $scriptPath 'FileOptimizerSetup.exe'
-$extractPath = Join-path $scriptPath 'FileOptimizer'
+$installPath = "C:\Program Files\FileOptimizer"
 $logFile = Join-Path $scriptPath 'setuplog.txt'
 
 Write-Host "Downloading file..."
@@ -59,10 +59,13 @@ Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
 $p = Start-Process $path "/S" -Wait -Passthru
 $p.WaitForExit()
 if ($p.ExitCode -ne 0) {
-    Write-Host "Extraction failed, exiting."
+    Write-Host "Installation failed, exiting."
     $host.SetShouldExit($p.ExitCode)
 }
 
-Write-Host "Extraction completed"
+Write-Host "Installation completed"
 
-Write-Host "Script completed, extracted path: $extractPath"
+Write-Host "Script completed, installation path: $installPath"
+
+Write-Host "Existing files:"
+Get-ChildItem -Path $installPath
