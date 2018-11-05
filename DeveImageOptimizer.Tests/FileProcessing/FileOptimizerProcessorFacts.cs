@@ -1,6 +1,7 @@
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
+using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,19 +11,19 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 {
     public class FileOptimizerProcessorFacts
     {
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesLandscapeImage()
         {
             await OptimizeFileTest("Image1A.JPG");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesStandingRotatedImage()
         {
             await OptimizeFileTest("Image2A.JPG");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesPexelsPhoto()
         {
             await OptimizeFileTest("pexels-photo.jpg");
@@ -34,25 +35,25 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("vim16x16_1.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesGifImage()
         {
             await OptimizeFileTest("devtools-full_1.gif");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesVersioningImage()
         {
             await OptimizeFileTest("versioning-1_1.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesSnakeImage()
         {
             await OptimizeFileTest("snake.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesCraDynamicImportImage()
         {
             await OptimizeFileTest("cra-dynamic-import_1.gif");
@@ -64,44 +65,43 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("devtools-side-pane_1.gif");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesImageSharpImage1()
         {
             await OptimizeFileTest("Imagesharp/Resize_IsAppliedToAllFrames_Rgba32_giphy.gif");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesImageSharpImage2()
         {
             await OptimizeFileTest("Imagesharp/ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesImageSharpImage3()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithBoxPadMode_Rgba32_CalliphoraPartial.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesImageSharpImage4()
         {
             await OptimizeFileTest("Imagesharp/ResizeWithPadMode_Rgba32_CalliphoraPartial.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesGifSourceImage()
         {
-            //This image doesn't optimize correctly. This is a bug in FileOptimizerFull
             await OptimizeFileTest("Source.gif");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesIconImage()
         {
             await OptimizeFileTest("icon_1.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesGoProImage()
         {
             await OptimizeFileTest("GoProBison.JPG");

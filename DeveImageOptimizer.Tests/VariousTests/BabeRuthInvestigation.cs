@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
     {
         public const string BabeRuthInvestigationName = "BaberuthInvestigation";
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ShouldBeEqualToAllIterationsOfRuth()
         {
             var original = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
@@ -50,7 +51,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             }
         }
         
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task TestTruePngDirectly()
         {
             var bPNGCopyMetadata = true;
