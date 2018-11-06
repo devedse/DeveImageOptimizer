@@ -31,6 +31,56 @@ function Using-Object
     }
 }
 
+
+function Using-Object-Retry
+{
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [AllowEmptyCollection()]
+        [AllowNull()]
+        [Object]
+        $InputObject,
+
+        [Parameter(Mandatory = $true)]
+        [scriptblock]
+        $ScriptBlock
+    )
+
+    try
+    {
+        $success = $false
+        $count = 0
+        $retryMax = 5;
+
+        do {
+            . $ScriptBlock
+
+            if ($InputObject -ne $null) {
+                $success = $true
+            } else {
+                $count++
+                Write-Host "Retrying: $count/$retryMax"
+            }
+        }
+        until($count -eq $retryMax -or $success)
+
+        if ($success -eq $false) {
+            Write-Host "Failed when running: $scriptBlock"
+        }
+    }
+    finally
+    {
+        if ($null -ne $InputObject -and $InputObject -is [System.IDisposable])
+        {
+            $InputObject.Dispose()
+        }
+    }
+}
+
+
+
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
 Add-Type -AssemblyName System.Net.Http
@@ -44,7 +94,7 @@ $logFile = Join-Path $scriptPath 'setuplog.txt'
 
 Write-Host "Downloading file..."
 Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
-    Using-Object ($result = $httpClient.GetAsync($url).Result) {
+    Using-Object-Retry ($result = $httpClient.GetAsync($url).Result) {
         Using-Object ($contentStream = $result.Content.ReadAsStreamAsync().Result) {
             Using-object ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
                 $contentStream.CopyToAsync($fs).Wait()
