@@ -195,6 +195,12 @@
     <None Update="TestImages\SampleDirToOptimizeBrokenJpg\BlahCorruptImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\SampleDirToOptimizeWithTwoOfTheSameImage\TestImageBMP.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImages\SampleDirToOptimizeWithTwoOfTheSameImage\TestImageBMP2.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\SampleDirToOptimize\TestImageBMP.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

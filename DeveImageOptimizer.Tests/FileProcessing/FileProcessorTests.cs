@@ -92,6 +92,42 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         }
 
         [SkippableFact]
+        public async Task CorrectlyOptimizesCompleteDirectoryAndSkipsFileIfTheyHaveTheSameHashAndAreBothAlreadyOptimized()
+        {
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+
+            var testName = nameof(CorrectlyOptimizesCompleteDirectoryAndSkipsFileIfTheyHaveTheSameHashAndAreBothAlreadyOptimized);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeWithTwoOfTheSameImage", fileNameFileProcessedStateRememberer, testName);
+
+            //Optimize first time                
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(2, results.Count);
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));
+            }
+
+            //Optimize second time
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
+                var fp = new FileProcessor(fop, null, rememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(2, results.Count);
+                Assert.Equal(2, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));                
+            }
+        }
+
+        [SkippableFact]
         public async Task ProcessSampleDirInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
