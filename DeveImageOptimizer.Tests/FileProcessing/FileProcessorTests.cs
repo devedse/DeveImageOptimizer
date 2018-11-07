@@ -11,7 +11,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 {
     public class FileProcessorTests
     {
-        [SkippableFact]
+        [SkippableFact, Trait("SpecialTest", "Yes")]
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();

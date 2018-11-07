@@ -25,7 +25,7 @@ test_script:
   #- OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\DeveImageOptimizer.Tests\bin\release\netcoreapp2.0\DeveImageOptimizer.Tests.dll -noshadow" -filter:"+[DeveImageOptimizer*]*" -output:".\DeveImageOptimizer.Coverage.xml"
   - SonarScanner.MSBuild.exe begin /k:"DeveImageOptimizer" /d:sonar.organization="devedse-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%sonarqubetoken% /d:sonar.cs.opencover.reportsPaths=".\DeveImageOptimizer.Coverage.xml" /d:sonar.coverage.exclusions="DeveImageOptimizer.ConsoleApp/**/*.cs,DeveImageOptimizer.Tests/**/*.cs"
   - cmd: dotnet build -c Release
-  - OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test .\DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj -c Release --filter ShouldSkipForAppVeyor!=Yes" -oldstyle -returntargetcode -output:.\DeveImageOptimizer.Coverage.xml -filter:"+[DeveImageOptimizer*]* -[DeveImageOptimizer.Tests*]*"
+  - OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test .\DeveImageOptimizer.Tests\DeveImageOptimizer.Tests.csproj -c Release --filter SpecialTest==Yes" -oldstyle -returntargetcode -output:.\DeveImageOptimizer.Coverage.xml -filter:"+[DeveImageOptimizer*]* -[DeveImageOptimizer.Tests*]*"
   - SonarScanner.MSBuild.exe end /d:sonar.login=%sonarqubetoken%
   - codecov -f "DeveImageOptimizer.Coverage.xml"
   
