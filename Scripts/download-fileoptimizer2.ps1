@@ -93,10 +93,10 @@ $installPath = "C:\Program Files\FileOptimizer"
 $logFile = Join-Path $scriptPath 'setuplog.txt'
 
 Write-Host "Downloading file..."
-Using-Object ($httpClient = New-Object System.Net.Http.Httpclient) {
+Using-Object-Retry ($httpClient = New-Object System.Net.Http.Httpclient) {
     Using-Object-Retry ($result = $httpClient.GetAsync($url).Result) {
-        Using-Object ($contentStream = $result.Content.ReadAsStreamAsync().Result) {
-            Using-object ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
+        Using-Object-Retry ($contentStream = $result.Content.ReadAsStreamAsync().Result) {
+            Using-Object-Retry ($fs = New-Object IO.FileStream $path, 'Create', 'Write', 'None') {
                 $contentStream.CopyToAsync($fs).Wait()
 
                 Write-Host "File downloaded, installing..."     
