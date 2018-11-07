@@ -11,7 +11,7 @@ namespace DeveImageOptimizer.Helpers
             {
                 desiredExtension = Path.GetExtension(fileName);
             }
-            var newFileName = $"{ nameWithoutExtension}_{Path.ChangeExtension(Path.GetRandomFileName(), desiredExtension)}";
+            var newFileName = $"{nameWithoutExtension}_{Path.ChangeExtension(Path.GetRandomFileName(), desiredExtension)}";
             return newFileName;
         }
     }

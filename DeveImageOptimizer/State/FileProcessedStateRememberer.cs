@@ -10,18 +10,19 @@ namespace DeveImageOptimizer.State
     public class FileProcessedStateRememberer : IFileProcessedState
     {
         public bool ShouldAlwaysOptimize { get; }
+        public string FileNameHashesStorage { get; }
 
         private readonly ConcurrentDictionary<string, ConcurrentHashSet<string>> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, ConcurrentHashSet<string>>();
         private readonly string _filePath;
 
-        public const string FileNameHashesStorage = "ProcessedFiles.txt";
-
-        public FileProcessedStateRememberer(bool shouldAlwaysOptimize)
+        public FileProcessedStateRememberer(bool shouldAlwaysOptimize, string fileNameHashesStorage = "ProcessedFiles.txt")
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
+            FileNameHashesStorage = fileNameHashesStorage;
+
             _filePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, FileNameHashesStorage);
 
-            using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate)))
+            using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {
                 string line;
                 while ((line = streamReader.ReadLine()) != null)

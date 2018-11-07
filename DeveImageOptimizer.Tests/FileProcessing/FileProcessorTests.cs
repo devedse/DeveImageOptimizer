@@ -11,16 +11,20 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 {
     public class FileProcessorTests
     {
-        [SkippableFact, Trait("SpecialTest", "Yes")]
+        [SkippableFact]
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
-            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
+
+            var testName = nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, testName);
 
             //Optimize first time                
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
@@ -36,7 +40,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             //Optimize second time
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
@@ -54,12 +58,16 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFiles()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
-            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg");
+
+            var testName = nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFiles);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg", fileNameFileProcessedStateRememberer, testName);
 
             //Optimize first time                
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
@@ -72,7 +80,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             //Optimize second time
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
@@ -87,12 +95,16 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task ProcessSampleDirInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
-            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
+
+            var testName = nameof(ProcessSampleDirInParallel);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, testName);
 
             //Optimize first time                
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
@@ -110,12 +122,16 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTimeInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
-            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize");
+
+            var testName = nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTimeInParallel);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, testName);
 
             //Optimize first time                
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
@@ -131,7 +147,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             //Optimize second time
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
@@ -149,12 +165,16 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFilesInParallel()
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
-            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg");
+
+            var testName = nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFilesInParallel);
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+
+            string sampleDirToOptimize = PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg", fileNameFileProcessedStateRememberer, testName);
 
             //Optimize first time                
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
@@ -167,7 +187,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             //Optimize second time
             {
                 var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
-                var rememberer = new FileProcessedStateRememberer(false);
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer);
 
                 var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
@@ -178,11 +198,11 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             }
         }
 
-        private static string PrepareTestOptimizeDir(string dirToOptimize)
+        private static string PrepareTestOptimizeDir(string dirToOptimize, string fileNameFileProcessedStateRememberer, string testName)
         {
             var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", dirToOptimize);
-            var sampleDirToOptimize = Path.Combine(tempfortestdir, dirToOptimize);
+            var sampleDirToOptimize = Path.Combine(tempfortestdir, testName);
 
             if (Directory.Exists(sampleDirToOptimize))
             {
@@ -197,7 +217,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             }
 
             //Delete optimized file storage
-            var filePathOfRemembererStorage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, FileProcessedStateRememberer.FileNameHashesStorage);
+            var filePathOfRemembererStorage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, fileNameFileProcessedStateRememberer);
             File.Delete(filePathOfRemembererStorage);
             return sampleDirToOptimize;
         }
