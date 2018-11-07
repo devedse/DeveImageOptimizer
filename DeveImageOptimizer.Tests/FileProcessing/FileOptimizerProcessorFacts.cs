@@ -29,7 +29,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("pexels-photo.jpg");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesVimPicture()
         {
             await OptimizeFileTest("vim16x16_1.png");
@@ -59,7 +59,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("cra-dynamic-import_1.gif");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesDevtoolsSidePaneImage()
         {
             await OptimizeFileTest("devtools-side-pane_1.gif");
@@ -107,32 +107,32 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("GoProBison.JPG");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesSmileFaceBmpImage()
         {
             await OptimizeFileTest("SmileFaceBmp.bmp");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesPezImageWithSpaceInName()
         {
             await OptimizeFileTest("pez image with space.jpg");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesAfterJpgImage()
         {
             await OptimizeFileTest("After.JPG");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesRuthImage()
         {
             //As of 31-10-2018: This is the only failing test
             await OptimizeFileTest("baberuth_1.png");
         }
 
-        [SkippableFact]
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesAlreadyOptimizedOwl()
         {
             await OptimizeFileTest("AlreadyOptimizedOwl.jpg");
