@@ -46,72 +46,51 @@ namespace DeveImageOptimizer.FileProcessing
                 Console.WriteLine($"=== Optimizing image: {fileToOptimize} ===");
 
                 var fileName = Path.GetFileName(fileToOptimize);
-
-                Console.WriteLine($"1: Ultraverbose: {fileToOptimize}");
-
                 var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
-                Console.WriteLine($"2: Ultraverbose: {fileToOptimize}");
                 tempFiles.Add(tempFilePath);
-                Console.WriteLine($"3: Ultraverbose: {fileToOptimize}");
 
                 await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
-                Console.WriteLine($"4: Ultraverbose: {fileToOptimize}");
 
                 Orientation? jpegFileOrientation = null;
-                Console.WriteLine($"5: Ultraverbose: {fileToOptimize}");
                 bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
-                Console.WriteLine($"6: Ultraverbose: {fileToOptimize}");
                 if (shouldUseJpgWorkaround)
                 {
-                    Console.WriteLine($"7: Ultraverbose: {fileToOptimize}");
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
-                    Console.WriteLine($"8: Ultraverbose: {fileToOptimize}");
                 }
-                Console.WriteLine($"9: Ultraverbose: {fileToOptimize}");
+
                 var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {_fileOptimizerOptions} \"{tempFilePath}\"");
-                Console.WriteLine($"10: Ultraverbose: {fileToOptimize}");
+
                 if (!_shouldShowFileOptimizerWindow)
                 {
                     processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     processStartInfo.UseShellExecute = true;
                     processStartInfo.CreateNoWindow = false;
                 }
-                Console.WriteLine($"11: Ultraverbose: {fileToOptimize}");
 
                 var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
 
-                Console.WriteLine($"12: Ultraverbose: {fileToOptimize}");
                 if (exitCode != 0)
                 {
                     errors.Add($"Error when running FileOptimizer, Exit code: {exitCode}");
                 }
 
-                Console.WriteLine($"13: Ultraverbose: {fileToOptimize}");
                 if (shouldUseJpgWorkaround)
                 {
-                    Console.WriteLine($"1: Ultraverbose: {fileToOptimize}");
                     await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
-                    Console.WriteLine($"1: Ultraverbose: {fileToOptimize}");
                 }
 
-                Console.WriteLine($"14: Ultraverbose: {fileToOptimize}");
                 var imagesEqual = await ImageComparer.AreImagesEqualAsync(fileToOptimize, tempFilePath);
 
-                Console.WriteLine($"15: Ultraverbose: {fileToOptimize}");
                 if (!imagesEqual)
                 {
                     errors.Add("Optimized image isn't equal to source image.");
                 }
-
-                Console.WriteLine($"16: Ultraverbose: {fileToOptimize}");
 
                 var newSize = new FileInfo(tempFilePath).Length;
                 if (newSize > originalFileSize)
                 {
                     errors.Add($"Result image size is bigger then original. Original: {originalFileSize}, NewSize: {newSize}");
                 }
-
-                Console.WriteLine($"17: Ultraverbose: {fileToOptimize}");
 
                 if (errors.Count == 0 && newSize < originalFileSize)
                 {
