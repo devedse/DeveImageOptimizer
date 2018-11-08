@@ -138,6 +138,12 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("AlreadyOptimizedOwl.jpg");
         }
 
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesOfficeLensImage()
+        {
+            await OptimizeFileTest("OfficeLensImage.jpg");
+        }
+
         private async Task OptimizeFileTest(string fileName)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
