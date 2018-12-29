@@ -58,8 +58,14 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {_fileOptimizerOptions} \"{tempFilePath}\"");
+                var args = _fileOptimizerOptions;
 
+                //This next line should disable showing the window, but apparently it doesn't work yet as of version 13.50.2431
+                //if (!_shouldShowFileOptimizerWindow)
+                //{
+                //    args = $"/NoWindow {args}";
+                //}
+                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {args} \"{tempFilePath}\"");
                 if (!_shouldShowFileOptimizerWindow)
                 {
                     processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
