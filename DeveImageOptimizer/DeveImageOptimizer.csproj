@@ -19,7 +19,7 @@
   <ItemGroup>
     <PackageReference Include="DeveLibVipsNuget" Version="1.0.12" />
     <PackageReference Include="ExifLibNet" Version="1.2.21" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev002311" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-dev002315" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Memory" Version="4.5.1" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
