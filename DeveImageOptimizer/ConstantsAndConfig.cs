@@ -24,7 +24,7 @@ namespace DeveImageOptimizer
             "/EXEEnableUPX=false " +
             "/GIFCopyMetadata=true " +
             "/GIFAllowLossy=false " +
-            "/GZCopyMetadata=false " +
+            "/GZCopyMetadata=true " +
             "/HTMLEnableTidy=false " +
             "/JPEGCopyMetadata=true " +
             "/JPEGUseArithmeticEncoding=false " +
@@ -32,10 +32,10 @@ namespace DeveImageOptimizer
             "/JSEnableJSMin=false " +
             "/JSAdditionalExtensions= " +
             "/LUAEnableLeanify=false " +
-            "/MiscCopyMetadata=false " +
-            "/MP3CopyMetadata=false " +
-            "/MP4CopyMetadata=false " +
-            "/PCXCopyMetadata=false " +
+            "/MiscCopyMetadata=true " +
+            "/MP3CopyMetadata=true " +
+            "/MP4CopyMetadata=true " +
+            "/PCXCopyMetadata=true " +
             "/PDFProfile=none " +
             "/PDFCustomDPI=150 " +
             "/PDFSkipLayered=false " +
@@ -43,7 +43,7 @@ namespace DeveImageOptimizer
             "/PNGAllowLossy=false " +
             "/TIFFCopyMetadata=true " +
             "/XMLEnableLeanify=false " +
-            "/ZIPCopyMetadata=false " +
+            "/ZIPCopyMetadata=true " +
             "/ZIPRecurse=false " +
             "/KeepAttributes=false " +
             "/DoNotUseRecycleBin=true " +
@@ -63,7 +63,7 @@ namespace DeveImageOptimizer
             "/FilenameFormat=0 " +
             "/LeanifyIterations=-1 " +
             "/Theme=Windows " +
-            "/TempDirectory= " +
+            //"/TempDirectory= " +
             //"/Version=10.00.1878 " +
             "/TGACopyMetadata=true " +
             //"/Donator= " +
