@@ -45,7 +45,7 @@ namespace DeveImageOptimizer
             "/XMLEnableLeanify=false " +
             "/ZIPCopyMetadata=true " +
             "/ZIPRecurse=false " +
-            "/KeepAttributes=false " +
+            "/KeepAttributes=true " +
             "/DoNotUseRecycleBin=true " +
             "/IncludeMask= " +
             "/ExcludeMask= " +
