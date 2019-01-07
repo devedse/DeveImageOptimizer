@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace DeveImageOptimizer.Helpers
 {
@@ -15,6 +14,12 @@ namespace DeveImageOptimizer.Helpers
                 return true;
             }
             return false;
+        }
+
+        public static bool IsValidImageFile(string file)
+        {
+            var result = ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant());
+            return result;
         }
     }
 }

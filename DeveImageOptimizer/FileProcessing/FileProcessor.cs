@@ -4,7 +4,6 @@ using DeveImageOptimizer.State;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -31,7 +30,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             foreach (var file in files)
             {
-                if (ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
+                if (FileTypeHelper.IsValidImageFile(file))
                 {
                     var optimizedFileResult = await ProcessFile(file, directory);
                     if (_fileProcessedListener != null)
@@ -83,7 +82,7 @@ namespace DeveImageOptimizer.FileProcessing
             {
                 foreach (var file in files)
                 {
-                    if (ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
+                    if (FileTypeHelper.IsValidImageFile(file))
                     {
                         Console.WriteLine($"Posting: {Path.GetFileName(file)}");
                         var result = await processFileBlock.SendAsync(file);
