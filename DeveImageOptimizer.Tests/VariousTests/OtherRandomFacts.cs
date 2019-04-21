@@ -1,7 +1,7 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.MetaData.Profiles.Exif;
+using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using System;
 using System.IO;
 using System.Reflection;
@@ -247,9 +247,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
                         using (var imageAfter = Image.Load(image1temppath))
                         {
-                            var rotBefore = imageBefore.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                            var rotAfterUnrotate = imageAfterUnrotate.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
-                            var rotAfter = imageAfter.MetaData.ExifProfile.GetValue(ExifTag.Orientation);
+                            var rotBefore = imageBefore.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
+                            var rotAfterUnrotate = imageAfterUnrotate.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
+                            var rotAfter = imageAfter.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
 
                             Assert.Contains("270", rotBefore.ToString());
                             Assert.Contains("normal", rotAfterUnrotate.ToString().ToLowerInvariant());

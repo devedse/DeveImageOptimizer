@@ -118,8 +118,8 @@ namespace DeveImageOptimizer.Helpers
                         ImageFrame<Rgba32> frame1 = image1.Frames[0];
                         ImageFrame<Rgba32> frame2 = image2.Frames[0];
 
-                        int delay1 = frame1.MetaData.GetFormatMetaData(GifFormat.Instance).FrameDelay;
-                        int delay2 = frame2.MetaData.GetFormatMetaData(GifFormat.Instance).FrameDelay;
+                        int delay1 = frame1.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
+                        int delay2 = frame2.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
 
                         while (true)
                         {
@@ -158,7 +158,7 @@ namespace DeveImageOptimizer.Helpers
                                 if (pointer1 < image1.Frames.Count)
                                 {
                                     frame1 = image1.Frames[pointer1];
-                                    delay1 += frame1.MetaData.GetFormatMetaData(GifFormat.Instance).FrameDelay;
+                                    delay1 += frame1.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
                                 }
                             }
                             if (delay2 == 0)
@@ -168,7 +168,7 @@ namespace DeveImageOptimizer.Helpers
                                 if (pointer2 < image2.Frames.Count)
                                 {
                                     frame2 = image2.Frames[pointer2];
-                                    delay2 += frame2.MetaData.GetFormatMetaData(GifFormat.Instance).FrameDelay;
+                                    delay2 += frame2.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
                                 }
                             }
 
