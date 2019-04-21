@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeveImageOptimizer.State.StoringProcessedDirectories;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -22,13 +23,18 @@ namespace DeveImageOptimizer.Helpers
             }
         }
 
-        public static IEnumerable<string> RecurseFiles(string directory)
+        public static IEnumerable<FileAndCountOfFilesInDirectory> RecurseFiles(string directory, Func<string, bool> filter = null)
         {
             var files = Directory.GetFiles(directory);
 
             foreach (var file in files)
             {
-                yield return file;
+                yield return new FileAndCountOfFilesInDirectory()
+                {
+                    FilePath = file,
+                    DirectoryPath = directory,
+                    CountOfFilesInDirectory = files.Length
+                };
             }
 
             var directories = Directory.GetDirectories(directory);

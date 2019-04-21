@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.State;
+using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +24,8 @@ namespace DeveImageOptimizer.ConsoleApp
             var fop = new FileOptimizerProcessor(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe", "Temp", true);
             var fileProcessedListener = new FileProcessedListener();
             var rememberer = new FileProcessedStateRememberer(true);
-            var fp = new FileProcessor(fop, fileProcessedListener, rememberer);
+            var dirRememberer = new DirProcessedStateRememberer(true);
+            var fp = new FileProcessor(fop, fileProcessedListener, rememberer, dirRememberer);
 
             await fp.ProcessDirectoryParallel(dirrr, 4);
         }
