@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace DeveImageOptimizer.Helpers
@@ -25,7 +26,12 @@ namespace DeveImageOptimizer.Helpers
 
         public static IEnumerable<FileAndCountOfFilesInDirectory> RecurseFiles(string directory, Func<string, bool> filter = null)
         {
-            var files = Directory.GetFiles(directory);
+            if (filter == null)
+            {
+                filter = t => true;
+            }
+
+            var files = Directory.GetFiles(directory).Where(filter).ToList();
 
             foreach (var file in files)
             {
@@ -33,7 +39,7 @@ namespace DeveImageOptimizer.Helpers
                 {
                     FilePath = file,
                     DirectoryPath = directory,
-                    CountOfFilesInDirectory = files.Length
+                    CountOfFilesInDirectory = files.Count
                 };
             }
 
