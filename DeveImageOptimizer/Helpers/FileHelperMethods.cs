@@ -46,7 +46,7 @@ namespace DeveImageOptimizer.Helpers
             var directories = Directory.GetDirectories(directory);
             foreach (var subDirectory in directories)
             {
-                var recursedFIles = RecurseFiles(subDirectory);
+                var recursedFIles = RecurseFiles(subDirectory, filter);
                 foreach (var subFile in recursedFIles)
                 {
                     yield return subFile;
