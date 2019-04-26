@@ -135,7 +135,7 @@ namespace DeveImageOptimizer.FileProcessing
         private async Task<OptimizedFileResult> ProcessFile(string file, string originDirectory)
         {
             Console.WriteLine();
-            if (_fileProcessedState.ShouldOptimizeFile(file) && _dirProcessedState.ShouldOptimizeFileInDirectory(file))
+            if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
                 var optimizedFileResult = await _fileOptimizer.OptimizeFile(file, originDirectory);
 
