@@ -31,7 +31,7 @@ namespace DeveImageOptimizer.Helpers
                 filter = t => true;
             }
 
-            var files = Directory.GetFiles(directory).Where(filter).ToList();
+            var files = Directory.GetFiles(directory).Where(filter).OrderBy(t => t).ToList();
 
             foreach (var file in files)
             {
@@ -43,7 +43,7 @@ namespace DeveImageOptimizer.Helpers
                 };
             }
 
-            var directories = Directory.GetDirectories(directory);
+            var directories = Directory.GetDirectories(directory).OrderBy(t => t).ToList();
             foreach (var subDirectory in directories)
             {
                 var recursedFIles = RecurseFiles(subDirectory, filter);
