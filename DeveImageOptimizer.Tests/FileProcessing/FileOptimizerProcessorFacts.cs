@@ -144,6 +144,12 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest("OfficeLensImage.jpg");
         }
 
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesImageSharpGeneratedImage()
+        {
+            await OptimizeFileTest("Generated_0.jpg");
+        }
+
         private async Task OptimizeFileTest(string fileName)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
