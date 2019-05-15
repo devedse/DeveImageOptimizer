@@ -20,8 +20,8 @@ namespace DeveImageOptimizer.Tests.TestHelpers
 
             int pixelsWrong = 0;
 
-            using (var img1 = Image.Load(image1))
-            using (var img2 = Image.Load(image2))
+            using (var img1 = Image.Load<Rgba32>(image1))
+            using (var img2 = Image.Load<Rgba32>(image2))
             {
                 Assert.Equal(img1.Width, img2.Width);
                 Assert.Equal(img1.Height, img2.Height);
@@ -29,7 +29,6 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                 using (var outputImg = new Image<Rgba32>(img1.Width, img1.Height))
                 using (var outputImg2 = new Image<Rgba32>(img1.Width, img1.Height))
                 {
-
                     for (int y = 0; y < img1.Height; y++)
                     {
                         for (int x = 0; x < img1.Width; x++)

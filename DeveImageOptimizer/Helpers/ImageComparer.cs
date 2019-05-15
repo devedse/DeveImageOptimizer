@@ -27,11 +27,11 @@ namespace DeveImageOptimizer.Helpers
             {
                 var imageAsPngPath = ImageConverter.ConvertJpgToPngWithAutoRotate(imagePath);
                 tempFiles.Add(imageAsPngPath);
-                return Image.Load(imageAsPngPath);
+                return Image.Load<Rgba32>(imageAsPngPath);
             }
             else
             {
-                return Image.Load(imagePath);
+                return Image.Load<Rgba32>(imagePath);
             }
         }
 

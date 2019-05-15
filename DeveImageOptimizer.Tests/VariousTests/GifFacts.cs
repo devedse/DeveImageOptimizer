@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -33,8 +34,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var sb = new StringBuilder();
             sb.AppendLine("This test shouldn't fail but for some reason it does sometimes.");
-            using (var img1 = Image.Load(imageApath))
-            using (var img2 = Image.Load(imageBpath))
+            using (var img1 = Image.Load<Rgba32>(imageApath))
+            using (var img2 = Image.Load<Rgba32>(imageBpath))
             {
                 sb.AppendLine($"Frames Image a: {img1.Frames.Count}");
                 sb.AppendLine($"Frames Image a: {img2.Frames.Count}");

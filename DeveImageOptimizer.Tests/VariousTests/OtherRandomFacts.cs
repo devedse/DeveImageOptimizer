@@ -2,6 +2,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.IO;
 using System.Reflection;
@@ -24,7 +25,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var image1path = Path.Combine(assemblyDir, "TestImages", "Image1A.JPG");
 
-            using (var img = Image.Load(image1path))
+            using (var img = Image.Load<Rgba32>(image1path))
             {
                 int width = img.Width;
                 int height = img.Height;
@@ -56,7 +57,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var img = Image.Load(image1path))
+                using (var img = Image.Load<Rgba32>(image1path))
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
@@ -98,7 +99,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var img = Image.Load(image1path))
+                using (var img = Image.Load<Rgba32>(image1path))
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
@@ -143,7 +144,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var img = Image.Load(image1path))
+                using (var img = Image.Load<Rgba32>(image1path))
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {
@@ -188,7 +189,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             try
             {
-                using (var img = Image.Load(image1path))
+                using (var img = Image.Load<Rgba32>(image1path))
                 {
                     using (var fs = new FileStream(outputImage, FileMode.Create))
                     {

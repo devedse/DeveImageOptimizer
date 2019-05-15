@@ -1,6 +1,7 @@
 ﻿using DeveImageOptimizer.Helpers;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.PixelFormats;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
@@ -93,7 +94,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             Directory.CreateDirectory(tempfortestdir);
 
-            using (var image = Image.Load(imagePath))
+            using (var image = Image.Load<Rgba32>(imagePath))
             {
                 for (int y = 0; y < image.Height; y++)
                 {
@@ -115,7 +116,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             Directory.CreateDirectory(tempfortestdir);
 
-            using (var image = Image.Load(imagePath))
+            using (var image = Image.Load<Rgba32>(imagePath))
             {
                 for (int y = 0; y < image.Height; y++)
                 {
