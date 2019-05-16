@@ -6,6 +6,7 @@ namespace DeveImageOptimizer
     {
         public static string[] ValidExtensions { get; } = new string[] { ".PNG", ".JPG", ".JPEG", ".GIF", ".BMP" };
         public const string TempDirectoryName = "Temp";
+        public const string FailedFilesDirectoryName = "FailedFiles";
 
         public static string GenerateOptimizerOptions(int logLevel)
         {

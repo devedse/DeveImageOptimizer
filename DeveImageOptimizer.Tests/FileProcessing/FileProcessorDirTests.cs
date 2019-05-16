@@ -24,7 +24,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -41,7 +41,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize second time
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -70,7 +70,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -84,7 +84,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize second time
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -110,7 +110,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -139,7 +139,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -156,7 +156,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize second time
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -185,7 +185,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize first time                
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
@@ -199,7 +199,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             //Optimize second time
             {
-                var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
                 var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new FileProcessor(fop, null, rememberer, dirRememberer);

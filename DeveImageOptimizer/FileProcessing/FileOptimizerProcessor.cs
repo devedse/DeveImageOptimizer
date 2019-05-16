@@ -14,21 +14,33 @@ namespace DeveImageOptimizer.FileProcessing
     {
         private readonly string _pathToFileOptimizer;
         private readonly string _tempDirectory;
+        private readonly string _failedFilesDirectory;
         private readonly bool _shouldShowFileOptimizerWindow;
         private readonly bool _saveFailedOptimizedFile;
 
         private readonly string _fileOptimizerOptions;
 
-        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory, bool shouldShowFileOptimizerWindow = false, int logLevel = 2, bool saveFailedOptimizedFile = false)
+        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory = null, string failedFilesDirectory = null, bool shouldShowFileOptimizerWindow = false, int logLevel = 2, bool saveFailedOptimizedFile = false)
         {
             _pathToFileOptimizer = pathToFileOptimizer;
             _tempDirectory = tempDirectory;
+            _failedFilesDirectory = failedFilesDirectory;
             _shouldShowFileOptimizerWindow = shouldShowFileOptimizerWindow;
             _saveFailedOptimizedFile = saveFailedOptimizedFile;
 
             _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(logLevel);
 
-            Directory.CreateDirectory(tempDirectory);
+            if (string.IsNullOrWhiteSpace(_tempDirectory))
+            {
+                _tempDirectory = FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value;
+            }
+            if (string.IsNullOrWhiteSpace(_failedFilesDirectory))
+            {
+                _failedFilesDirectory = FolderHelperMethods.LocationOfImageProcessorDllAssemblyFailedFilesDirectory.Value;
+            }
+
+            Directory.CreateDirectory(_tempDirectory);
+            Directory.CreateDirectory(_failedFilesDirectory);
         }
 
         public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, string originDirectory)
@@ -106,14 +118,9 @@ namespace DeveImageOptimizer.FileProcessing
                 {
                     if (_saveFailedOptimizedFile)
                     {
-                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileToOptimize);
-                        var fileExtension = Path.GetExtension(fileToOptimize);
-                        var newFileName = $"{fileNameWithoutExtension}_FAILED{fileExtension}";
+                        var newFilePath = Path.Combine(_failedFilesDirectory, fileName);
 
-                        var directoryOfFileToOptimize = Path.GetDirectoryName(fileToOptimize);
-                        var newFilePath = Path.Combine(directoryOfFileToOptimize, newFileName);
-
-                        //Write a file as Blah_FAILED.png
+                        //Write a file as FailedFiles\Blah.png
                         await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
                     }
                 }

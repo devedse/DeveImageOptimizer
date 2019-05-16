@@ -154,7 +154,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
-            var fop = new FileOptimizerProcessor(fileOptimizerPath, FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, TestConstants.ShouldShowFileOptimizerWindow);
+            var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
             var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
             var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
