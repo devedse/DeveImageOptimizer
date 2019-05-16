@@ -14,8 +14,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task BmpFileShouldBeEqualToBmpConvertedAsPng()
         {
             var fileName = "SmileFaceBmp.bmp";
-            var imagePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
+            var imagePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -51,8 +51,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task Bmp2FileShouldBeEqualToBmpConvertedAsPng()
         {
             var fileName = "SmileFaceBmp2.bmp";
-            var imagePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
+            var imagePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -88,8 +88,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public void BmpShouldNotContainAlpha()
         {
             var fileName = "SmileFaceBmp.bmp";
-            var imagePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
+            var imagePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -110,8 +110,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public void Bmp2ShouldNotContainAlpha()
         {
             var fileName = "SmileFaceBmp2.bmp";
-            var imagePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
+            var imagePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);

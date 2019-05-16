@@ -32,11 +32,11 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (string.IsNullOrWhiteSpace(_tempDirectory))
             {
-                _tempDirectory = FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value;
+                _tempDirectory = FolderHelperMethods.TempDirectory.Value;
             }
             if (string.IsNullOrWhiteSpace(_failedFilesDirectory))
             {
-                _failedFilesDirectory = FolderHelperMethods.LocationOfImageProcessorDllAssemblyFailedFilesDirectory.Value;
+                _failedFilesDirectory = FolderHelperMethods.FailedFilesDirectory.Value;
             }
 
             Directory.CreateDirectory(_tempDirectory);

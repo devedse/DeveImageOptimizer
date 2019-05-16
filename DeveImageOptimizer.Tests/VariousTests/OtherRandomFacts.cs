@@ -51,9 +51,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task CanReadThisPngCorrectly()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "vim16x16output.png");
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectory.Value, "vim16x16output.png");
 
             try
             {
@@ -93,9 +93,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveThisImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "versioning-1_2_output.png");
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectory.Value, "versioning-1_2_output.png");
 
             try
             {
@@ -138,9 +138,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveSnakeImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "snake.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "snake_output.png");
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "snake.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectory.Value, "snake_output.png");
 
             try
             {
@@ -183,9 +183,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveImageSharpImage2()
         {
-            Directory.CreateDirectory(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value);
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
-            var outputImage = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "Imagesharp2.png");
+            Directory.CreateDirectory(FolderHelperMethods.TempDirectory.Value);
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
+            var outputImage = Path.Combine(FolderHelperMethods.TempDirectory.Value, "Imagesharp2.png");
 
             try
             {
@@ -229,8 +229,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task RemovesExifRotationAndReapliesAfterwards()
         {
             var fileName = "Image2A.JPG";
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyTempDirectory.Value, "TempForTest");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);

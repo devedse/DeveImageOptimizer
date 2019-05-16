@@ -20,7 +20,7 @@ namespace DeveImageOptimizer.State
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
             FileNameHashesStorage = fileNameHashesStorage;
 
-            _filePath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, FileNameHashesStorage);
+            _filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, FileNameHashesStorage);
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {

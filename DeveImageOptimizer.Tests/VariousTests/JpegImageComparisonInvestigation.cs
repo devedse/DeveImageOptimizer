@@ -41,8 +41,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task ImageSharpToLibVips()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_VIPS");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
@@ -52,8 +52,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task ImageSharpToIrfanView()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_IRFANVIEW");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
@@ -63,8 +63,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task ImageSharpToPaint()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_PAINT");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
@@ -74,8 +74,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task ImageSharpToPaintNET()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_PaintNET");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
@@ -90,8 +90,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task PaintToVips()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINT_TO_VIPS"));
@@ -100,8 +100,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task VipsToPaintNet()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "VIPS_TO_PAINTNET"));
@@ -110,8 +110,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task PaintNetToIrfanView()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINTNET_TO_IRFANVIEW"));
@@ -120,8 +120,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task IrfanViewToPaint()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "IRFANVIEW_TO_PAINT"));
@@ -132,8 +132,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task IrfanViewToVips()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
 
             //IrfanView and LibVIPS have the same decoder
             Assert.Equal(0, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "IRFANVIEW_TO_VIPS"));
@@ -142,8 +142,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task PaintToPaintNET()
         {
-            var image1path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
-            var image2path = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
+            var image2path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
 
             //IrfanView and LibVIPS have the same decoder
             Assert.Equal(0, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINT_TO_PAINTNET"));

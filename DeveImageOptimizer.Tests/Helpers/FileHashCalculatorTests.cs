@@ -9,7 +9,7 @@ namespace DeveImageOptimizer.Tests.Helpers
         [Fact]
         public void FileHashIsCorrect()
         {
-            var imageApath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "Image1A.JPG");
+            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
             
             var hash = FileHashCalculator.CalculateFileHash(imageApath);
 
