@@ -18,6 +18,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task ShouldBeEqualToAllIterationsOfRuth()
         {
+            //These tests fail due to bug in TruePNG, but it's disabled in FileOptimizerFull
+
             var original = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
             var otherImagesPath = Path.Combine(FolderHelperMethods.LocationOfImageProcessorDllAssemblyDirectory.Value, "TestImages", "BaberuthInvestigation");
 
@@ -45,18 +47,19 @@ namespace DeveImageOptimizer.Tests.VariousTests
                 }
             }
 
-            if (failers.Any() || allImages.Count != succeeders.Count )
+            if (failers.Any() || allImages.Count != succeeders.Count)
             {
                 throw new SkipException("This test fails because of an issue in FileOptimizer");
             }
         }
-        
+
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task TestTruePngDirectly()
         {
+            //These tests fail due to bug in TruePNG, but it's disabled in FileOptimizerFull
+
             var bPNGCopyMetadata = true;
             var bPNGAllowLossy = false;
-
 
             var sFlags = "";
             var iLevel = Math.Min(9 * 3 / 9, 3) + 1;
@@ -104,9 +107,9 @@ namespace DeveImageOptimizer.Tests.VariousTests
             var processStartInfo = new ProcessStartInfo(existingTruePng, arguments);
             using (var proc = Process.Start(processStartInfo))
             {
-                proc.WaitForExit();                
+                proc.WaitForExit();
             }
-            
+
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(original, tmpOutputFile, BabeRuthInvestigationName, "TruePngDirectlyOutput");
 
             //If this test fails, TruePNG still has a bug in it
