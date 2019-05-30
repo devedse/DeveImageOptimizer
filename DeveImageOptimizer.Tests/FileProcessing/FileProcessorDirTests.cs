@@ -1,8 +1,10 @@
-﻿using DeveImageOptimizer.FileProcessing;
+﻿using CodeAssassin;
+using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using DeveImageOptimizer.Tests.TestHelpers;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -209,6 +211,45 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 Assert.Equal(2, results.Count);
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Failed));
+            }
+        }
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesReadonlyAndBlockedFilesInDirectory()
+        {
+            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
+
+            var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesReadonlyAndBlockedFilesInDirectory)}";
+            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
+            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+
+            string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("DirWithReadonlyFile", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
+
+            var blockedJpg = Path.Combine(sampleDirToOptimize, "BlockedJpg.jpg");
+            var readonlyJpg = Path.Combine(sampleDirToOptimize, "ReadOnlyJpg.jpg");
+
+            //Prepare files
+            using (var zoneIdentifier = new ZoneIdentifier(blockedJpg))
+            {
+                zoneIdentifier.Zone = UrlZone.Internet;
+            }
+            new FileInfo(readonlyJpg).IsReadOnly = true;
+
+            //Optimize first time                
+            {
+                var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
+                var rememberer = new FileProcessedStateRememberer(true, fileNameFileProcessedStateRememberer);
+                var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
+                var fp = new FileProcessor(fop, null, rememberer, dirRememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(2, results.Count);
+                foreach (var result in results)
+                {
+                    Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
+                    Assert.True(result.OriginalSize > result.OptimizedSize);
+                }
             }
         }
     }

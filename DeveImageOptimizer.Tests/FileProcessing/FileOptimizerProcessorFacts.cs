@@ -1,3 +1,4 @@
+using CodeAssassin;
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
@@ -148,6 +149,31 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesImageSharpGeneratedImage()
         {
             await OptimizeFileTest("Generated_0.jpg");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesReadOnlyFile()
+        {
+            var fileName = "ReadOnlyJpg.jpg";
+            var filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+
+            new FileInfo(filePath).IsReadOnly = true;
+
+            await OptimizeFileTest(fileName);
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesBlockedFile()
+        {
+            var fileName = "BlockedJpg.jpg";
+            var filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+
+            using (var zoneIdentifier = new ZoneIdentifier(filePath))
+            {
+                zoneIdentifier.Zone = UrlZone.Internet;
+            }
+
+            await OptimizeFileTest(fileName);
         }
 
         private async Task OptimizeFileTest(string fileName)
