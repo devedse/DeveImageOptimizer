@@ -1,8 +1,7 @@
-﻿using CodeAssassin;
-using DeveImageOptimizer.FileProcessing;
-using DeveImageOptimizer.Helpers;
+﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
+using DeveImageOptimizer.Tests.ExternalTools;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System.IO;
 using System.Linq;
