@@ -152,6 +152,48 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         }
 
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes01png()
+        {
+            await OptimizeFileTest("01.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes03png()
+        {
+            await OptimizeFileTest("03.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes031png()
+        {
+            await OptimizeFileTest("03_1.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes05png()
+        {
+            await OptimizeFileTest("05.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes05_3png()
+        {
+            await OptimizeFileTest("05_3.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizes08_01png()
+        {
+            await OptimizeFileTest("08_1.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesBrokenstickmanJpg()
+        {
+            await OptimizeFileTest("Brokenstickman.JPG");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesReadOnlyFile()
         {
             var fileName = "ReadOnlyJpg.jpg";
