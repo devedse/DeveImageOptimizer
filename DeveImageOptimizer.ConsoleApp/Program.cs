@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.FileProcessing;
+using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
@@ -19,6 +20,10 @@ namespace DeveImageOptimizer.ConsoleApp
 
         public static async Task MainAsync(string[] args)
         {
+
+            var aaa = FolderHelperMethods.AppDataFolder.Value;
+
+
             var dirrr = @"C:\KanWeg";
 
             var fop = new FileOptimizerProcessor(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe");

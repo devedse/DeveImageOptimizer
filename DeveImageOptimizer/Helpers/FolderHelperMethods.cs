@@ -17,6 +17,15 @@ namespace DeveImageOptimizer.Helpers
 
         //public static Lazy<string> EntryTempDirectory { get; } = new Lazy<string>(() => Path.Combine(EntryAssemblyDirectory.Value, ConstantsAndConfig.TempDirectoryName));
 
+
+        public static Lazy<string> AppDataFolder { get; } = new Lazy<string>(() => CreateAppDataFolder());
+        public static string CreateAppDataFolder()
+        {
+            var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var combinedPath = Path.Combine(appdataPath, ConstantsAndConfig.AppDataDirectoryName);
+            return combinedPath;
+        }
+
         public static Lazy<string> AssemblyDirectory { get; } = new Lazy<string>(() => CreateLocationOfImageProcessorAssemblyDirectory());
 
         private static string CreateLocationOfImageProcessorAssemblyDirectory()
@@ -26,7 +35,7 @@ namespace DeveImageOptimizer.Helpers
             return assemblyDir;
         }
 
-        public static Lazy<string> TempDirectory { get; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value, ConstantsAndConfig.TempDirectoryName));
+        public static Lazy<string> TempDirectory { get; } = new Lazy<string>(() => Path.Combine(Path.GetTempPath(), ConstantsAndConfig.TempDirectoryName));
         public static Lazy<string> FailedFilesDirectory { get; } = new Lazy<string>(() => Path.Combine(AssemblyDirectory.Value, ConstantsAndConfig.FailedFilesDirectoryName));
     }
 }
