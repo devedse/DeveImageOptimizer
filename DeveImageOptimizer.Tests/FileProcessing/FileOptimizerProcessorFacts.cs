@@ -197,7 +197,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesReadOnlyFile()
         {
             var fileName = "ReadOnlyJpg.jpg";
-            var filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var filePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
 
             new FileInfo(filePath).IsReadOnly = true;
 
@@ -208,7 +208,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         public async Task CorrectlyOptimizesBlockedFile()
         {
             var fileName = "BlockedJpg.jpg";
-            var filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
+            var filePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
 
             using (var zoneIdentifier = new ZoneIdentifier(filePath))
             {
@@ -223,8 +223,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var fop = new FileOptimizerProcessor(fileOptimizerPath, default, default, TestConstants.ShouldShowFileOptimizerWindow);
-            var image1path = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
+            var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);

@@ -9,6 +9,9 @@ namespace DeveImageOptimizer
         public const string TempDirectoryName = "DeveImageOptimizerTemp";
         public const string FailedFilesDirectoryName = "FailedFiles";
 
+        public const string ProcessedFilesFileName = "ProcessedFiles.txt";
+        public const string ProcessedDirsFileName = "ProcessedDirs.txt";
+
         public static string GenerateOptimizerOptions(int logLevel)
         {
             if (logLevel < 0 || logLevel > 4)

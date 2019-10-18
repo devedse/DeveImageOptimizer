@@ -21,7 +21,7 @@ namespace DeveImageOptimizer.ConsoleApp
         public static async Task MainAsync(string[] args)
         {
 
-            var aaa = FolderHelperMethods.AppDataFolder.Value;
+            var aaa = FolderHelperMethods.Internal_AppDataFolder.Value;
 
 
             var dirrr = @"C:\KanWeg";
