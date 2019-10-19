@@ -26,8 +26,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task SourceEqualsSourceGifcicle()
         {
             //Gifcicle command: gifsicle.exe -b -w -j --no-conserve-memory -o result.gif -O3 source.gif
-            var imageApath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "GifInvest", "Source.gif");
-            var imageBpath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "GifInvest", "Source-Gifcicle.gif");
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "GifInvest", "Source.gif");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "GifInvest", "Source-Gifcicle.gif");
 
             var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
             //Assert.True(areEqual);

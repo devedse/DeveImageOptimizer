@@ -9,17 +9,19 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
     public class DirProcessedStateRememberer : IDirProcessedState
     {
         public bool ShouldAlwaysOptimize { get; }
-        public string FileNameHashesStorage { get; }
 
         private readonly ConcurrentHashSet<string> _fullyOptimizedDirectories = new ConcurrentHashSet<string>();
         private readonly string _filePath;
 
-        public DirProcessedStateRememberer(bool shouldAlwaysOptimize, string fileNameHashesStorage = "ProcessedDirs.txt")
+        public DirProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
-            FileNameHashesStorage = fileNameHashesStorage;
 
-            _filePath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, FileNameHashesStorage);
+            _filePath = saveFilePath;
+            if (_filePath == null)
+            {
+                _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedFilesFileName);
+            }
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {

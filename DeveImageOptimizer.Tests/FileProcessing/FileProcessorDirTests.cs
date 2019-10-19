@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.FileProcessing;
+using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using DeveImageOptimizer.Tests.ExternalTools;
@@ -18,8 +19,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTime)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 
@@ -64,8 +65,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFiles)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 
@@ -104,8 +105,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(ProcessSampleDirInParallel)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 
@@ -133,8 +134,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntOptimizeSecondTimeInParallel)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 
@@ -179,8 +180,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesCompleteDirectoryAndDoesntSkipFailedFilesInParallel)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimizeBrokenJpg", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 
@@ -219,8 +220,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesReadonlyAndBlockedFilesInDirectory)}";
-            var fileNameFileProcessedStateRememberer = $"{testName}.txt";
-            var fileNameDirProcessedStateRememberer = $"{testName}-dir.txt";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
 
             string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("DirWithReadonlyFile", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
 

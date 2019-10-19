@@ -7,8 +7,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
     {
         public static string PrepareTestOptimizeDir(string dirToOptimize, string fileNameFileProcessedStateRememberer, string fileNameDirProcessedStateRememberer, string testName)
         {
-            var tempfortestdir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TempForTest");
-            var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", dirToOptimize);
+            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", dirToOptimize);
             var sampleDirToOptimize = Path.Combine(tempfortestdir, testName);
 
             if (Directory.Exists(sampleDirToOptimize))
@@ -24,9 +24,9 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             }
 
             //Delete optimized file storage
-            var filePathOfRemembererStorage = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, fileNameFileProcessedStateRememberer);
+            var filePathOfRemembererStorage = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, fileNameFileProcessedStateRememberer);
             File.Delete(filePathOfRemembererStorage);
-            var filePathOfDirRemembererStorage = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, fileNameDirProcessedStateRememberer);
+            var filePathOfDirRemembererStorage = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, fileNameDirProcessedStateRememberer);
             File.Delete(filePathOfDirRemembererStorage);
             return sampleDirToOptimize;
         }
