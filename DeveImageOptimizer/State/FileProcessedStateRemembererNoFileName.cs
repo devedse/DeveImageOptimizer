@@ -9,17 +9,19 @@ namespace DeveImageOptimizer.State
     public class FileProcessedStateRemembererNoFileName : IFileProcessedState
     {
         public bool ShouldAlwaysOptimize { get; }
-        public string FileNameHashesStorage { get; }
 
         private readonly HashSet<string> _fullyOptimizedFileHashes = new HashSet<string>();
         private readonly string _filePath;
 
-        public FileProcessedStateRemembererNoFileName(bool shouldAlwaysOptimize, string fileNameHashesStorage = "ProcessedFiles.txt")
+        public FileProcessedStateRemembererNoFileName(bool shouldAlwaysOptimize, string saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
-            FileNameHashesStorage = fileNameHashesStorage;
 
-            _filePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, FileNameHashesStorage);
+            _filePath = saveFilePath;
+            if (_filePath == null)
+            {
+                _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedFilesFileName);
+            }
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {
