@@ -193,7 +193,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
         private void TestImageLoading(string filename)
         {
-            var imagepath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", filename);
+            var imagepath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", filename);
 
             using (var img = Image.Load<Rgba32>(imagepath))
             {

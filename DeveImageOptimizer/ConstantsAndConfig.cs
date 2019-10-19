@@ -5,8 +5,12 @@ namespace DeveImageOptimizer
     public static class ConstantsAndConfig
     {
         public static string[] ValidExtensions { get; } = new string[] { ".PNG", ".JPG", ".JPEG", ".GIF", ".BMP" };
-        public const string TempDirectoryName = "Temp";
+        public const string AppDataDirectoryName = "DeveImageOptimizer";
+        public const string TempDirectoryName = "DeveImageOptimizerTemp";
         public const string FailedFilesDirectoryName = "FailedFiles";
+
+        public const string ProcessedFilesFileName = "ProcessedFiles.txt";
+        public const string ProcessedDirsFileName = "ProcessedDirs.txt";
 
         public static string GenerateOptimizerOptions(int logLevel)
         {

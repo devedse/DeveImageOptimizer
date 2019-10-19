@@ -12,7 +12,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
     {
         public static async Task<int> CompareTheseImagesAndWriteResultToOutputAsync(string image1, string image2, string investigationname, string outputImageName)
         {
-            var outputDir = Path.Combine(FolderHelperMethods.TempDirectory.Value, investigationname);
+            var outputDir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, investigationname);
             Directory.CreateDirectory(outputDir);
 
             var outputImage = Path.Combine(outputDir, outputImageName + ".png");

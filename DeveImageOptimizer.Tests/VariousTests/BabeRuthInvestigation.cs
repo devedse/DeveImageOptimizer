@@ -20,8 +20,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             //These tests fail due to bug in TruePNG, but it's disabled in FileOptimizerFull
 
-            var original = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
-            var otherImagesPath = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation");
+            var original = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
+            var otherImagesPath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation");
 
             var failers = new Dictionary<string, int>();
             var succeeders = new List<string>();
@@ -94,7 +94,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             }
 
 
-            var outputDir = Path.Combine(FolderHelperMethods.TempDirectory.Value, "TruePngInvestigation");
+            var outputDir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TruePngInvestigation");
             Directory.CreateDirectory(outputDir);
 
             var tmpOutputFile = Path.Combine(outputDir, "truepnginvest.png");
@@ -102,7 +102,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             {
                 File.Delete(tmpOutputFile);
             }
-            var original = Path.Combine(FolderHelperMethods.AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
+            var original = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "BaberuthInvestigation", "Original.png");
             var arguments = $"{sFlags}/i0 /tz /quiet /y /out \"{tmpOutputFile}\" \"{original}\"";
 
             var processStartInfo = new ProcessStartInfo(existingTruePng, arguments);
