@@ -1,11 +1,8 @@
 ﻿using DeveImageOptimizer.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests.Helpers
-{    
+{
     public class ValuesToStringHelperTests
     {
         [Fact]

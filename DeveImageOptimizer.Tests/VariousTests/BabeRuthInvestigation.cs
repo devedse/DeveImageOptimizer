@@ -80,10 +80,11 @@ namespace DeveImageOptimizer.Tests.VariousTests
             var fileOptimizerExe = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
             var rootDir = Path.GetDirectoryName(fileOptimizerExe);
 
-            var possiblePaths = new List<string>();
-
-            possiblePaths.Add(Path.Combine(rootDir, "Plugins64", "TruePNG.exe"));
-            possiblePaths.Add(Path.Combine(rootDir, "Plugins32", "TruePNG.exe"));
+            var possiblePaths = new List<string>
+            {
+                Path.Combine(rootDir, "Plugins64", "TruePNG.exe"),
+                Path.Combine(rootDir, "Plugins32", "TruePNG.exe")
+            };
 
             var existingTruePng = possiblePaths.FirstOrDefault(t => File.Exists(t));
 

@@ -7,7 +7,7 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class ExifImageRotator
     {
-        public async static Task<Orientation?> UnrotateImageAsync(string path)
+        public static async Task<Orientation?> UnrotateImageAsync(string path)
         {
             return await Task.Run(() =>
             {
@@ -36,7 +36,7 @@ namespace DeveImageOptimizer.Helpers
             return null;
         }
 
-        public async static Task RerotateImageAsync(string path, Orientation? newOrientation)
+        public static async Task RerotateImageAsync(string path, Orientation? newOrientation)
         {
             await Task.Run(() =>
             {

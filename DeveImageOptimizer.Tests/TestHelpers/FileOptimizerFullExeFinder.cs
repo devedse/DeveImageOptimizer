@@ -8,9 +8,10 @@ namespace DeveImageOptimizer.Tests.TestHelpers
     {
         public static string GetFileOptimizerPathOrThrowSkipTestException()
         {
-            var possiblePaths = new List<string>();
-
-            possiblePaths.Add(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe");
+            var possiblePaths = new List<string>
+            {
+                @"C:\Program Files\FileOptimizer\FileOptimizer64.exe"
+            };
 
             //Maybe this can be improved, but just to test I'll have it like this for now. (It's just for unit testing anyway)
             var extractedPathForAppVeyor = Path.GetFullPath(@"..\..\..\..\..\DeveImageOptimizer\Scripts\FileOptimizer\FileOptimizer64.exe");

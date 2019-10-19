@@ -1,5 +1,4 @@
 ﻿using DeveImageOptimizer.FileProcessing;
-using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using DeveImageOptimizer.Tests.TestHelpers;

@@ -26,14 +26,30 @@ namespace DeveImageOptimizer.Tests.ExternalTools
         {
             get
             {
-                if (_persistFile == null) throw new ObjectDisposedException(GetType().Name);
+                if (_persistFile == null)
+                {
+                    throw new ObjectDisposedException(GetType().Name);
+                }
+
                 return _urlZone;
             }
             set
             {
-                if (_persistFile == null) throw new ObjectDisposedException(GetType().Name);
-                if (_urlZone == value) return;
-                if (!Enum.IsDefined(typeof(UrlZone), value) || value == UrlZone.Invalid) throw new ArgumentOutOfRangeException();
+                if (_persistFile == null)
+                {
+                    throw new ObjectDisposedException(GetType().Name);
+                }
+
+                if (_urlZone == value)
+                {
+                    return;
+                }
+
+                if (!Enum.IsDefined(typeof(UrlZone), value) || value == UrlZone.Invalid)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
                 _urlZone = value;
                 _zoneIdentifier.SetId(_urlZone);
                 _persistFile.Save(null, false);
@@ -42,8 +58,16 @@ namespace DeveImageOptimizer.Tests.ExternalTools
 
         public void Remove()
         {
-            if (_persistFile == null) throw new ObjectDisposedException(GetType().Name);
-            if (_urlZone == UrlZone.LocalMachine) return;
+            if (_persistFile == null)
+            {
+                throw new ObjectDisposedException(GetType().Name);
+            }
+
+            if (_urlZone == UrlZone.LocalMachine)
+            {
+                return;
+            }
+
             _urlZone = UrlZone.LocalMachine;
             _zoneIdentifier.Remove();
             _persistFile.Save(null, false);
@@ -51,7 +75,11 @@ namespace DeveImageOptimizer.Tests.ExternalTools
 
         public void Dispose()
         {
-            if (_persistFile == null) return;
+            if (_persistFile == null)
+            {
+                return;
+            }
+
             _zoneIdentifier = null;
             _persistFile = null;
         }
@@ -60,7 +88,7 @@ namespace DeveImageOptimizer.Tests.ExternalTools
     [ComImport]
     [Guid("0000010c-0000-0000-c000-000000000046")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IPersist
+    internal interface IPersist
     {
         [PreserveSig]
         void GetClassID(out Guid pClassId);
@@ -69,7 +97,7 @@ namespace DeveImageOptimizer.Tests.ExternalTools
     [ComImport]
     [Guid("0000010b-0000-0000-C000-000000000046")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IPersistFile : IPersist
+    internal interface IPersistFile : IPersist
     {
         new void GetClassID(out Guid pClassId);
 
@@ -92,13 +120,13 @@ namespace DeveImageOptimizer.Tests.ExternalTools
 
     [ComImport]
     [Guid("0968e258-16c7-4dba-aa86-462dd61e31a3")]
-    class PersistFile { }
+    internal class PersistFile { }
 
     // http://msdn.microsoft.com/en-us/library/ms537032(v=vs.85).aspx
     [ComImport]
     [Guid("cd45f185-1b21-48e2-967b-ead743a8914e")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IZoneIdentifier
+    internal interface IZoneIdentifier
     {
         [PreserveSig]
         void GetId([Out] out UrlZone dwZone);
@@ -123,7 +151,7 @@ namespace DeveImageOptimizer.Tests.ExternalTools
 
     // http://msdn.microsoft.com/en-us/library/ie/aa380337(v=vs.85).aspx
     [Flags]
-    enum StorageMode
+    internal enum StorageMode
     {
         Read = 0,
         Write = 1,
