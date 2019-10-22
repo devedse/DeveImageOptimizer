@@ -20,7 +20,7 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
             _filePath = saveFilePath;
             if (_filePath == null)
             {
-                _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedFilesFileName);
+                _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedDirsFileName);
             }
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
