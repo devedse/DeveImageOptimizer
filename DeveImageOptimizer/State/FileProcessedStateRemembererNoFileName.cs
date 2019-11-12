@@ -38,7 +38,7 @@ namespace DeveImageOptimizer.State
 
         public async Task AddFullyOptimizedFile(string path)
         {
-            var hash = FileHashCalculator.CalculateFileHash(path);
+            var hash = Sha512HashCalculator.CalculateFileHash(path);
             var addedHash = _fullyOptimizedFileHashes.Add(hash);
             if (addedHash)
             {
@@ -67,7 +67,7 @@ namespace DeveImageOptimizer.State
                 return true;
             }
 
-            var hash = FileHashCalculator.CalculateFileHash(path);
+            var hash = Sha512HashCalculator.CalculateFileHash(path);
             if (!_fullyOptimizedFileHashes.Contains(hash))
             {
                 Console.WriteLine($"File hash of file that is already optimized: {hash}");
