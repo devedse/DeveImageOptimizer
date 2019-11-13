@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
 {
-    public class FileProcessedStateRememberer : IFileProcessedState, IDisposable
+    public class FileProcessedStateRemembererOld : IFileProcessedState
     {
         public bool ShouldAlwaysOptimize { get; }
 
         private readonly ConcurrentDictionary<string, ConcurrentHashSet<string>> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, ConcurrentHashSet<string>>();
         private readonly string _filePath;
 
-        private readonly StreamWriter writer;
-
-        public FileProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
+        public FileProcessedStateRemembererOld(bool shouldAlwaysOptimize, string saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
 
@@ -35,23 +33,19 @@ namespace DeveImageOptimizer.State
                     {
                         if (!string.IsNullOrWhiteSpace(line))
                         {
+                            var listOfFiles = new ConcurrentHashSet<string>();
+
                             var splitted = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (splitted.Length == 2)
+                            string hash = splitted[0];
+
+                            if (splitted.Length > 1)
                             {
-                                string hash = splitted[0];
-                                if (hash.Length == Sha512HashCalculator.ExpectedHashLength)
-                                {
-                                    var listOfFiles = _fullyOptimizedFileHashes.GetOrAdd(hash, (hash) => new ConcurrentHashSet<string>());
+                                var files = splitted[1];
 
-                                    var files = splitted[1];
-                                    var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                                    foreach (var file in splittedFiles)
-                                    {
-                                        listOfFiles.Add(file);
-                                    }
-
-                                }
+                                var splittedFiles = files.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                                listOfFiles = new ConcurrentHashSet<string>(splittedFiles);
                             }
+                            _fullyOptimizedFileHashes.TryAdd(hash, listOfFiles);
                         }
                     }
                     catch (Exception ex)
@@ -60,37 +54,50 @@ namespace DeveImageOptimizer.State
                     }
                 }
             }
-
-            writer = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read));
-            writer.BaseStream.Seek(0, SeekOrigin.End);
         }
 
-        public Task AddFullyOptimizedFile(string path)
+        public async Task AddFullyOptimizedFile(string path)
         {
             var hash = Sha512HashCalculator.CalculateFileHash(path);
             var fileName = Path.GetFileName(path);
 
-            var setForThisHash = _fullyOptimizedFileHashes.GetOrAdd(hash, (hash) => new ConcurrentHashSet<string>());
-
-            var itemNewlyCreated = setForThisHash.TryAdd(fileName);
-
-            if (itemNewlyCreated)
+            var itemNewlyCreated = _fullyOptimizedFileHashes.TryAdd(hash, new ConcurrentHashSet<string>() { fileName });
+            if (!itemNewlyCreated)
             {
-                AppendToFile(hash, fileName);
+                if (_fullyOptimizedFileHashes.TryGetValue(hash, out ConcurrentHashSet<string> fileList))
+                {
+                    bool shouldSave = fileList.Add(fileName);
+                    if (shouldSave)
+                    {
+                        await SaveToFile();
+                    }
+                }
             }
-
-            return Task.CompletedTask;
+            else
+            {
+                await SaveToFile();
+            }
         }
 
         private readonly object _saveFileLockject = new object();
 
-        private void AppendToFile(string hash, string fileName)
+        private Task SaveToFile()
         {
-            lock (_saveFileLockject)
+            return Task.Run(() =>
             {
-                writer.WriteLine($"{hash}|{fileName}");
-                writer.Flush();
-            }
+                lock (_saveFileLockject)
+                {
+                    using (var streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
+                    {
+                        foreach (var curhash in _fullyOptimizedFileHashes)
+                        {
+                            var combinedFileNames = string.Join(":", curhash.Value);
+                            var stringToWrite = $"{curhash.Key}|{combinedFileNames}";
+                            streamWriter.WriteLine(stringToWrite);
+                        }
+                    }
+                }
+            });
         }
 
         public bool ShouldOptimizeFile(string path)
@@ -107,14 +114,6 @@ namespace DeveImageOptimizer.State
             }
             Console.WriteLine($"File {path} is already optimized. File hash: {hash}");
             return false;
-        }
-
-        public void Dispose()
-        {
-            if (writer != null)
-            {
-                writer.Dispose();
-            }
         }
     }
 }

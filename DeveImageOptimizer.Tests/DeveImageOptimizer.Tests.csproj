@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
 
     <!-- Workaround to get Code Coverage working, see: https://github.com/Microsoft/vstest-docs/blob/master/docs/analyze.md#coverage -->
     <DebugType>Full</DebugType>
