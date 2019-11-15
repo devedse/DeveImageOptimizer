@@ -8,7 +8,7 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
 {
     public class DirProcessedStateRememberer : IDirProcessedState
     {
-        public bool ShouldAlwaysOptimize { get; }
+        public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly ConcurrentHashSet<string> _fullyOptimizedDirectories = new ConcurrentHashSet<string>();
         private readonly string _filePath;

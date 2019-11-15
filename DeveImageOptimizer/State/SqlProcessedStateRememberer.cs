@@ -11,7 +11,7 @@ namespace DeveImageOptimizer.State
 {
     public class SqlProcessedStateRememberer : IFileProcessedState
     {
-        public bool ShouldAlwaysOptimize { get; }
+        public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly string _filePath;
 

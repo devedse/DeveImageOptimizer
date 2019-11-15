@@ -9,7 +9,7 @@ namespace DeveImageOptimizer.State
 {
     public class FileProcessedStateRememberer : IFileProcessedState, IDisposable
     {
-        public bool ShouldAlwaysOptimize { get; }
+        public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly ConcurrentDictionary<string, ConcurrentHashSet<string>> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, ConcurrentHashSet<string>>();
         private readonly string _filePath;

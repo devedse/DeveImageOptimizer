@@ -8,7 +8,7 @@ namespace DeveImageOptimizer.State
 {
     public class FileProcessedStateRemembererNoFileName : IFileProcessedState
     {
-        public bool ShouldAlwaysOptimize { get; }
+        public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly HashSet<string> _fullyOptimizedFileHashes = new HashSet<string>();
         private readonly string _filePath;
