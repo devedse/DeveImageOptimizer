@@ -33,7 +33,7 @@ namespace DeveImageOptimizer.FileProcessing
             return val;
         }
 
-        private async Task DetectIfDirectoryIsCompleteAndThenAddToDirState(Dictionary<string, int> filesProcessedPerDirectoryCounter, FileAndCountOfFilesInDirectory file, OptimizedFileResult optimizedFileResult)
+        private async Task DetectIfDirectoryIsCompleteAndThenAddToDirState(Dictionary<string, int> filesProcessedPerDirectoryCounter, FileAndCountOfFilesInDirectory file, OptimizableFile optimizedFileResult)
         {
             if (optimizedFileResult.OptimizationResult == OptimizationResult.Success || optimizedFileResult.OptimizationResult == OptimizationResult.Skipped)
             {
@@ -45,9 +45,9 @@ namespace DeveImageOptimizer.FileProcessing
             }
         }
 
-        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectory(string directory)
+        public async Task<IEnumerable<OptimizableFile>> ProcessDirectory(string directory)
         {
-            var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
+            var optimizedFileResultsForThisDirectory = new List<OptimizableFile>();
             var filesProcessedPerDirectoryCounter = new Dictionary<string, int>();
 
             var files = FileHelperMethods.RecurseFiles(directory, FileTypeHelper.IsValidImageFile);
@@ -70,9 +70,9 @@ namespace DeveImageOptimizer.FileProcessing
             return optimizedFileResultsForThisDirectory;
         }
 
-        public async Task<IEnumerable<OptimizedFileResult>> ProcessDirectoryParallel(string directory, int maxDegreeOfParallelism = 4)
+        public async Task<IEnumerable<OptimizableFile>> ProcessDirectoryParallel(string directory, int maxDegreeOfParallelism = 4)
         {
-            var optimizedFileResultsForThisDirectory = new List<OptimizedFileResult>();
+            var optimizedFileResultsForThisDirectory = new List<OptimizableFile>();
             var filesProcessedPerDirectoryCounter = new Dictionary<string, int>();
 
             var processFileBlock = new TransformBlock<FileAndCountOfFilesInDirectory, OptimizedFileResultAndOriginalFile>(async file =>
@@ -132,29 +132,29 @@ namespace DeveImageOptimizer.FileProcessing
             return optimizedFileResultsForThisDirectory;
         }
 
-        private async Task<OptimizedFileResult> ProcessFile(string file, string originDirectory)
+        private async Task<OptimizableFile> ProcessFile(string file, string originDirectory)
         {
             Console.WriteLine();
+            var fileSize = new FileInfo(file).Length;
+            var optimizableFile = new OptimizableFile(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), fileSize);
+
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
-                var optimizedFileResult = await _fileOptimizer.OptimizeFile(file, originDirectory);
+                await _fileOptimizer.OptimizeFile(optimizableFile);
 
                 //If the file is successfully optimized add it to the list of optimized files so it can be skipped next time
-                if (optimizedFileResult.OptimizationResult == OptimizationResult.Success)
+                if (optimizableFile.OptimizationResult == OptimizationResult.Success)
                 {
-                    await _fileProcessedState.AddFullyOptimizedFile(optimizedFileResult.Path);
+                    await _fileProcessedState.AddFullyOptimizedFile(optimizableFile.Path);
                 }
-
-                return optimizedFileResult;
             }
             else
             {
                 Console.WriteLine($"=== Skipping because already optimized: {file} ===");
 
-                var fileSize = new FileInfo(file).Length;
-                var skippedFile = new OptimizedFileResult(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), OptimizationResult.Skipped, fileSize, fileSize, TimeSpan.Zero, new List<string>());
-                return skippedFile;
+                optimizableFile.SetSkipped();
             }
+            return optimizableFile;
         }
     }
 }

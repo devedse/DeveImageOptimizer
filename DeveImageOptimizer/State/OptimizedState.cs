@@ -2,6 +2,7 @@
 {
     public enum OptimizationResult
     {
+        InProgress,
         Success,
         Skipped,
         Failed

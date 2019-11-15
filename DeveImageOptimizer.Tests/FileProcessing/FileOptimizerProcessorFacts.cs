@@ -232,9 +232,11 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             try
             {
-                var result = await fop.OptimizeFile(image1temppath, null);
+                var fileToOptimize = new OptimizableFile(image1temppath, null, new FileInfo(image1temppath).Length);
 
-                Assert.Equal(OptimizationResult.Success, result.OptimizationResult);
+                await fop.OptimizeFile(fileToOptimize);
+
+                Assert.Equal(OptimizationResult.Success, fileToOptimize.OptimizationResult);
 
                 var fileOptimized = new FileInfo(image1temppath);
                 var fileUnoptimized = new FileInfo(image1path);

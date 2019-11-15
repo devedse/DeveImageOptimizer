@@ -2,6 +2,6 @@
 {
     public interface IFilesProcessedListener
     {
-        void AddProcessedFile(OptimizedFileResult optimizedFileResult);
+        void AddProcessedFile(OptimizableFile optimizedFileResult);
     }
 }

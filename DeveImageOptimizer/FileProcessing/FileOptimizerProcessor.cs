@@ -43,11 +43,9 @@ namespace DeveImageOptimizer.FileProcessing
             Directory.CreateDirectory(_failedFilesDirectory);
         }
 
-        public async Task<OptimizedFileResult> OptimizeFile(string fileToOptimize, string originDirectory)
+        public async Task OptimizeFile(OptimizableFile file)
         {
             var w = Stopwatch.StartNew();
-
-            long originalFileSize = new FileInfo(fileToOptimize).Length;
 
             var tempFiles = new List<string>();
 
@@ -55,13 +53,13 @@ namespace DeveImageOptimizer.FileProcessing
 
             try
             {
-                Console.WriteLine($"=== Optimizing image: {fileToOptimize} ===");
+                Console.WriteLine($"=== Optimizing image: {file.Path} ===");
 
-                var fileName = Path.GetFileName(fileToOptimize);
+                var fileName = Path.GetFileName(file.Path);
                 var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
                 tempFiles.Add(tempFilePath);
 
-                await AsyncFileHelper.CopyFileAsync(fileToOptimize, tempFilePath, true);
+                await AsyncFileHelper.CopyFileAsync(file.Path, tempFilePath, true);
 
                 Orientation? jpegFileOrientation = null;
                 bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
@@ -97,7 +95,7 @@ namespace DeveImageOptimizer.FileProcessing
                     await ExifImageRotator.RerotateImageAsync(tempFilePath, jpegFileOrientation);
                 }
 
-                var imagesEqual = await ImageComparer.AreImagesEqualAsync(fileToOptimize, tempFilePath);
+                var imagesEqual = await ImageComparer.AreImagesEqualAsync(file.Path, tempFilePath);
 
                 if (!imagesEqual)
                 {
@@ -105,14 +103,14 @@ namespace DeveImageOptimizer.FileProcessing
                 }
 
                 var newSize = new FileInfo(tempFilePath).Length;
-                if (newSize > originalFileSize)
+                if (newSize > file.OriginalSize)
                 {
-                    errors.Add($"Result image size is bigger then original. Original: {originalFileSize}, NewSize: {newSize}");
+                    errors.Add($"Result image size is bigger then original. Original: {file.OriginalSize}, NewSize: {newSize}");
                 }
 
-                if (errors.Count == 0 && newSize < originalFileSize)
+                if (errors.Count == 0 && newSize < file.OriginalSize)
                 {
-                    await AsyncFileHelper.CopyFileAsync(tempFilePath, fileToOptimize, true);
+                    await AsyncFileHelper.CopyFileAsync(tempFilePath, file.Path, true);
                 }
                 else if (errors.Count != 0)
                 {
@@ -143,21 +141,22 @@ namespace DeveImageOptimizer.FileProcessing
 
             w.Stop();
             //The fileToOptimize has been overwritten by the optimized file, so this is the optimized file size.
-            long optimizedFileSize = new FileInfo(fileToOptimize).Length;
+            long optimizedFileSize = new FileInfo(file.Path).Length;
 
-            var optimizedFileResult = new OptimizedFileResult(fileToOptimize, RelativePathFinderHelper.GetRelativePath(originDirectory, fileToOptimize), errors.Count == 0 ? OptimizationResult.Success : OptimizationResult.Failed, originalFileSize, optimizedFileSize, w.Elapsed, errors);
-
-            if (errors.Any())
+            if (errors.Count == 0)
+            {
+                file.SetSuccess(optimizedFileSize, w.Elapsed);
+            }
+            else
             {
                 Console.WriteLine("Errors:");
                 foreach (var error in errors)
                 {
                     Console.WriteLine($"\tError: {error}");
                 }
+                file.SetFailed(w.Elapsed, errors);
             }
-            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {optimizedFileResult.OptimizationResult}. Bytes saved: {ValuesToStringHelper.BytesToString(optimizedFileResult.OriginalSize - optimizedFileResult.OptimizedSize)}");
-
-            return optimizedFileResult;
+            Console.WriteLine($"Image optimization completed in {w.Elapsed}. Result: {file.OptimizationResult}. Bytes saved: {ValuesToStringHelper.BytesToString(file.OriginalSize - file.OptimizedSize)}");
         }
     }
 }
