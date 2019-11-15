@@ -55,10 +55,6 @@ namespace DeveImageOptimizer.FileProcessing
             foreach (var file in files)
             {
                 var optimizedFileResult = await ProcessFile(file.FilePath, directory);
-                if (_fileProcessedListener != null)
-                {
-                    _fileProcessedListener.AddProcessedFile(optimizedFileResult);
-                }
 
                 optimizedFileResultsForThisDirectory.Add(optimizedFileResult);
 
@@ -92,10 +88,6 @@ namespace DeveImageOptimizer.FileProcessing
 
             var putInListBlock = new ActionBlock<OptimizedFileResultAndOriginalFile>(async t =>
             {
-                if (_fileProcessedListener != null)
-                {
-                    _fileProcessedListener.AddProcessedFile(t.OptimizedFileResult);
-                }
                 optimizedFileResultsForThisDirectory.Add(t.OptimizedFileResult);
 
                 await DetectIfDirectoryIsCompleteAndThenAddToDirState(filesProcessedPerDirectoryCounter, t.FileAndCountOfFilesInDirectory, t.OptimizedFileResult);
@@ -137,6 +129,7 @@ namespace DeveImageOptimizer.FileProcessing
             Console.WriteLine();
             var fileSize = new FileInfo(file).Length;
             var optimizableFile = new OptimizableFile(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), fileSize);
+            _fileProcessedListener.AddProcessedFile(optimizableFile);
 
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
@@ -153,6 +146,11 @@ namespace DeveImageOptimizer.FileProcessing
                 Console.WriteLine($"=== Skipping because already optimized: {file} ===");
 
                 optimizableFile.SetSkipped();
+            }
+
+            if (_fileProcessedListener != null)
+            {
+                _fileProcessedListener.AddProcessedFile(optimizableFile);
             }
             return optimizableFile;
         }
