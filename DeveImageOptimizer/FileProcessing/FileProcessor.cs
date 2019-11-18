@@ -129,7 +129,8 @@ namespace DeveImageOptimizer.FileProcessing
             Console.WriteLine();
             var fileSize = new FileInfo(file).Length;
             var optimizableFile = new OptimizableFile(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), fileSize);
-            _fileProcessedListener.AddProcessedFile(optimizableFile);
+
+            _fileProcessedListener?.AddProcessedFile(optimizableFile);
 
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
@@ -148,10 +149,8 @@ namespace DeveImageOptimizer.FileProcessing
                 optimizableFile.SetSkipped();
             }
 
-            if (_fileProcessedListener != null)
-            {
-                _fileProcessedListener.AddProcessedFile(optimizableFile);
-            }
+            _fileProcessedListener?.AddProcessedFile(optimizableFile);
+
             return optimizableFile;
         }
     }
