@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State.StoringProcessedDirectories
 {
-    public class DirProcessedStateRememberer : IDirProcessedState
+    public class DirProcessedStateRememberer : IDirProcessedState, IDisposable
     {
         public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly ConcurrentHashSet<string> _fullyOptimizedDirectories = new ConcurrentHashSet<string>();
         private readonly string _filePath;
+
+        private StreamWriter writer;
 
         public DirProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
         {
@@ -43,34 +45,31 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
                     }
                 }
             }
+
+            writer = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read));
+            writer.BaseStream.Seek(0, SeekOrigin.End);
         }
 
-        public async Task AddFullyOptimizedDirectory(string path)
+        public Task AddFullyOptimizedDirectory(string path)
         {
             var itemNewlyCreated = _fullyOptimizedDirectories.TryAdd(path.ToLowerInvariant());
             if (itemNewlyCreated)
             {
-                await SaveToFile();
+                AppendToFile(path);
             }
+
+            return Task.CompletedTask;
         }
 
         private readonly object _saveFileLockject = new object();
 
-        private Task SaveToFile()
+        private void AppendToFile(string path)
         {
-            return Task.Run(() =>
+            lock (_saveFileLockject)
             {
-                lock (_saveFileLockject)
-                {
-                    using (var streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
-                    {
-                        foreach (var curDirPath in _fullyOptimizedDirectories)
-                        {
-                            streamWriter.WriteLine(curDirPath);
-                        }
-                    }
-                }
-            });
+                writer.WriteLine($"{path}");
+                writer.Flush();
+            }
         }
 
         public bool ShouldOptimizeFileInDirectory(string path)
@@ -88,6 +87,14 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
             }
             Console.WriteLine($"Directory {dirPath} is already optimized.");
             return false;
+        }
+
+        public void Dispose()
+        {
+            if (writer != null)
+            {
+                writer.Dispose();
+            }
         }
     }
 }
