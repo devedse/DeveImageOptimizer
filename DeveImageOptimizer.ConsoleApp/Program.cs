@@ -28,13 +28,13 @@ namespace DeveImageOptimizer.ConsoleApp
 
             var fop = new FileOptimizerProcessor(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe");
             var fileProcessedListener = new FileProcessedListener();
-            using (var rememberer = new FileProcessedStateRememberer(true))
-            {
-                var dirRememberer = new DirProcessedStateRememberer(true);
-                var fp = new FileProcessor(fop, fileProcessedListener, rememberer, dirRememberer);
 
-                await fp.ProcessDirectoryParallel(dirrr, 4);
-            }
+            var rememberer = new FileProcessedStateRememberer(true);
+            var dirRememberer = new DirProcessedStateRememberer(true);
+
+            var fp = new FileProcessor(fop, fileProcessedListener, rememberer, dirRememberer);
+
+            await fp.ProcessDirectoryParallel(dirrr, 4);
         }
     }
 }
