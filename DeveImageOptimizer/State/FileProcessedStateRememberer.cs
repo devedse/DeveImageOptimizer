@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
 {
-    public class FileProcessedStateRememberer : IFileProcessedState, IDisposable
+    public class FileProcessedStateRememberer : IFileProcessedState
     {
         public bool ShouldAlwaysOptimize { get; set; }
 
         private readonly ConcurrentDictionary<string, ConcurrentHashSet<string>> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, ConcurrentHashSet<string>>();
         private readonly string _filePath;
-
-        private StreamWriter writer;
 
         public FileProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
         {
@@ -64,8 +62,6 @@ namespace DeveImageOptimizer.State
                     }
                 }
             }
-
-            SaveAndCleanupProcessedFilesDataAndInitNewWriter();
         }
 
         public Task AddFullyOptimizedFile(string path)
@@ -91,8 +87,11 @@ namespace DeveImageOptimizer.State
         {
             lock (_saveFileLockject)
             {
-                writer.WriteLine($"{hash}|{fileName}");
-                writer.Flush();
+                using (var writer = new StreamWriter(new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read)))
+                {
+                    writer.BaseStream.Seek(0, SeekOrigin.End);
+                    writer.WriteLine($"{hash}|{fileName}");
+                }
             }
         }
 
@@ -112,37 +111,21 @@ namespace DeveImageOptimizer.State
             return false;
         }
 
-        public void Dispose()
-        {
-            if (writer != null)
-            {
-                writer.Dispose();
-            }
-        }
-
         public void SaveAndCleanupProcessedFilesDataAndInitNewWriter()
         {
             lock (_saveFileLockject)
             {
-                if (writer != null)
-                {
-                    writer.Dispose();
-                }
-
-                using (var streamWriter = new StreamWriter(new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read)))
+                using (var writer = new StreamWriter(new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read)))
                 {
                     foreach (var curhash in _fullyOptimizedFileHashes)
                     {
                         foreach (var file in curhash.Value)
                         {
                             var stringToWrite = $"{curhash.Key}|{file}";
-                            streamWriter.WriteLine(stringToWrite);
+                            writer.WriteLine(stringToWrite);
                         }
                     }
                 }
-
-                writer = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read));
-                writer.BaseStream.Seek(0, SeekOrigin.End);
             }
         }
     }
