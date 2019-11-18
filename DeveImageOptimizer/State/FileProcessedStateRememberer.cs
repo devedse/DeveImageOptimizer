@@ -87,7 +87,7 @@ namespace DeveImageOptimizer.State
         {
             lock (_saveFileLockject)
             {
-                using (var writer = new StreamWriter(new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.Read)))
+                using (var writer = new StreamWriter(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read)))
                 {
                     writer.BaseStream.Seek(0, SeekOrigin.End);
                     writer.WriteLine($"{hash}|{fileName}");
