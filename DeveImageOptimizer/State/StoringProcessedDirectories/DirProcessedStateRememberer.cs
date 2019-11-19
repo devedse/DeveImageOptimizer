@@ -47,10 +47,11 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
 
         public Task AddFullyOptimizedDirectory(string path)
         {
-            var itemNewlyCreated = _fullyOptimizedDirectories.TryAdd(path.ToLowerInvariant());
+            var lowerPath = path.ToLowerInvariant();
+            var itemNewlyCreated = _fullyOptimizedDirectories.TryAdd(lowerPath);
             if (itemNewlyCreated)
             {
-                AppendToFile(path);
+                AppendToFile(lowerPath);
             }
 
             return Task.CompletedTask;
