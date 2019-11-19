@@ -51,9 +51,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task CanReadThisPngCorrectly()
         {
-            Directory.CreateDirectory(FolderHelperMethods.Internal_TempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "vim16x16_1.png");
-            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "vim16x16output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempForTestDirectory.Value, "vim16x16output.png");
 
             try
             {
@@ -93,9 +92,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveThisImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.Internal_TempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "versioning-1_2.png");
-            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "versioning-1_2_output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempForTestDirectory.Value, "versioning-1_2_output.png");
 
             try
             {
@@ -138,9 +136,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveSnakeImage()
         {
-            Directory.CreateDirectory(FolderHelperMethods.Internal_TempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "snake.png");
-            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "snake_output.png");
+            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempForTestDirectory.Value, "snake_output.png");
 
             try
             {
@@ -183,9 +180,8 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task LoadAndSaveImageSharpImage2()
         {
-            Directory.CreateDirectory(FolderHelperMethods.Internal_TempDirectory.Value);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Imagesharp", "ResizeFromSourceRectangle_Rgba32_CalliphoraPartial.png");
-            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "Imagesharp2.png");
+            var outputImage = Path.Combine(FolderHelperMethods.Internal_TempForTestDirectory.Value, "Imagesharp2.png");
 
             try
             {
@@ -230,7 +226,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             var fileName = "Image2A.JPG";
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);

@@ -94,7 +94,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             }
 
 
-            var outputDir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TruePngInvestigation");
+            var outputDir = Path.Combine(FolderHelperMethods.Internal_TempForTestDirectory.Value, "TruePngInvestigation");
             Directory.CreateDirectory(outputDir);
 
             var tmpOutputFile = Path.Combine(outputDir, "truepnginvest.png");

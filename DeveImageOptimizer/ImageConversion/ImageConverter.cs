@@ -8,12 +8,10 @@ namespace DeveImageOptimizer.ImageConversion
     {
         public static string ConvertJpgToPngWithAutoRotate(string inputPath)
         {
-            Directory.CreateDirectory(FolderHelperMethods.Internal_TempDirectory.Value);
-
             string pathVips = DeveLibVipsNuget.LibVipsManager.ExtractAndGetVipsExeFile();
 
             var imageName = Path.GetFileNameWithoutExtension(inputPath);
-            var outPath = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
+            var outPath = Path.Combine(FolderHelperMethods.TempDirectory, RandomFileNameHelper.RandomizeFileName(imageName, "png"));
             string args = $"COPY \"{inputPath}\"[autorotate] \"{outPath}\"";
 
             var processStartInfo = new ProcessStartInfo(pathVips, args)

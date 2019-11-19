@@ -35,6 +35,8 @@ namespace DeveImageOptimizer.Helpers
         public static Lazy<string> Internal_TempDirectory { get; } = new Lazy<string>(() => EnsureExists(Path.Combine(Path.GetTempPath(), ConstantsAndConfig.TempDirectoryName)));
         public static Lazy<string> Internal_FailedFilesDirectory { get; } = new Lazy<string>(() => EnsureExists(Path.Combine(ConfigFolder, ConstantsAndConfig.FailedFilesDirectoryName)));
 
+        public static Lazy<string> Internal_TempForTestDirectory { get; } = new Lazy<string>(() => EnsureExists(Path.Combine(Internal_AssemblyDirectory.Value, "TempForTest")));
+
         private static string CreateAppDataFolder()
         {
             var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

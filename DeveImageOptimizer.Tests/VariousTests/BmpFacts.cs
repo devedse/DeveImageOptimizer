@@ -15,7 +15,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             var fileName = "SmileFaceBmp.bmp";
             var imagePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -52,7 +52,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             var fileName = "SmileFaceBmp2.bmp";
             var imagePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -89,7 +89,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             var fileName = "SmileFaceBmp.bmp";
             var imagePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);
@@ -111,7 +111,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         {
             var fileName = "SmileFaceBmp2.bmp";
             var imagePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var imageTempPath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName, "png"));
 
             Directory.CreateDirectory(tempfortestdir);

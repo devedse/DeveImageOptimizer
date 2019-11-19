@@ -7,7 +7,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
     {
         public static string PrepareTestOptimizeDir(string dirToOptimize, string fileNameFileProcessedStateRememberer, string fileNameDirProcessedStateRememberer, string testName)
         {
-            var tempfortestdir = Path.Combine(FolderHelperMethods.Internal_TempDirectory.Value, "TempForTest");
+            var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
             var sourceSampleDirToOptimize = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", dirToOptimize);
             var sampleDirToOptimize = Path.Combine(tempfortestdir, testName);
 
