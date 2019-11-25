@@ -1,7 +1,7 @@
 ﻿namespace DeveImageOptimizer.State
 {
-    public interface IFilesProcessedListener
+    public interface IProgressReporter
     {
-        void AddProcessedFile(OptimizableFile optimizedFileResult);
+        void OptimizableFileProgressUpdated(OptimizableFile optimizableFile);
     }
 }

@@ -13,16 +13,30 @@ namespace DeveImageOptimizer.FileProcessing
     public class FileProcessor
     {
         private readonly FileOptimizerProcessor _fileOptimizer;
-        private readonly IFilesProcessedListener _fileProcessedListener;
+        //private readonly IFilesProcessedListener _fileProcessedListener;
         private readonly IFileProcessedState _fileProcessedState;
         private readonly IDirProcessedState _dirProcessedState;
 
-        public FileProcessor(FileOptimizerProcessor fileOptimizer, IFilesProcessedListener fileProcessedListener, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
+        private readonly IProgress<OptimizableFile> _progress;
+
+        public FileProcessor(FileOptimizerProcessor fileOptimizer, IProgressReporter progressReporter, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
         {
             _fileOptimizer = fileOptimizer;
-            _fileProcessedListener = fileProcessedListener;
+            //_fileProcessedListener = fileProcessedListener;
             _fileProcessedState = fileProcessedState;
             _dirProcessedState = dirProcessedState;
+
+            var progress = new Progress<OptimizableFile>();
+
+            if (progressReporter != null)
+            {
+                progress.ProgressChanged += (sender, e) =>
+                {
+                    progressReporter.OptimizableFileProgressUpdated(e);
+                };
+            }
+
+            _progress = progress;
         }
 
         public static int IncreaseCountInDict(Dictionary<string, int> dict, string key)
@@ -82,7 +96,7 @@ namespace DeveImageOptimizer.FileProcessing
             }, new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = maxDegreeOfParallelism,
-                BoundedCapacity = 10,
+                BoundedCapacity = maxDegreeOfParallelism * 2,
                 EnsureOrdered = false
             });
 
@@ -130,7 +144,7 @@ namespace DeveImageOptimizer.FileProcessing
             var fileSize = new FileInfo(file).Length;
             var optimizableFile = new OptimizableFile(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), fileSize);
 
-            _fileProcessedListener?.AddProcessedFile(optimizableFile);
+            _progress.Report(optimizableFile);
 
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
@@ -149,7 +163,7 @@ namespace DeveImageOptimizer.FileProcessing
                 optimizableFile.SetSkipped();
             }
 
-            _fileProcessedListener?.AddProcessedFile(optimizableFile);
+            _progress.Report(optimizableFile);
 
             return optimizableFile;
         }
