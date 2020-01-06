@@ -26,13 +26,12 @@ namespace DeveImageOptimizer.ConsoleApp
 
             var dirrr = @"C:\KanWeg";
 
-            var fop = new FileOptimizerProcessor(@"C:\Program Files\FileOptimizer\FileOptimizer64.exe");
             var fileProcessedListener = new ConsoleProgressReporter();
 
             var rememberer = new FileProcessedStateRememberer(true);
             var dirRememberer = new DirProcessedStateRememberer(true);
 
-            var fp = new FileProcessor(fop, fileProcessedListener, rememberer, dirRememberer);
+            var fp = new DeveImageOptimizerProcessor(new DeveImageOptimizerConfiguration(), fileProcessedListener, rememberer, dirRememberer);
 
             await fp.ProcessDirectoryParallel(dirrr, 4);
         }

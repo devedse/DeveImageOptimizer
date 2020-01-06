@@ -10,7 +10,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace DeveImageOptimizer.FileProcessing
 {
-    public class FileProcessor
+    public class DeveImageOptimizerProcessor
     {
         private readonly FileOptimizerProcessor _fileOptimizer;
         //private readonly IFilesProcessedListener _fileProcessedListener;
@@ -19,9 +19,9 @@ namespace DeveImageOptimizer.FileProcessing
 
         private readonly IProgress<OptimizableFile> _progress;
 
-        public FileProcessor(FileOptimizerProcessor fileOptimizer, IProgressReporter progressReporter, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
+        public DeveImageOptimizerProcessor(DeveImageOptimizerConfiguration configuration, IProgressReporter progressReporter, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
         {
-            _fileOptimizer = fileOptimizer;
+            _fileOptimizer = new FileOptimizerProcessor(configuration);
             //_fileProcessedListener = fileProcessedListener;
             _fileProcessedState = fileProcessedState;
             _dirProcessedState = dirProcessedState;

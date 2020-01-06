@@ -5,42 +5,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.FileProcessing
 {
     public class FileOptimizerProcessor
     {
-        private readonly string _pathToFileOptimizer;
-        private readonly string _tempDirectory;
-        private readonly string _failedFilesDirectory;
-        private readonly bool _shouldShowFileOptimizerWindow;
-        private readonly bool _saveFailedOptimizedFile;
+        public DeveImageOptimizerConfiguration Configuration { get; }
 
         private readonly string _fileOptimizerOptions;
 
-        public FileOptimizerProcessor(string pathToFileOptimizer, string tempDirectory = null, string failedFilesDirectory = null, bool shouldShowFileOptimizerWindow = false, int logLevel = 2, bool saveFailedOptimizedFile = false)
+        public FileOptimizerProcessor(DeveImageOptimizerConfiguration configuration)
         {
-            _pathToFileOptimizer = pathToFileOptimizer;
-            _tempDirectory = tempDirectory;
-            _failedFilesDirectory = failedFilesDirectory;
-            _shouldShowFileOptimizerWindow = shouldShowFileOptimizerWindow;
-            _saveFailedOptimizedFile = saveFailedOptimizedFile;
+            Configuration = configuration;
 
-            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(logLevel);
+            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel);
 
-            if (string.IsNullOrWhiteSpace(_tempDirectory))
-            {
-                _tempDirectory = FolderHelperMethods.TempDirectory;
-            }
-            if (string.IsNullOrWhiteSpace(_failedFilesDirectory))
-            {
-                _failedFilesDirectory = FolderHelperMethods.FailedFilesDirectory;
-            }
-
-            Directory.CreateDirectory(_tempDirectory);
-            Directory.CreateDirectory(_failedFilesDirectory);
+            Directory.CreateDirectory(Configuration.TempDirectory);
+            Directory.CreateDirectory(Configuration.FailedFilesDirectory);
         }
 
         public async Task OptimizeFile(OptimizableFile file)
@@ -56,7 +38,7 @@ namespace DeveImageOptimizer.FileProcessing
                 Console.WriteLine($"=== Optimizing image: {file.Path} ===");
 
                 var fileName = Path.GetFileName(file.Path);
-                var tempFilePath = Path.Combine(_tempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
+                var tempFilePath = Path.Combine(Configuration.TempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
                 tempFiles.Add(tempFilePath);
 
                 await AsyncFileHelper.CopyFileAsync(file.Path, tempFilePath, true);
@@ -75,8 +57,8 @@ namespace DeveImageOptimizer.FileProcessing
                 //{
                 //    args = $"/NoWindow {args}";
                 //}
-                var processStartInfo = new ProcessStartInfo(_pathToFileOptimizer, $" {args} \"{tempFilePath}\"");
-                if (!_shouldShowFileOptimizerWindow)
+                var processStartInfo = new ProcessStartInfo(Configuration.FileOptimizerPath, $" {args} \"{tempFilePath}\"");
+                if (Configuration.HideFileOptimizerWindow)
                 {
                     processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     processStartInfo.UseShellExecute = true;
@@ -114,9 +96,9 @@ namespace DeveImageOptimizer.FileProcessing
                 }
                 else if (errors.Count != 0)
                 {
-                    if (_saveFailedOptimizedFile)
+                    if (Configuration.SaveFailedFiles)
                     {
-                        var newFilePath = Path.Combine(_failedFilesDirectory, fileName);
+                        var newFilePath = Path.Combine(Configuration.FailedFilesDirectory, fileName);
 
                         //Write a file as FailedFiles\Blah.png
                         await AsyncFileHelper.CopyFileAsync(tempFilePath, newFilePath, true);
