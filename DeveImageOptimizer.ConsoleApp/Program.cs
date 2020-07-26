@@ -1,5 +1,4 @@
 ﻿using DeveImageOptimizer.FileProcessing;
-using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
@@ -20,10 +19,6 @@ namespace DeveImageOptimizer.ConsoleApp
 
         public static async Task MainAsync(string[] args)
         {
-
-            var aaa = FolderHelperMethods.Internal_AppDataFolder.Value;
-
-
             var dirrr = @"C:\KanWeg";
 
             var fileProcessedListener = new ConsoleProgressReporter();
@@ -31,9 +26,14 @@ namespace DeveImageOptimizer.ConsoleApp
             var rememberer = new FileProcessedStateRememberer(true);
             var dirRememberer = new DirProcessedStateRememberer(true);
 
-            var fp = new DeveImageOptimizerProcessor(new DeveImageOptimizerConfiguration(), fileProcessedListener, rememberer, dirRememberer);
+            var config = new DeveImageOptimizerConfiguration()
+            {
+                ExecuteImageOptimizationParallel = true
+            };
 
-            await fp.ProcessDirectoryParallel(dirrr, 4);
+            var fp = new DeveImageOptimizerProcessor(config, fileProcessedListener, rememberer, dirRememberer);
+
+            await fp.ProcessDirectory(dirrr);
         }
     }
 }
