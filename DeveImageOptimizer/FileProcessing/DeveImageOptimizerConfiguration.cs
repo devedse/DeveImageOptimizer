@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using System;
 
 namespace DeveImageOptimizer.FileProcessing
 {
@@ -13,7 +14,7 @@ namespace DeveImageOptimizer.FileProcessing
         public bool SaveFailedFiles { get; set; } = false;
 
         public bool ExecuteImageOptimizationParallel { get; set; } = true;
-        public int MaxDegreeOfParallelism { get; set; } = 4;
+        public int MaxDegreeOfParallelism { get; set; } = Environment.ProcessorCount;
 
         /// <summary>
         /// The log level passed to FileOptimizerFull
