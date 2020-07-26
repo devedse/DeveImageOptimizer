@@ -25,5 +25,11 @@ namespace DeveImageOptimizer.FileProcessing
         /// This loops through all the files first to ensure we get a total filecount before starting the optimization
         /// </summary>
         public bool DetermineCountFilesBeforehand { get; set; } = false;
+
+        /// <summary>
+        /// By default it uses the synchronisationcontext for progress reporting. However in some scenario's you want to make sure that progress reporting
+        /// completes before the image optimization process is finished. That's when you should put this to true.
+        /// </summary>
+        public bool AwaitProgressReporting { get; set; } = false;
     }
 }

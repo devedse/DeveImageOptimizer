@@ -20,8 +20,8 @@ namespace DeveImageOptimizer.FileProcessing
         private readonly IFileProcessedState _fileProcessedState;
         private readonly IDirProcessedState _dirProcessedState;
 
-        private readonly IProgress<OptimizableFile> _progress;
-        private readonly IProgress<int> _progressCountTotalFiles;
+        private readonly DeveProgressReporter<OptimizableFile> _progress;
+        private readonly DeveProgressReporter<int> _progressCountTotalFiles;
 
         public DeveImageOptimizerProcessor(DeveImageOptimizerConfiguration configuration, IProgressReporter progressReporter, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
         {
@@ -34,21 +34,13 @@ namespace DeveImageOptimizer.FileProcessing
             var progress = new Progress<OptimizableFile>();
             var progressCountTotalFiles = new Progress<int>();
 
+
+
             if (progressReporter != null)
             {
-                progress.ProgressChanged += (sender, e) =>
-                {
-                    progressReporter.OptimizableFileProgressUpdated(e);
-                };
-
-                progressCountTotalFiles.ProgressChanged += (sender, e) =>
-                {
-                    progressReporter.TotalFileCountDiscovered(e);
-                };
+                _progress = new DeveProgressReporter<OptimizableFile>(progressReporter.OptimizableFileProgressUpdated, configuration.AwaitProgressReporting);
+                _progressCountTotalFiles = new DeveProgressReporter<int>(progressReporter.TotalFileCountDiscovered, configuration.AwaitProgressReporting);
             }
-
-            _progress = progress;
-            _progressCountTotalFiles = progressCountTotalFiles;
         }
 
         public static int IncreaseCountInDict(Dictionary<string, int> dict, string key)
@@ -93,7 +85,7 @@ namespace DeveImageOptimizer.FileProcessing
             if (_configuration.DetermineCountFilesBeforehand)
             {
                 var tempFiles = files.ToList();
-                _progressCountTotalFiles.Report(tempFiles.Count);
+                await _progressCountTotalFiles.Report(tempFiles.Count);
                 files = tempFiles;
             }
 
@@ -110,7 +102,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (!_configuration.DetermineCountFilesBeforehand)
             {
-                _progressCountTotalFiles.Report(fileCount);
+                await _progressCountTotalFiles.Report(fileCount);
             }
 
             Console.WriteLine($"Optimization of directory {directory} completed.");
@@ -157,7 +149,7 @@ namespace DeveImageOptimizer.FileProcessing
             if (_configuration.DetermineCountFilesBeforehand)
             {
                 var tempFiles = files.ToList();
-                _progressCountTotalFiles.Report(tempFiles.Count);
+                await _progressCountTotalFiles.Report(tempFiles.Count);
                 files = tempFiles;
             }
 
@@ -179,7 +171,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (!_configuration.DetermineCountFilesBeforehand)
             {
-                _progressCountTotalFiles.Report(fileCount);
+                await _progressCountTotalFiles.Report(fileCount);
             }
 
             Console.WriteLine("Completing");
@@ -197,7 +189,7 @@ namespace DeveImageOptimizer.FileProcessing
             var fileSize = new FileInfo(file).Length;
             var optimizableFile = new OptimizableFile(file, RelativePathFinderHelper.GetRelativePath(originDirectory, file), fileSize);
 
-            _progress.Report(optimizableFile);
+            await _progress.Report(optimizableFile);
 
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
             {
@@ -216,7 +208,7 @@ namespace DeveImageOptimizer.FileProcessing
                 optimizableFile.SetSkipped();
             }
 
-            _progress.Report(optimizableFile);
+            await _progress.Report(optimizableFile);
 
             return optimizableFile;
         }

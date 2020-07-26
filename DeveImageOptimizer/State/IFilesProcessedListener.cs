@@ -1,8 +1,10 @@
-﻿namespace DeveImageOptimizer.State
+﻿using System.Threading.Tasks;
+
+namespace DeveImageOptimizer.State
 {
     public interface IProgressReporter
     {
-        void TotalFileCountDiscovered(int count);
-        void OptimizableFileProgressUpdated(OptimizableFile optimizableFile);
+        Task TotalFileCountDiscovered(int count);
+        Task OptimizableFileProgressUpdated(OptimizableFile optimizableFile);
     }
 }
