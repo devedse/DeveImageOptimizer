@@ -8,12 +8,12 @@ namespace DeveImageOptimizer.ConsoleApp
     {
         public void OptimizableFileProgressUpdated(OptimizableFile optimizableFile)
         {
-            Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId}: {optimizableFile}");
+            Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} File Optimized: {optimizableFile}");
         }
 
         public void TotalFileCountDiscovered(int count)
         {
-            Console.WriteLine($"Total file count: {count}");
+            Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} Total file count: {count}");
         }
     }
 }
