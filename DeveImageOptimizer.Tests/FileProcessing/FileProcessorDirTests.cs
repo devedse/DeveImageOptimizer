@@ -112,7 +112,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -140,7 +140,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -156,7 +156,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
                 Assert.Equal(4, results.Count);
                 foreach (var result in results)
@@ -184,7 +184,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
                 Assert.Equal(2, results.Count);
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
@@ -197,7 +197,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
                 var dirRememberer = new DirProcessedStateRememberer(false, fileNameDirProcessedStateRememberer);
                 var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
 
-                var results = (await fp.ProcessDirectoryParallel(sampleDirToOptimize, TestConstants.MaxDegreeOfParallelism)).ToList();
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
 
                 Assert.Equal(2, results.Count);
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));

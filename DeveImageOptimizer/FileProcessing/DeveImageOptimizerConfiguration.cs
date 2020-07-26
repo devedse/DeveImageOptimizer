@@ -15,6 +15,14 @@ namespace DeveImageOptimizer.FileProcessing
         public bool ExecuteImageOptimizationParallel { get; set; } = true;
         public int MaxDegreeOfParallelism { get; set; } = 4;
 
+        /// <summary>
+        /// The log level passed to FileOptimizerFull
+        /// </summary>
         public int LogLevel { get; set; } = 2;
+
+        /// <summary>
+        /// This loops through all the files first to ensure we get a total filecount before starting the optimization
+        /// </summary>
+        public bool DetermineCountFilesBeforehand { get; set; } = false;
     }
 }

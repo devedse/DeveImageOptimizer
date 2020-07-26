@@ -10,5 +10,10 @@ namespace DeveImageOptimizer.ConsoleApp
         {
             Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId}: {optimizableFile}");
         }
+
+        public void TotalFileCountDiscovered(int count)
+        {
+            Console.WriteLine($"Total file count: {count}");
+        }
     }
 }

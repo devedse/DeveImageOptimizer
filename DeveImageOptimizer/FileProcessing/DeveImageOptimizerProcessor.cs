@@ -5,6 +5,7 @@ using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -13,20 +14,25 @@ namespace DeveImageOptimizer.FileProcessing
     public class DeveImageOptimizerProcessor
     {
         private readonly FileOptimizerProcessor _fileOptimizer;
+        private readonly DeveImageOptimizerConfiguration _configuration;
+
         //private readonly IFilesProcessedListener _fileProcessedListener;
         private readonly IFileProcessedState _fileProcessedState;
         private readonly IDirProcessedState _dirProcessedState;
 
         private readonly IProgress<OptimizableFile> _progress;
+        private readonly IProgress<int> _progressCountTotalFiles;
 
         public DeveImageOptimizerProcessor(DeveImageOptimizerConfiguration configuration, IProgressReporter progressReporter, IFileProcessedState fileProcessedState, IDirProcessedState dirProcessedState)
         {
             _fileOptimizer = new FileOptimizerProcessor(configuration);
+            _configuration = configuration;
             //_fileProcessedListener = fileProcessedListener;
             _fileProcessedState = fileProcessedState;
             _dirProcessedState = dirProcessedState;
 
             var progress = new Progress<OptimizableFile>();
+            var progressCountTotalFiles = new Progress<int>();
 
             if (progressReporter != null)
             {
@@ -34,9 +40,15 @@ namespace DeveImageOptimizer.FileProcessing
                 {
                     progressReporter.OptimizableFileProgressUpdated(e);
                 };
+
+                progressCountTotalFiles.ProgressChanged += (sender, e) =>
+                {
+                    progressReporter.TotalFileCountDiscovered(e);
+                };
             }
 
             _progress = progress;
+            _progressCountTotalFiles = progressCountTotalFiles;
         }
 
         public static int IncreaseCountInDict(Dictionary<string, int> dict, string key)
@@ -59,15 +71,36 @@ namespace DeveImageOptimizer.FileProcessing
             }
         }
 
-        public async Task<IEnumerable<OptimizableFile>> ProcessDirectory(string directory)
+        public Task<IEnumerable<OptimizableFile>> ProcessDirectory(string directory)
+        {
+            if (!_configuration.ExecuteImageOptimizationParallel)
+            {
+                return ProcessDirectorySingleThreaded(directory);
+            }
+            else
+            {
+                return ProcessDirectoryParallel(directory);
+            }
+        }
+
+        private async Task<IEnumerable<OptimizableFile>> ProcessDirectorySingleThreaded(string directory)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizableFile>();
             var filesProcessedPerDirectoryCounter = new Dictionary<string, int>();
 
             var files = FileHelperMethods.RecurseFiles(directory, FileTypeHelper.IsValidImageFile);
 
+            if (_configuration.DetermineCountFilesBeforehand)
+            {
+                var tempFiles = files.ToList();
+                _progressCountTotalFiles.Report(tempFiles.Count);
+                files = tempFiles;
+            }
+
+            int fileCount = 0;
             foreach (var file in files)
             {
+                fileCount++;
                 var optimizedFileResult = await ProcessFile(file.FilePath, directory);
 
                 optimizedFileResultsForThisDirectory.Add(optimizedFileResult);
@@ -75,12 +108,17 @@ namespace DeveImageOptimizer.FileProcessing
                 await DetectIfDirectoryIsCompleteAndThenAddToDirState(filesProcessedPerDirectoryCounter, file, optimizedFileResult);
             }
 
+            if (!_configuration.DetermineCountFilesBeforehand)
+            {
+                _progressCountTotalFiles.Report(fileCount);
+            }
+
             Console.WriteLine($"Optimization of directory {directory} completed.");
 
             return optimizedFileResultsForThisDirectory;
         }
 
-        public async Task<IEnumerable<OptimizableFile>> ProcessDirectoryParallel(string directory, int maxDegreeOfParallelism = 4)
+        private async Task<IEnumerable<OptimizableFile>> ProcessDirectoryParallel(string directory)
         {
             var optimizedFileResultsForThisDirectory = new List<OptimizableFile>();
             var filesProcessedPerDirectoryCounter = new Dictionary<string, int>();
@@ -95,8 +133,8 @@ namespace DeveImageOptimizer.FileProcessing
                 };
             }, new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = maxDegreeOfParallelism,
-                BoundedCapacity = maxDegreeOfParallelism * 2,
+                MaxDegreeOfParallelism = _configuration.MaxDegreeOfParallelism,
+                BoundedCapacity = _configuration.MaxDegreeOfParallelism * 2,
                 EnsureOrdered = false
             });
 
@@ -115,10 +153,20 @@ namespace DeveImageOptimizer.FileProcessing
 
 
             var files = FileHelperMethods.RecurseFiles(directory, FileTypeHelper.IsValidImageFile);
+
+            if (_configuration.DetermineCountFilesBeforehand)
+            {
+                var tempFiles = files.ToList();
+                _progressCountTotalFiles.Report(tempFiles.Count);
+                files = tempFiles;
+            }
+
+            int fileCount = 0;
             await Task.Run(async () =>
             {
                 foreach (var file in files)
                 {
+                    fileCount++;
                     Console.WriteLine($"Posting: {Path.GetFileName(file.FilePath)}");
                     var result = await processFileBlock.SendAsync(file);
 
@@ -128,6 +176,11 @@ namespace DeveImageOptimizer.FileProcessing
                     }
                 }
             });
+
+            if (!_configuration.DetermineCountFilesBeforehand)
+            {
+                _progressCountTotalFiles.Report(fileCount);
+            }
 
             Console.WriteLine("Completing");
             processFileBlock.Complete();
