@@ -38,8 +38,8 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (progressReporter != null)
             {
-                _progress = new DeveProgressReporter<OptimizableFile>(progressReporter.OptimizableFileProgressUpdated, configuration.AwaitProgressReporting);
-                _progressCountTotalFiles = new DeveProgressReporter<int>(progressReporter.TotalFileCountDiscovered, configuration.AwaitProgressReporting);
+                _progress = new DeveProgressReporter<OptimizableFile>(progressReporter.OptimizableFileProgressUpdated, !configuration.AwaitProgressReporting);
+                _progressCountTotalFiles = new DeveProgressReporter<int>(progressReporter.TotalFileCountDiscovered, !configuration.AwaitProgressReporting);
             }
         }
 
