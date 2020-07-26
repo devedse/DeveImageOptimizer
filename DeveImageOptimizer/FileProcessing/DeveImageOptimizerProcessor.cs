@@ -16,7 +16,6 @@ namespace DeveImageOptimizer.FileProcessing
         private readonly FileOptimizerProcessor _fileOptimizer;
         private readonly DeveImageOptimizerConfiguration _configuration;
 
-        //private readonly IFilesProcessedListener _fileProcessedListener;
         private readonly IFileProcessedState _fileProcessedState;
         private readonly IDirProcessedState _dirProcessedState;
 
@@ -27,7 +26,6 @@ namespace DeveImageOptimizer.FileProcessing
         {
             _fileOptimizer = new FileOptimizerProcessor(configuration);
             _configuration = configuration;
-            //_fileProcessedListener = fileProcessedListener;
             _fileProcessedState = fileProcessedState;
             _dirProcessedState = dirProcessedState;
 
