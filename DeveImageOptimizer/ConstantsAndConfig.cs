@@ -64,7 +64,7 @@ namespace DeveImageOptimizer
             "/EnableCache=false " +
             "/Level=9 " +
             "/ProcessPriority=16384 " +
-            "/CheckForUpdates=1 " +
+            "/CheckForUpdates=0 " +
             "/LogLevel={LogLevel} " +
             "/FilenameFormat=0 " +
             "/LeanifyIterations=-1 " +
