@@ -157,7 +157,7 @@ namespace DeveImageOptimizer.FileProcessing
                 foreach (var file in files)
                 {
                     fileCount++;
-                    Console.WriteLine($"Posting: {Path.GetFileName(file.FilePath)}");
+                    //Console.WriteLine($"Posting: {Path.GetFileName(file.FilePath)}");
                     var result = await processFileBlock.SendAsync(file);
 
                     if (!result)

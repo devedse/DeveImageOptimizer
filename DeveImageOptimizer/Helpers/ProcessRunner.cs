@@ -9,7 +9,7 @@ namespace DeveImageOptimizer.Helpers
     {
         public static Task<int> RunProcessAsync(ProcessStartInfo processStartInfo)
         {
-            Console.WriteLine($"> {Path.GetFileName(processStartInfo.FileName)} {processStartInfo.Arguments}");
+            //Console.WriteLine($"> {Path.GetFileName(processStartInfo.FileName)} {processStartInfo.Arguments}");
 
             var tcs = new TaskCompletionSource<int>();
 
