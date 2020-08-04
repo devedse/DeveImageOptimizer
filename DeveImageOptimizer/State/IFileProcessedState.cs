@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using DeveImageOptimizer.ImageOptimization;
+using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
 {
     public interface IFileProcessedState
     {
-        bool ShouldOptimizeFile(string path);
-        Task AddFullyOptimizedFile(string path);
+        bool ShouldOptimizeFile(string path, ImageOptimizationLevel imageOptimizationLevel);
+        Task AddFullyOptimizedFile(string path, ImageOptimizationLevel imageOptimizationLevel);
     }
 }

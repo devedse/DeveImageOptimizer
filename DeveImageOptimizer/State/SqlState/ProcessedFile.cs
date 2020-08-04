@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using DeveImageOptimizer.ImageOptimization;
 
 namespace DeveImageOptimizer.State.SqlState
 {
@@ -6,6 +6,7 @@ namespace DeveImageOptimizer.State.SqlState
     {
         public int Id { get; set; }
         public string Hash { get; set; }
+        public int ImageOptimizationLevel { get; set; }
         public string FileNames { get; set; }
     }
 }

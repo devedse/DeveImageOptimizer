@@ -1,5 +1,7 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State.SqlState;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +36,7 @@ namespace DeveImageOptimizer.State
             return new ProcessedFilesDbContext(_filePath);
         }
 
-        public async Task AddFullyOptimizedFile(string path)
+        public async Task AddFullyOptimizedFile(string path, ImageOptimizationLevel imageOptimizationLevel)
         {
             var hash = Sha512HashCalculator.CalculateFileHash(path);
             var fileName = Path.GetFileName(path);
@@ -48,6 +50,7 @@ namespace DeveImageOptimizer.State
                     var newEntry = new ProcessedFile()
                     {
                         Hash = hash,
+                        ImageOptimizationLevel = (int)imageOptimizationLevel,
                         FileNames = fileName
                     };
                     dbContext.ProcessedFiles.Add(newEntry);
@@ -62,17 +65,30 @@ namespace DeveImageOptimizer.State
 
                     var fileNames = foundEntry.FileNames.Split("|", StringSplitOptions.RemoveEmptyEntries).ToList();
 
+                    bool shouldSave = false;
+
                     if (!fileNames.Contains(fileName))
                     {
                         fileNames.Add(fileName);
                         foundEntry.FileNames = string.Join("|", fileNames);
+                        shouldSave = true;
+                    }
+
+                    if (foundEntry.ImageOptimizationLevel < (int)imageOptimizationLevel)
+                    {
+                        foundEntry.ImageOptimizationLevel = (int)imageOptimizationLevel;
+                        shouldSave = true;
+                    }
+
+                    if (shouldSave)
+                    {
                         await dbContext.SaveChangesAsync();
                     }
                 }
             }
         }
 
-        public bool ShouldOptimizeFile(string path)
+        public bool ShouldOptimizeFile(string path, ImageOptimizationLevel imageOptimizationLevel)
         {
             if (ShouldAlwaysOptimize)
             {
@@ -82,7 +98,7 @@ namespace DeveImageOptimizer.State
             var hash = Sha512HashCalculator.CalculateFileHash(path);
             using (var dbContext = CreateDbContext())
             {
-                var foundEntry = dbContext.ProcessedFiles.FirstOrDefault(t => t.Hash == hash);
+                var foundEntry = dbContext.ProcessedFiles.FirstOrDefault(t => t.Hash == hash && t.ImageOptimizationLevel >= (int)imageOptimizationLevel);
                 if (foundEntry == null)
                 {
                     return true;

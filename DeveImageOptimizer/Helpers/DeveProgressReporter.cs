@@ -11,22 +11,28 @@ namespace DeveImageOptimizer.Helpers
 
         public DeveProgressReporter(Func<T, Task> reportProgress, bool useSynchronizationContext)
         {
-            _reportProgress = reportProgress;
             _useSynchronizationContext = useSynchronizationContext;
 
-            var progress = new Progress<T>(async (t) => await reportProgress(t));
-            _progress = progress;
+            if (reportProgress != null)
+            {
+                _reportProgress = reportProgress;
+                var progress = new Progress<T>(async (t) => await reportProgress(t));
+                _progress = progress;
+            }
         }
 
         public async Task Report(T value)
         {
-            if (_useSynchronizationContext)
+            if (_reportProgress != null)
             {
-                _progress.Report(value);
-            }
-            else
-            {
-                await _reportProgress(value);
+                if (_useSynchronizationContext)
+                {
+                    _progress.Report(value);
+                }
+                else
+                {
+                    await _reportProgress(value);
+                }
             }
         }
     }

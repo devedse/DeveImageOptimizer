@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOptimization;
 using System;
 
 namespace DeveImageOptimizer.FileProcessing
@@ -31,5 +32,15 @@ namespace DeveImageOptimizer.FileProcessing
         /// completes before the image optimization process is finished. That's when you should put this to true.
         /// </summary>
         public bool AwaitProgressReporting { get; set; } = false;
+
+        /// <summary>
+        /// This settings ensures the DeveImageOptimizer doesn't make use of FileOptimizerFull anymore. It calls the tool .exe files directly.
+        /// </summary>
+        public bool UseNewDeveImageOptimizer { get; set; } = false;
+
+        /// <summary>
+        /// Configure how strong the image compression should be. Only the levels 'Maximum' and 'Placebo' will 
+        /// </summary>
+        public ImageOptimizationLevel ImageOptimizationLevel { get; set; } = ImageOptimizationLevel.Maximum;
     }
 }

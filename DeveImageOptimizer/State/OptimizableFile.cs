@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeveImageOptimizer.ImageOptimization;
+using System;
 using System.Collections.Generic;
 
 namespace DeveImageOptimizer.State
@@ -17,6 +18,8 @@ namespace DeveImageOptimizer.State
 
         public List<string> Errors { get; } = new List<string>();
 
+        public ImageOptimizationLevel? ImageOptimizationLevel { get; set; }
+
         public OptimizableFile(string path, string relativepath, long originalSize)
         {
             Path = path;
@@ -25,11 +28,12 @@ namespace DeveImageOptimizer.State
             OptimizedSize = originalSize;
         }
 
-        public void SetSuccess(long optimizedFileSize, TimeSpan duration)
+        public void SetSuccess(long optimizedFileSize, TimeSpan duration, ImageOptimizationLevel imageOptimizationLevel)
         {
             OptimizationResult = OptimizationResult.Success;
             OptimizedSize = optimizedFileSize;
             Duration = duration;
+            ImageOptimizationLevel = imageOptimizationLevel;
         }
 
         public void SetFailed(TimeSpan duration, IEnumerable<string> errors)

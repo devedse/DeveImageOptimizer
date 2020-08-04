@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using ExifLibrary;
 using System;
@@ -13,19 +14,18 @@ namespace DeveImageOptimizer.FileProcessing
     {
         public DeveImageOptimizerConfiguration Configuration { get; }
 
-        private readonly string _fileOptimizerOptions;
 
         public FileOptimizerProcessor(DeveImageOptimizerConfiguration configuration)
         {
             Configuration = configuration;
 
-            _fileOptimizerOptions = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel);
+
 
             Directory.CreateDirectory(Configuration.TempDirectory);
             Directory.CreateDirectory(Configuration.FailedFilesDirectory);
         }
 
-        public async Task OptimizeFile(OptimizableFile file)
+        public async Task OptimizeFile(OptimizableFile file, ImageOptimizationLevel imageOptimizationLevel)
         {
             var w = Stopwatch.StartNew();
 
@@ -50,7 +50,7 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                var args = _fileOptimizerOptions;
+                var args = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel, imageOptimizationLevel);
 
                 //This next line should disable showing the window, but apparently it doesn't work yet as of version 13.50.2431
                 //if (!_shouldShowFileOptimizerWindow)
@@ -127,7 +127,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (errors.Count == 0)
             {
-                file.SetSuccess(optimizedFileSize, w.Elapsed);
+                file.SetSuccess(optimizedFileSize, w.Elapsed, imageOptimizationLevel);
             }
             else
             {

@@ -29,15 +29,15 @@ namespace DeveImageOptimizer.FileProcessing
             _fileProcessedState = fileProcessedState;
             _dirProcessedState = dirProcessedState;
 
-            var progress = new Progress<OptimizableFile>();
-            var progressCountTotalFiles = new Progress<int>();
-
-
-
             if (progressReporter != null)
             {
                 _progress = new DeveProgressReporter<OptimizableFile>(progressReporter.OptimizableFileProgressUpdated, !configuration.AwaitProgressReporting);
                 _progressCountTotalFiles = new DeveProgressReporter<int>(progressReporter.TotalFileCountDiscovered, !configuration.AwaitProgressReporting);
+            }
+            else
+            {
+                _progress = new DeveProgressReporter<OptimizableFile>(null, !configuration.AwaitProgressReporting);
+                _progressCountTotalFiles = new DeveProgressReporter<int>(null, !configuration.AwaitProgressReporting);
             }
         }
 
@@ -189,14 +189,16 @@ namespace DeveImageOptimizer.FileProcessing
 
             await _progress.Report(optimizableFile);
 
-            if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file))
+            var desiredOptimizationLevel = _configuration.ImageOptimizationLevel;
+
+            if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file, desiredOptimizationLevel))
             {
-                await _fileOptimizer.OptimizeFile(optimizableFile);
+                await _fileOptimizer.OptimizeFile(optimizableFile, desiredOptimizationLevel);
 
                 //If the file is successfully optimized add it to the list of optimized files so it can be skipped next time
                 if (optimizableFile.OptimizationResult == OptimizationResult.Success)
                 {
-                    await _fileProcessedState.AddFullyOptimizedFile(optimizableFile.Path);
+                    await _fileProcessedState.AddFullyOptimizedFile(optimizableFile.Path, optimizableFile.ImageOptimizationLevel.Value);
                 }
             }
             else

@@ -1,5 +1,6 @@
 using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.Tests.ExternalTools;
 using DeveImageOptimizer.Tests.TestConfig;
@@ -218,7 +219,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             await OptimizeFileTest(fileName);
         }
 
-        private async Task OptimizeFileTest(string fileName)
+        private async Task OptimizeFileTest(string fileName, ImageOptimizationLevel imageOptimizationLevel = ImageOptimizationLevel.Maximum)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
@@ -239,7 +240,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             {
                 var fileToOptimize = new OptimizableFile(image1temppath, null, new FileInfo(image1temppath).Length);
 
-                await fop.OptimizeFile(fileToOptimize);
+                await fop.OptimizeFile(fileToOptimize, imageOptimizationLevel);
 
                 Assert.Equal(OptimizationResult.Success, fileToOptimize.OptimizationResult);
 

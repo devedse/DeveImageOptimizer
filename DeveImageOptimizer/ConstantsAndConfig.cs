@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeveImageOptimizer.ImageOptimization;
+using System;
 
 namespace DeveImageOptimizer
 {
@@ -13,13 +14,33 @@ namespace DeveImageOptimizer
         public const string ProcessedFilesFileName = "ProcessedFiles.txt";
         public const string ProcessedDirsFileName = "ProcessedDirs.txt";
 
-        public static string GenerateOptimizerOptions(int logLevel)
+        public static string GenerateOptimizerOptions(int logLevel, ImageOptimizationLevel imageOptimizationLevel)
         {
             if (logLevel < 0 || logLevel > 4)
             {
                 throw new ArgumentException("LogLevel should be between 0 and 4", nameof(logLevel));
             }
-            return OptimizerOptions.Replace("{LogLevel}", logLevel.ToString());
+
+            var level = 0;
+            switch (imageOptimizationLevel)
+            {
+                case ImageOptimizationLevel.SuperFast:
+                    level = 0;
+                    break;
+                case ImageOptimizationLevel.Fast:
+                    level = 1;
+                    break;
+                case ImageOptimizationLevel.Normal:
+                    level = 5;
+                    break;
+                case ImageOptimizationLevel.Maximum:
+                    level = 9;
+                    break;
+                case ImageOptimizationLevel.Placebo:
+                    level = 9;
+                    break;
+            }
+            return OptimizerOptions.Replace("{LogLevel}", logLevel.ToString()).Replace("{OptimizationLevel}", level.ToString());
         }
 
         private const string OptimizerOptions =
@@ -62,7 +83,7 @@ namespace DeveImageOptimizer
             "/AllowDuplicates=false " +
             "/AllowMultipleInstances=true " +
             "/EnableCache=false " +
-            "/Level=9 " +
+            "/Level={OptimizationLevel} " +
             "/ProcessPriority=16384 " +
             "/CheckForUpdates=0 " +
             "/LogLevel={LogLevel} " +
