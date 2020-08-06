@@ -30,10 +30,11 @@ namespace DeveImageOptimizer.ImageOptimization
             Arguments = arguments;
         }
 
-        public async Task<ImageOptimizationStepResult> Run(DeveImageOptimizerConfiguration configuration, string imagePath)
+        public async Task<ImageOptimizationStepResult> Run(DeveImageOptimizerConfiguration configuration, string imagePath, List<string> tempFiles)
         {
             var extension = Path.GetExtension(imagePath);
-            var inputFile = RandomFileNameHelper.RandomFileNameShort(Path.GetFileNameWithoutExtension(ToolExeFileName), extension);
+            var inputFile = Path.Combine(configuration.TempDirectory, RandomFileNameHelper.RandomFileNameShort(Path.GetFileNameWithoutExtension(ToolExeFileName), extension));
+            tempFiles.Add(inputFile);
 
             File.Copy(imagePath, inputFile, true);
             string args = Arguments;
@@ -44,13 +45,14 @@ namespace DeveImageOptimizer.ImageOptimization
             string tempFilePath = "";
             if (usesTempFile)
             {
-                tempFilePath = Path.Combine(configuration.TempDirectory, Path.ChangeExtension(Path.GetRandomFileName(), extension));
+                tempFilePath = Path.Combine(configuration.TempDirectory, RandomFileNameHelper.RandomFileNameShort(Path.GetFileNameWithoutExtension($"{ToolExeFileName}_out"), extension));
+                tempFiles.Add(tempFilePath);
                 args = args.Replace(OutputFileToken, tempFilePath);
             }
 
             var processResult = await ProcessRunner.RunAsyncAndLogToConsole(_toolExePath, args);
 
-            return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : imagePath);
+            return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : inputFile);
         }
     }
 }

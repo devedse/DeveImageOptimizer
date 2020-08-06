@@ -54,7 +54,7 @@ namespace DeveImageOptimizer.FileProcessing
                 if (Configuration.UseNewDeveImageOptimizer)
                 {
                     var optimizationPlan = new ImageOptimizationPlan(Configuration);
-                    var result = await optimizationPlan.GoOptimize(tempFilePath, imageOptimizationLevel);
+                    var result = await optimizationPlan.GoOptimize(tempFilePath, imageOptimizationLevel, tempFiles);
 
                     tempFilePath = result.OutputPath;
 
