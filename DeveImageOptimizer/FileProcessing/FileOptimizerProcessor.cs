@@ -1,4 +1,5 @@
-﻿using DeveImageOptimizer.Helpers;
+﻿using DeveCoolLib.ProcessAsTask;
+using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using ExifLibrary;
@@ -52,13 +53,18 @@ namespace DeveImageOptimizer.FileProcessing
 
                 if (Configuration.UseNewDeveImageOptimizer)
                 {
-                    var optimizationPlan = new ImageOptimizationPlan();
-                    var result = await optimizationPlan.GoOptimize(tempFilePath);
+                    var optimizationPlan = new ImageOptimizationPlan(Configuration);
+                    var result = await optimizationPlan.GoOptimize(tempFilePath, imageOptimizationLevel);
 
-                    if (!result)
+                    tempFilePath = result.OutputPath;
+
+                    if (!result.Success)
                     {
                         errors.Add($"Error when running NewDeveImageOptimization");
+                        errors.AddRange(result.ErrorsLog);
                     }
+
+                    //TODO: Do something with the logging
                 }
                 else
                 {
@@ -77,19 +83,19 @@ namespace DeveImageOptimizer.FileProcessing
                         processStartInfo.CreateNoWindow = false;
                     }
 
-                    var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
+                    var processResult = await ProcessRunner.RunAsync(processStartInfo);
 
-                    if (exitCode != 0)
+                    if (processResult.ExitCode != 0)
                     {
-                        errors.Add($"Error when running FileOptimizer, Exit code: {exitCode}");
+                        errors.Add($"Error when running FileOptimizer, Exit code: {processResult.ExitCode}");
                     }
                 }
 
 
-             
 
 
-           
+
+
 
                 if (shouldUseJpgWorkaround)
                 {

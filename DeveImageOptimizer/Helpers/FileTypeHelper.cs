@@ -9,7 +9,7 @@ namespace DeveImageOptimizer.Helpers
         public static bool IsJpgFile(string file)
         {
             var extension = Path.GetExtension(file);
-            if (string.Equals(extension, ".jpg", StringComparison.OrdinalIgnoreCase) || string.Equals(extension, ".jpeg", StringComparison.OrdinalIgnoreCase))
+            if (ConstantsFileExtensions.JPGExtensions.Contains(extension.ToUpperInvariant()))
             {
                 return true;
             }
@@ -18,7 +18,7 @@ namespace DeveImageOptimizer.Helpers
 
         public static bool IsValidImageFile(string file)
         {
-            var result = ConstantsAndConfig.ValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant());
+            var result = ConstantsFileExtensions.AllValidExtensions.Contains(Path.GetExtension(file).ToUpperInvariant());
             return result;
         }
     }
