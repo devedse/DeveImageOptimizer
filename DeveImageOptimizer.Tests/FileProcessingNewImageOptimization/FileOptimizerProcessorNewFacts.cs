@@ -31,11 +31,11 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
         //    await OptimizeFileTest("pexels-photo.jpg");
         //}
 
-        //[SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
-        //public async Task CorrectlyOptimizesVimPicture()
-        //{
-        //    await OptimizeFileTest("vim16x16_1.png");
-        //}
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesVimPicture()
+        {
+            await OptimizeFileTest("vim16x16_1.png");
+        }
 
         //[SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         //public async Task CorrectlyOptimizesGifImage()
@@ -226,7 +226,8 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
             var config = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                UseNewDeveImageOptimizer = true
+                UseNewDeveImageOptimizer = true,
+                LogLevel = 4
             };
 
             var fop = new FileOptimizerProcessor(config);

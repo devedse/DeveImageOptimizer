@@ -226,7 +226,8 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var config = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                UseNewDeveImageOptimizer = false
+                UseNewDeveImageOptimizer = false,
+                LogLevel = 4
             };
 
             var fop = new FileOptimizerProcessor(config);

@@ -41,7 +41,7 @@ namespace DeveImageOptimizer.ImageOptimization
                 var result = await step.Run(Configuration, imagePathCur, tempFiles);
                 var fileSizeAfter = new FileInfo(result.OutputPath).Length;
 
-                if (fileSizeAfter < fileSizeBefore)
+                if (fileSizeAfter < fileSizeBefore && fileSizeAfter > 0)
                 {
                     imagePathCur = result.OutputPath;
                 }
@@ -49,12 +49,13 @@ namespace DeveImageOptimizer.ImageOptimization
                 outputLog.AddRange(result.ProcessResults.StandardOutput);
                 errorsLog.AddRange(result.ProcessResults.StandardError);
 
-                if (result.ProcessResults.ExitCode != 0)
-                {
-                    Console.WriteLine($"Optimization failed for ({i + 1}/{steps.Count}) {step.ToolExeFileName} {step.Arguments}");
-                    success = false;
-                    break;
-                }
+                //if (result.ProcessResults.ExitCode != 0)
+                //{
+                //    PNGOUT fails if it can't optimize further. So we skip this check
+                //    Console.WriteLine($"Optimization failed for ({i + 1}/{steps.Count}) {step.ToolExeFileName} {step.Arguments}");
+                //    success = false;
+                //    break;
+                //}
 
                 var warnIsBigger = fileSizeAfter > fileSizeBefore ? "(SKIPPED! After is larger then before)" : $"(Reduced by {fileSizeBefore - fileSizeAfter})";
                 var resultString = $"Optimization successfull: {fileSizeBefore} => {fileSizeAfter} {warnIsBigger} (Elapsed: {Math.Round(result.ProcessResults.RunTime.TotalSeconds, 2) } seconds)";
@@ -130,8 +131,18 @@ namespace DeveImageOptimizer.ImageOptimization
                     //Plugin: defluff (15/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\defluff.bat "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_8276_1.png"
                     //Plugin: DeflOpt (16/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\deflopt.exe /a /b /s /k "Z:\FileOptimizerTemp\FileOptimizer_Input_4983_1.png"
 
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "PngOptimizer.exe"), $"-KeepPhysicalPixelDimensions -file:\"{ImageOptimizationStep.InputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o4 -md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d0 /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o6 \"{ImageOptimizationStep.InputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngwolf.exe"), $"--out-deflate=zopfli,iter=30 --in=\"{ImageOptimizationStep.InputFileToken}\" --out=\"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngrewrite.exe"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters -9 \"{ImageOptimizationStep.InputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "defluff.bat"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\""));
 
-                    throw new NotImplementedException("This is not yet implemented");
+
                     break;
                 case var e when ConstantsFileExtensions.BMPExtensions.Contains(e.ToUpperInvariant()):
                     throw new NotImplementedException("This is not yet implemented");

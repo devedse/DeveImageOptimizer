@@ -3,6 +3,7 @@ using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,9 +51,18 @@ namespace DeveImageOptimizer.ImageOptimization
                 args = args.Replace(OutputFileToken, tempFilePath);
             }
 
-            var processResult = await ProcessRunner.RunAsyncAndLogToConsole(_toolExePath, args);
+            var psi = new ProcessStartInfo(_toolExePath, args)
+            {
+                WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+            };
+            var processResult = await ProcessRunner.RunAsyncAndLogToConsole(psi);
 
             return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : inputFile);
+        }
+
+        public override string ToString()
+        {
+            return $"{ToolExeFileName} {Arguments}";
         }
     }
 }

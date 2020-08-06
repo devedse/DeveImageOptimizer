@@ -83,11 +83,11 @@ namespace DeveImageOptimizer.FileProcessing
                         processStartInfo.CreateNoWindow = false;
                     }
 
-                    var processResult = await ProcessRunner.RunAsync(processStartInfo);
+                    var processResult = await ProcessRunnerOld.RunProcessAsync(processStartInfo);
 
-                    if (processResult.ExitCode != 0)
+                    if (processResult != 0)
                     {
-                        errors.Add($"Error when running FileOptimizer, Exit code: {processResult.ExitCode}");
+                        errors.Add($"Error when running FileOptimizer, Exit code: {processResult}");
                     }
                 }
 
