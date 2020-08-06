@@ -50,27 +50,46 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                var args = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel, imageOptimizationLevel);
-
-                //This next line should disable showing the window, but apparently it doesn't work yet as of version 13.50.2431
-                //if (!_shouldShowFileOptimizerWindow)
-                //{
-                //    args = $"/NoWindow {args}";
-                //}
-                var processStartInfo = new ProcessStartInfo(Configuration.FileOptimizerPath, $" {args} \"{tempFilePath}\"");
-                if (Configuration.HideFileOptimizerWindow)
+                if (Configuration.UseNewDeveImageOptimizer)
                 {
-                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    processStartInfo.UseShellExecute = true;
-                    processStartInfo.CreateNoWindow = false;
+                    var optimizationPlan = new ImageOptimizationPlan();
+                    var result = await optimizationPlan.GoOptimize(tempFilePath);
+
+                    if (!result)
+                    {
+                        errors.Add($"Error when running NewDeveImageOptimization");
+                    }
+                }
+                else
+                {
+                    var args = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel, imageOptimizationLevel);
+
+                    //This next line should disable showing the window, but apparently it doesn't work yet as of version 13.50.2431
+                    //if (!_shouldShowFileOptimizerWindow)
+                    //{
+                    //    args = $"/NoWindow {args}";
+                    //}
+                    var processStartInfo = new ProcessStartInfo(Configuration.FileOptimizerPath, $" {args} \"{tempFilePath}\"");
+                    if (Configuration.HideFileOptimizerWindow)
+                    {
+                        processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        processStartInfo.UseShellExecute = true;
+                        processStartInfo.CreateNoWindow = false;
+                    }
+
+                    var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
+
+                    if (exitCode != 0)
+                    {
+                        errors.Add($"Error when running FileOptimizer, Exit code: {exitCode}");
+                    }
                 }
 
-                var exitCode = await ProcessRunner.RunProcessAsync(processStartInfo);
 
-                if (exitCode != 0)
-                {
-                    errors.Add($"Error when running FileOptimizer, Exit code: {exitCode}");
-                }
+             
+
+
+           
 
                 if (shouldUseJpgWorkaround)
                 {
