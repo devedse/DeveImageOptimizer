@@ -39,12 +39,14 @@ namespace DeveImageOptimizer.ImageOptimization
 
                 var fileSizeBefore = new FileInfo(imagePathCur).Length;
                 var result = await step.Run(Configuration, imagePathCur, tempFiles);
-                var fileSizeAfter = new FileInfo(result.OutputPath).Length;
+                var outFile = new FileInfo(result.OutputPath);
 
-                if (fileSizeAfter < fileSizeBefore && fileSizeAfter > 0)
+                if (outFile.Exists && outFile.Length < fileSizeBefore && outFile.Length > 0)
                 {
                     imagePathCur = result.OutputPath;
                 }
+
+                var fileSizeAfter = outFile.Exists ? outFile.Length : fileSizeBefore;
 
                 outputLog.AddRange(result.ProcessResults.StandardOutput);
                 errorsLog.AddRange(result.ProcessResults.StandardError);
@@ -145,10 +147,20 @@ namespace DeveImageOptimizer.ImageOptimization
 
                     break;
                 case var e when ConstantsFileExtensions.BMPExtensions.Contains(e.ToUpperInvariant()):
-                    throw new NotImplementedException("This is not yet implemented");
+                    //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" -quiet -compress RLE "Z:\FileOptimizerTemp\FileOptimizer_Output_8722_TestImageBMP_xnvdctl3.bmp"
+                    //Plugin: ImageWorsener (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\imagew.exe -noresize -zipcmprlevel 9 -outfmt bmp -compress "rle" "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" "Z:\FileOptimizerTemp\FileOptimizer_Output_1885_TestImageBMP_xnvdctl3.bmp"
+
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -compress RLE \"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "imagew.exe"), $"-noresize -zipcmprlevel 9 -outfmt bmp -compress \"rle\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+
                     break;
                 case var e when ConstantsFileExtensions.GIFExtensions.Contains(e.ToUpperInvariant()):
-                    throw new NotImplementedException("This is not yet implemented");
+                    //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif" -quiet -set dispose background -layers optimize -compress -loop 0 LZW "Z:\FileOptimizerTemp\FileOptimizer_Output_4294964962_TestImageGIF_gykbljhq.gif"
+                    //Plugin: gifsicle (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\gifsicle.exe -w -j --no-conserve-memory -o "Z:\FileOptimizerTemp\FileOptimizer_Output_4294966173_TestImageGIF_gykbljhq.gif" -O3 "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif"
+
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -set dispose background -layers optimize -compress -loop 0 LZW \"{ImageOptimizationStep.OutputFileToken}\""));
+                    steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "gifsicle.exe"), $"-w -j --no-conserve-memory -o \"{ImageOptimizationStep.OutputFileToken}\" -O3 \"{ImageOptimizationStep.InputFileToken}\""));
+
                     break;
                 default:
                     throw new NotImplementedException("This is not yet implemented");

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
 {
-  public  class FileOptimizeSizeCompareFacts
+  public  class FileOptimizerProcessorNewFacts
     {
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesLandscapeImage()
@@ -223,56 +223,38 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
-            var configFileOptimizer = new DeveImageOptimizerConfiguration()
+            var config = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 UseNewDeveImageOptimizer = true,
-                LogLevel = 4,
-            };
-            var configNew = new DeveImageOptimizerConfiguration()
-            {
-                HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                UseNewDeveImageOptimizer = false,
                 LogLevel = 4
             };
 
-            var fopFileOptimizer = new FileOptimizerProcessor(configFileOptimizer);
-            var fopNew = new FileOptimizerProcessor(configNew);
-            var imagePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
+            var fop = new FileOptimizerProcessor(config);
+            var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
             var tempfortestdir = FolderHelperMethods.Internal_TempForTestDirectory.Value;
-            var imagetemppathFileOptimizer = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
-            var imagetemppathNew = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
+            var image1temppath = Path.Combine(tempfortestdir, RandomFileNameHelper.RandomizeFileName(fileName));
 
             Directory.CreateDirectory(tempfortestdir);
-            File.Copy(imagePath, imagetemppathFileOptimizer, true);
-            File.Copy(imagePath, imagetemppathNew, true);
+            File.Copy(image1path, image1temppath, true);
 
             try
             {
-                var fileToOptimizeFileOptimizer = new OptimizableFile(imagetemppathFileOptimizer, null, new FileInfo(imagetemppathFileOptimizer).Length);
-                var fileToOptimizeNew = new OptimizableFile(imagetemppathNew, null, new FileInfo(imagetemppathFileOptimizer).Length);
+                var fileToOptimize = new OptimizableFile(image1temppath, null, new FileInfo(image1temppath).Length);
 
-                await fopFileOptimizer.OptimizeFile(fileToOptimizeFileOptimizer, imageOptimizationLevel);
-                await fopNew.OptimizeFile(fileToOptimizeNew, imageOptimizationLevel);
+                await fop.OptimizeFile(fileToOptimize, imageOptimizationLevel);
 
-                Assert.Equal(OptimizationResult.Success, fileToOptimizeFileOptimizer.OptimizationResult);
-                Assert.Equal(OptimizationResult.Success, fileToOptimizeNew.OptimizationResult);
+                Assert.Equal(OptimizationResult.Success, fileToOptimize.OptimizationResult);
 
-                var fileOptimizedFileOptimizer = new FileInfo(imagetemppathFileOptimizer);
-                var fileUnoptimizedFileOptimizer = new FileInfo(imagePath);
-
-                var fileOptimizedNew = new FileInfo(imagetemppathFileOptimizer);
-                var fileUnoptimizedNew = new FileInfo(imagePath);
+                var fileOptimized = new FileInfo(image1temppath);
+                var fileUnoptimized = new FileInfo(image1path);
 
                 //Verify that the new file is actually smaller
-                Assert.True(fileOptimizedFileOptimizer.Length <= fileUnoptimizedFileOptimizer.Length);
-                Assert.True(fileOptimizedNew.Length <= fileUnoptimizedNew.Length);
-
-                Assert.Equal(fileOptimizedFileOptimizer.Length, fileOptimizedNew.Length);
+                Assert.True(fileOptimized.Length <= fileUnoptimized.Length);
             }
             finally
             {
-                File.Delete(imagetemppathFileOptimizer);
+                File.Delete(image1temppath);
             }
         }
     }
