@@ -40,6 +40,11 @@ namespace DeveImageOptimizer.Helpers
         private static string CreateAppDataFolder()
         {
             var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (string.IsNullOrWhiteSpace(appdataPath))
+            {
+                //Fall back to assembly directory (this is not ideal but it's required to be ran inside a windows nanoserver docker container)
+                appdataPath = CreateLocationOfImageProcessorAssemblyDirectory();
+            }
             var combinedPath = Path.Combine(appdataPath, ConstantsAndConfig.AppDataDirectoryName);
             return combinedPath;
         }
