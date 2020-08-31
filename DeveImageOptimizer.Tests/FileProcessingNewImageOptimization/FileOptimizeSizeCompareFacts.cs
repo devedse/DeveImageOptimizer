@@ -195,6 +195,12 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
         }
 
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesSmileEnzoImage()
+        {
+            await OptimizeFileTest("SmileEnzo.jpg");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesReadOnlyFile()
         {
             var fileName = "ReadOnlyJpg.jpg";
