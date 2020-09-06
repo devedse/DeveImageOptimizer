@@ -1,10 +1,11 @@
 ﻿using DeveImageOptimizer.FileProcessing;
+using DeveImageOptimizer.ImageOptimization;
 
 namespace DeveImageOptimizer.Tests.TestHelpers
 {
     public static class ConfigCreator
     {
-        public static DeveImageOptimizerConfiguration CreateTestConfig(bool parallel)
+        public static DeveImageOptimizerConfiguration CreateTestConfig(bool parallel, ImageOptimizationLevel imageOptimizationLevel = ImageOptimizationLevel.Maximum)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
@@ -14,7 +15,9 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                 MaxDegreeOfParallelism = 8,
                 ExecuteImageOptimizationParallel = parallel,
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                LogLevel = 4
+                LogLevel = 4,
+                ImageOptimizationLevel = imageOptimizationLevel,
+                UseNewDeveImageOptimizer = true
             };
             return config;
         }
