@@ -26,7 +26,7 @@ namespace DeveImageOptimizer.FileProcessing
             Directory.CreateDirectory(Configuration.FailedFilesDirectory);
         }
 
-        public async Task OptimizeFile(OptimizableFile file, ImageOptimizationLevel imageOptimizationLevel)
+        public async Task OptimizeFile(OptimizableFile file)
         {
             var w = Stopwatch.StartNew();
 
@@ -54,7 +54,7 @@ namespace DeveImageOptimizer.FileProcessing
                 if (Configuration.UseNewDeveImageOptimizer)
                 {
                     var optimizationPlan = new ImageOptimizationPlan(Configuration);
-                    var result = await optimizationPlan.GoOptimize(tempFilePath, imageOptimizationLevel, tempFiles);
+                    var result = await optimizationPlan.GoOptimize(tempFilePath, Configuration.ImageOptimizationLevel, tempFiles);
 
                     tempFilePath = result.OutputPath;
 
@@ -68,7 +68,7 @@ namespace DeveImageOptimizer.FileProcessing
                 }
                 else
                 {
-                    var args = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel, imageOptimizationLevel);
+                    var args = ConstantsAndConfig.GenerateOptimizerOptions(Configuration.LogLevel, Configuration.ImageOptimizationLevel);
 
                     //This next line should disable showing the window, but apparently it doesn't work yet as of version 13.50.2431
                     //if (!_shouldShowFileOptimizerWindow)
@@ -152,7 +152,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (errors.Count == 0)
             {
-                file.SetSuccess(optimizedFileSize, w.Elapsed, imageOptimizationLevel);
+                file.SetSuccess(optimizedFileSize, w.Elapsed, Configuration.ImageOptimizationLevel);
             }
             else
             {

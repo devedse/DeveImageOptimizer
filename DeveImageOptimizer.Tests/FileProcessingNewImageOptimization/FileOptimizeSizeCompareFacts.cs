@@ -234,12 +234,14 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 UseNewDeveImageOptimizer = true,
                 LogLevel = 4,
+                ImageOptimizationLevel = imageOptimizationLevel
             };
             var configNew = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 UseNewDeveImageOptimizer = false,
-                LogLevel = 4
+                LogLevel = 4,
+                ImageOptimizationLevel = imageOptimizationLevel
             };
 
             var fopFileOptimizer = new FileOptimizerProcessor(configFileOptimizer);
@@ -258,8 +260,8 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
                 var fileToOptimizeFileOptimizer = new OptimizableFile(imagetemppathFileOptimizer, null, new FileInfo(imagetemppathFileOptimizer).Length);
                 var fileToOptimizeNew = new OptimizableFile(imagetemppathNew, null, new FileInfo(imagetemppathFileOptimizer).Length);
 
-                await fopFileOptimizer.OptimizeFile(fileToOptimizeFileOptimizer, imageOptimizationLevel);
-                await fopNew.OptimizeFile(fileToOptimizeNew, imageOptimizationLevel);
+                await fopFileOptimizer.OptimizeFile(fileToOptimizeFileOptimizer);
+                await fopNew.OptimizeFile(fileToOptimizeNew);
 
                 Assert.Equal(OptimizationResult.Success, fileToOptimizeFileOptimizer.OptimizationResult);
                 Assert.Equal(OptimizationResult.Success, fileToOptimizeNew.OptimizationResult);

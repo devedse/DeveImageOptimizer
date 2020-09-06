@@ -55,7 +55,7 @@ namespace DeveImageOptimizer.ImageOptimization
             {
                 WorkingDirectory = Path.GetDirectoryName(_toolExePath)
             };
-            var processResult = await ProcessRunner.RunAsyncAndLogToConsole(psi);
+            var processResult = await ProcessRunner.RunAsync(psi, configuration.ForwardOptimizerToolLogsToConsole);
 
             return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : inputFile);
         }

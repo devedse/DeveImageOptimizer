@@ -193,7 +193,7 @@ namespace DeveImageOptimizer.FileProcessing
 
             if (_dirProcessedState.ShouldOptimizeFileInDirectory(file) && _fileProcessedState.ShouldOptimizeFile(file, desiredOptimizationLevel))
             {
-                await _fileOptimizer.OptimizeFile(optimizableFile, desiredOptimizationLevel);
+                await _fileOptimizer.OptimizeFile(optimizableFile);
 
                 //If the file is successfully optimized add it to the list of optimized files so it can be skipped next time
                 if (optimizableFile.OptimizationResult == OptimizationResult.Success)
