@@ -8,18 +8,9 @@ namespace DeveImageOptimizer.ConsoleApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            MainAsync(args).GetAwaiter().GetResult();
-
-            Console.WriteLine("Application done press any key to exit");
-            Console.ReadKey();
-        }
-
-
-        public static async Task MainAsync(string[] args)
-        {
-            var dirrr = @"C:\KanWeg";
+            var dirrr = @"C:\TheCFolder\TestMapKanWeg";
 
             var fileProcessedListener = new ConsoleProgressReporter();
 
@@ -28,12 +19,15 @@ namespace DeveImageOptimizer.ConsoleApp
 
             var config = new DeveImageOptimizerConfiguration()
             {
-                ExecuteImageOptimizationParallel = true
+                ExecuteImageOptimizationParallel = false,
+                UseNewDeveImageOptimizer = true
             };
 
             var fp = new DeveImageOptimizerProcessor(config, fileProcessedListener, rememberer, dirRememberer);
 
             await fp.ProcessDirectory(dirrr);
+            Console.WriteLine("Application done press any key to exit");
+            Console.ReadKey();
         }
     }
 }

@@ -9,13 +9,13 @@ namespace DeveImageOptimizer.ConsoleApp
     {
         public Task OptimizableFileProgressUpdated(OptimizableFile optimizableFile)
         {
-            Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} File Optimized: {optimizableFile}");
+            Console.WriteLine($"File Optimized: {optimizableFile}");
             return Task.CompletedTask;
         }
 
         public Task TotalFileCountDiscovered(int count)
         {
-            Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} Total file count: {count}");
+            Console.WriteLine($"Total file count: {count}");
             return Task.CompletedTask;
         }
     }
