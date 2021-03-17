@@ -7,7 +7,7 @@ This project is the source for the github package [DeveImageOptimizer](https://w
 
 | GitHubActions Builds |
 |:--------------------:|
-| [![GitHubActions Builds](https://github.com/devedse/DeveMazeGeneratorCore/workflows/GitHubActionsBuilds/badge.svg)](https://github.com/devedse/DeveMazeGeneratorCore/actions/workflows/githubactionsbuilds.yml) |
+| [![GitHubActions Builds](https://github.com/devedse/DeveImageOptimizer/workflows/GitHubActionsBuilds/badge.svg)](https://github.com/devedse/DeveImageOptimizer/actions/workflows/githubactionsbuilds.yml) |
 
 | AppVeyor (Windows build) |
 |:------------------------:|
