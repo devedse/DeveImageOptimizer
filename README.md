@@ -5,6 +5,10 @@ This project is the source for the github package [DeveImageOptimizer](https://w
 
 ## Build status
 
+| GitHubActions Builds |
+|:--------------------:|
+| [![GitHubActions Builds](https://github.com/devedse/DeveMazeGeneratorCore/workflows/GitHubActionsBuilds/badge.svg)](https://github.com/devedse/DeveMazeGeneratorCore/actions/workflows/githubactionsbuilds.yml) |
+
 | AppVeyor (Windows build) |
 |:------------------------:|
 | [![Build status](https://ci.appveyor.com/api/projects/status/qo0hx7i9j2hrlmpr?svg=true)](https://ci.appveyor.com/project/devedse/deveimageoptimizer) |
