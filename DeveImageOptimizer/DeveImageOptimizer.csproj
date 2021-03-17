@@ -1,19 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.0.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>DeveImageOptimizer</AssemblyName>
+    <PackageId>DeveImageOptimizer</PackageId>
     <Title>DeveImageOptimizer</Title>
     <Authors>Devedse</Authors>
     <Description>A library to more easily control image optimization from C# using https://encode.ru/threads/1589-FileOptimizer</Description>
     <PackageProjectUrl>https://github.com/devedse/DeveImageOptimizer</PackageProjectUrl>
     <PackageTags>image;drawing;optimization</PackageTags>
     
-    <!-- Workaround to get Code Coverage working, see: https://github.com/Microsoft/vstest-docs/blob/master/docs/analyze.md#coverage -->
-    <DebugType>Full</DebugType>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+ 
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
+  
+    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
