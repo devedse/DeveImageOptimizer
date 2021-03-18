@@ -2,6 +2,19 @@
 
 FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+        echo amd64 ; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        echo arm64 ; \
+        mkdir ~/qemu \
+        cd ~/qemu \
+        git git://git.qemu.org/qemu.git \
+        cd qemu \
+        ./configure --target-list=i386-linux-user --static \
+        make \
+    elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
+        echo armv7 ; \
+    fi \
 RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download && wine /root/FileOptimizerSetup.exe /S && rm /root/FileOptimizerSetup.exe
 ENV FILEOPTIMIZERPATH="/root/.wine/drive_c/Program Files/FileOptimizer/FileOptimizer64.exe"
 WORKDIR /app

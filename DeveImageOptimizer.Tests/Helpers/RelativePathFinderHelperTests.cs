@@ -1,6 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
 using System;
-using System.IO;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests.Helpers
