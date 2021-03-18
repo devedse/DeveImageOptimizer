@@ -9,4 +9,13 @@
     <ProjectReference Include="..\DeveImageOptimizer\DeveImageOptimizer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DSC01906.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestImage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

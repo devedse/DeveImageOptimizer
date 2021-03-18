@@ -2,6 +2,8 @@
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.ConsoleApp
@@ -10,7 +12,8 @@ namespace DeveImageOptimizer.ConsoleApp
     {
         public static async Task Main(string[] args)
         {
-            var dirrr = @"C:\TheCFolder\TestMapKanWeg";
+            //var dirrr = @"C:\TheCFolder\TestMapKanWeg";
+            var dirrr = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             var fileProcessedListener = new ConsoleProgressReporter();
 
@@ -27,7 +30,6 @@ namespace DeveImageOptimizer.ConsoleApp
 
             await fp.ProcessDirectory(dirrr);
             Console.WriteLine("Application done press any key to exit");
-            Console.ReadKey();
         }
     }
 }
