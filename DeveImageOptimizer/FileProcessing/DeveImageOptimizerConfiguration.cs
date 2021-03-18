@@ -6,7 +6,8 @@ namespace DeveImageOptimizer.FileProcessing
 {
     public class DeveImageOptimizerConfiguration
     {
-        public string FileOptimizerPath { get; set; } = Environment.GetEnvironmentVariable("FILEOPTIMIZERPATH") ?? @"C:/Program Files/FileOptimizer/FileOptimizer64.exe";
+        private static char s = System.IO.Path.DirectorySeparatorChar;
+        public string FileOptimizerPath { get; set; } = Environment.GetEnvironmentVariable("FILEOPTIMIZERPATH") ?? $"C:{s}Program Files{s}FileOptimizer{s}FileOptimizer64.exe";
         public string TempDirectory { get; set; } = FolderHelperMethods.TempDirectory;
 
         public bool HideFileOptimizerWindow { get; set; } = true;

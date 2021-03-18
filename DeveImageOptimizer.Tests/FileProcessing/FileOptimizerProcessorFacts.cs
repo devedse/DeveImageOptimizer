@@ -5,6 +5,7 @@ using DeveImageOptimizer.State;
 using DeveImageOptimizer.Tests.ExternalTools;
 using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
@@ -217,9 +218,12 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             var fileName = "BlockedJpg.jpg";
             var filePath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
 
-            using (var zoneIdentifier = new ZoneIdentifier(filePath))
+            if (OperatingSystem.IsWindows())
             {
-                zoneIdentifier.Zone = UrlZone.Internet;
+                using (var zoneIdentifier = new ZoneIdentifier(filePath))
+                {
+                    zoneIdentifier.Zone = UrlZone.Internet;
+                }
             }
 
             await OptimizeFileTest(fileName);

@@ -75,7 +75,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task ImageSharpToPaintNET()
         {
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
-            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNet.png");
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_PaintNET");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
@@ -101,7 +101,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task VipsToPaintNet()
         {
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_LibVIPS.png");
-            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNet.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
             Assert.Equal(845209, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "VIPS_TO_PAINTNET"));
@@ -110,7 +110,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public async Task PaintNetToIrfanView()
         {
-            var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNet.png");
             var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_IrfanView.png");
 
             //Ideally this would be 0, but it seems Paint.NET/Paint use the same decoder and IrfanView/LibVIPS. So if we compare others, they have different results.
@@ -143,7 +143,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         public async Task PaintToPaintNET()
         {
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_Paint.png");
-            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNET.png");
+            var image2path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1_PaintNet.png");
 
             //IrfanView and LibVIPS have the same decoder
             Assert.Equal(0, await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "PAINT_TO_PAINTNET"));

@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using System.IO;
 using Xunit;
 
 namespace DeveImageOptimizer.Tests.Helpers
@@ -8,8 +9,10 @@ namespace DeveImageOptimizer.Tests.Helpers
         [Fact]
         public void MakesARelativePath()
         {
-            var dirPath = @"C:\WOP\DeveMazeGenerator";
-            var filePath = @"C:\WOP\DevemazeGenerator\Images\TestImage.png";
+            var s = Path.DirectorySeparatorChar;
+
+            var dirPath = $"C:{s}WOP{s}DeveMazeGenerator";
+            var filePath = $"C:{s}WOP{s}DevemazeGenerator{s}Images{s}TestImage.png";
 
             var expectedPath = @"Images/TestImage.png";
 
@@ -20,8 +23,9 @@ namespace DeveImageOptimizer.Tests.Helpers
         [Fact]
         public void WorksForNullPath()
         {
+            var s = Path.DirectorySeparatorChar;
             string dirPath = null;
-            var filePath = @"C:\WOP\DevemazeGenerator\Images\TestImage.png";
+            var filePath = $"C:{s}WOP{s}DevemazeGenerator{s}Images{s}TestImage.png";
 
             var expectedPath = filePath;
 
