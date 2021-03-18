@@ -14,6 +14,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         make ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
         echo armv7 ; \
+    else then \
+        echo $TARGETPLATFORM \
     fi
 RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download && wine /root/FileOptimizerSetup.exe /S && rm /root/FileOptimizerSetup.exe
 ENV FILEOPTIMIZERPATH="/root/.wine/drive_c/Program Files/FileOptimizer/FileOptimizer64.exe"
