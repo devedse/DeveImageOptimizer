@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using System;
 using System.IO;
 using Xunit;
 
@@ -9,10 +10,18 @@ namespace DeveImageOptimizer.Tests.Helpers
         [Fact]
         public void MakesARelativePath()
         {
-            var s = Path.DirectorySeparatorChar;
-
-            var dirPath = $"C:{s}WOP{s}DeveMazeGenerator";
-            var filePath = $"C:{s}WOP{s}DevemazeGenerator{s}Images{s}TestImage.png";
+            string dirPath;
+            string filePath;
+            if (OperatingSystem.IsWindows())
+            {
+                dirPath = @"C:\WOP\DeveMazeGenerator";
+                filePath = @"C:\WOP\DevemazeGenerator\Images\TestImage.png";
+            }
+            else
+            {
+                dirPath = @"/home/WOP/DeveMazeGenerator";
+                filePath = @"/home/WOP/DeveMazeGenerator/Images/TestImage.png";
+            }
 
             var expectedPath = @"Images/TestImage.png";
 
@@ -23,9 +32,16 @@ namespace DeveImageOptimizer.Tests.Helpers
         [Fact]
         public void WorksForNullPath()
         {
-            var s = Path.DirectorySeparatorChar;
             string dirPath = null;
-            var filePath = $"C:{s}WOP{s}DevemazeGenerator{s}Images{s}TestImage.png";
+            string filePath;
+            if (OperatingSystem.IsWindows())
+            {
+                filePath = @"C:\WOP\DevemazeGenerator\Images\TestImage.png";
+            }
+            else
+            {
+                filePath = @"/home/WOP/DeveMazeGenerator/Images/TestImage.png";
+            }
 
             var expectedPath = filePath;
 
