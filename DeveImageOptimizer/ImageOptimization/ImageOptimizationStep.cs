@@ -51,10 +51,25 @@ namespace DeveImageOptimizer.ImageOptimization
                 args = args.Replace(OutputFileToken, tempFilePath);
             }
 
-            var psi = new ProcessStartInfo(_toolExePath, args)
+            ProcessStartInfo psi;
+
+            if (OperatingSystem.IsWindows())
             {
-                WorkingDirectory = Path.GetDirectoryName(_toolExePath)
-            };
+                psi = new ProcessStartInfo(_toolExePath, args)
+                {
+                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                };
+            }
+            else
+            {
+                psi = new ProcessStartInfo("wine", $"\"{_toolExePath}\" {args}")
+                {
+                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                };
+            }
+
+            Console.WriteLine($"Executing: {psi.FileName} {psi.Arguments}");
+
             var processResult = await ProcessRunner.RunAsync(psi, configuration.ForwardOptimizerToolLogsToConsole);
 
             return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : inputFile);
