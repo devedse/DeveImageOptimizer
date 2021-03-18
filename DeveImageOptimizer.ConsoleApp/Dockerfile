@@ -6,12 +6,12 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo amd64 ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         echo arm64 ; \
-        mkdir ~/qemu \
-        cd ~/qemu \
-        git git://git.qemu.org/qemu.git \
-        cd qemu \
-        ./configure --target-list=i386-linux-user --static \
-        make \
+        mkdir ~/qemu ; \
+        cd ~/qemu ; \
+        git git://git.qemu.org/qemu.git ; \
+        cd qemu ; \
+        ./configure --target-list=i386-linux-user --static ; \
+        make ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
         echo armv7 ; \
     fi \
