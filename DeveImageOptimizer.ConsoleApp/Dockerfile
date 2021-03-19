@@ -9,7 +9,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo hallo arm64 ; \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
-        apt-get install git build-essential pyton -y ; \
+        apt-get install git build-essential python3 -y ; \
         git clone https://github.com/qemu/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
