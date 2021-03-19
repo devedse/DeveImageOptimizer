@@ -2,6 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y
+ARG TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo amd64 ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
