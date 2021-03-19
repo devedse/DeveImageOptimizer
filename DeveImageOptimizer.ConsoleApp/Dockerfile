@@ -4,17 +4,18 @@ FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y
 ARG TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        echo amd64 ; \
+        echo hallo amd64 ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        echo arm64 ; \
+        echo hallo arm64 ; \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
+        apt-get install git ; \
         git git://git.qemu.org/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
         make ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
-        echo armv7 ; \
+        echo hallo armv7 ; \
     else \
         echo $TARGETPLATFORM ; \
     fi
