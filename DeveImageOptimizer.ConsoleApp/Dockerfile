@@ -9,7 +9,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo hallo arm64 ; \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
-        apt-get install git ; \
+        apt-get install git -y ; \
         git git://git.qemu.org/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
