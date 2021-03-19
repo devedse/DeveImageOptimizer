@@ -10,7 +10,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
         apt-get install git build-essential -y ; \
-        git git://git.qemu.org/qemu.git ; \
+        git glone https://github.com/qemu/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
         make ; \
