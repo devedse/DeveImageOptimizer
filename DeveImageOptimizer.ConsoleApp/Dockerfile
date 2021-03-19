@@ -7,7 +7,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo hallo amd64 ; \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
-        apt-get install git build-essential python3 ninja-build -y ; \
+        apt-get install git build-essential python3 ninja-build pkg-config libglib2.0-dev -y ; \
         git clone https://github.com/qemu/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
