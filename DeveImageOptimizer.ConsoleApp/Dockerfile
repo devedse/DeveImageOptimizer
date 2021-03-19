@@ -1,6 +1,6 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y
 ARG TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
@@ -9,7 +9,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo hallo arm64 ; \
         mkdir ~/qemu ; \
         cd ~/qemu ; \
-        apt-get install git -y ; \
+        apt-get install git build-essential -y ; \
         git git://git.qemu.org/qemu.git ; \
         cd qemu ; \
         ./configure --target-list=i386-linux-user --static ; \
