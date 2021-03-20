@@ -65,6 +65,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     fi
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         git clone --recurse-submodules -j8 https://github.com/AndreRH/hangover.git /root/hangover ; \
+        cd /root/hangover ; \
+        make -C /root/hangover -f Makefile ; \
     fi
 RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download
 #RUN wine /root/FileOptimizerSetup.exe /S
