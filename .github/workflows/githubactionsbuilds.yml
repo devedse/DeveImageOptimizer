@@ -51,7 +51,8 @@ jobs:
 
   build_docker_armtest:
     needs: generate_version_number
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
+    timeout-minutes: 4320
     steps:
     - uses: actions/checkout@v2
     - name: Login to Docker Hub
