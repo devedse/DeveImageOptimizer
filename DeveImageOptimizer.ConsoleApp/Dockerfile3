@@ -1,0 +1,11 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
+WORKDIR /root
+RUN dpkg --add-architecture i386 && dpkg --add-architecture amd64
+RUN apt update
+RUN apt install qemu binfmt-support qemu-user-static -y
+RUN apt install libc6:i386 libc6:amd64 -y
+RUN wget http://ftp.nl.debian.org/debian/pool/main/h/hello/hello_2.10-2_amd64.deb && wget http://ftp.nl.debian.org/debian/pool/main/h/hello/hello_2.10-2_i386.deb
+RUN dpkg -x hello_2.10-2_amd64.deb /tmp/hello64
+RUN dpkg -x hello_2.10-2_i386.deb /tmp/hello32
+
+ENTRYPOINT ["dotnet", "DeveImageOptimizer.ConsoleApp.dll"]

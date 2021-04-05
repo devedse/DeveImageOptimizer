@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +57,13 @@ namespace DeveImageOptimizer.ImageOptimization
             if (OperatingSystem.IsWindows())
             {
                 psi = new ProcessStartInfo(_toolExePath, args)
+                {
+                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                };
+            }
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.Arm || RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+            {
+                psi = new ProcessStartInfo("/root/hangover4/build/wine-host/loader/wine", $"/root/hangover4/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so \"{_toolExePath}\" {args}")
                 {
                     WorkingDirectory = Path.GetDirectoryName(_toolExePath)
                 };
