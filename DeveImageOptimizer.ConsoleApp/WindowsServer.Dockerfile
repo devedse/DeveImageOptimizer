@@ -17,11 +17,9 @@ RUN \
     $webClient = [System.Net.WebClient]::new() ; \
     $webClient.DownloadFile('https://sourceforge.net/projects/nikkhokkho/files/latest/download', 'FileOptimizerSetup.exe') ; \
     $webClient.Dispose() ; \
-    ping 8.8.8.8 ; \
     dir ; \
     & .\FileOptimizerSetup.exe /S | Out-Null ; \
-    del .\FileOptimizerSetup.exe ; \
-    echo hoi ;
+    del .\FileOptimizerSetup.exe ;
 
 # RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download && wine /root/FileOptimizerSetup.exe /S && rm /root/FileOptimizerSetup.exe
 # ENV FILEOPTIMIZERPATH="/root/.wine/drive_c/Program Files/FileOptimizer/FileOptimizer64.exe"
