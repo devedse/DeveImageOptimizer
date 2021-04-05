@@ -59,9 +59,8 @@ jobs:
     #   with:
     #     username: devedse
     #     password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Login to GitHub Package Registry
-        #TODO replace with docker-login action when https://github.com/docker/login-action/issues/47
-        run: echo ${{ secrets.DOCKERHUBTOKEN }} | docker login -u devedse --password-stdin
+    - name: Login to GitHub Package Registry #TODO replace with docker-login action when https://github.com/docker/login-action/issues/47
+      run: echo ${{ secrets.DOCKERHUBTOKEN }} | docker login -u devedse --password-stdin
     # - name: Set up QEMU
     #   id: qemu
     #   uses: docker/setup-qemu-action@v1
