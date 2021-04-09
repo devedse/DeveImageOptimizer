@@ -38,7 +38,7 @@ RUN dotnet build "DeveImageOptimizer.ConsoleApp.csproj" -c Release -o /app/build
 FROM build AS publish
 ARG BUILD_VERSION
 ARG VER=${BUILD_VERSION:-1.0.0}
-RUN dotnet publish "DeveImageOptimizer.ConsoleApp.csproj" -c Release -o /app/publish /p:Version=$env:VER
+RUN dotnet publish "DeveImageOptimizer.ConsoleApp.csproj" -c Release -o /app/publish /p:Version=%VER%
 
 FROM base AS final
 WORKDIR /app
