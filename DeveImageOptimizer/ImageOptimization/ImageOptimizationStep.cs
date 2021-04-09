@@ -63,7 +63,7 @@ namespace DeveImageOptimizer.ImageOptimization
             }
             else if (RuntimeInformation.ProcessArchitecture == Architecture.Arm || RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
             {
-                psi = new ProcessStartInfo("/root/hangover4/build/wine-host/loader/wine", $"/root/hangover4/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so \"{_toolExePath}\" {args}")
+                psi = new ProcessStartInfo("/root/hangover/build/wine-host/loader/wine", $"/root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so \"{_toolExePath}\" {args}")
                 {
                     WorkingDirectory = Path.GetDirectoryName(_toolExePath)
                 };
