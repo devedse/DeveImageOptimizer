@@ -80,7 +80,7 @@ namespace DeveImageOptimizer.ImageOptimization
                 case var e when ConstantsFileExtensions.JPGExtensions.Contains(e.ToUpperInvariant()):
                     {
                         //Plugin: jhead (3/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jhead.exe -q -autorot -zt  "Z:\FileOptimizerTemp\FileOptimizer_Input_4294959198_2.jpg"
-                        //Plugin: Leanify (4/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\leanify.exe -q --keep-exif --keep-icc-profile --jpeg-keep-all-metadata -i 30 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294960873_2.jpg"
+                        //Plugin: Leanify (4/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\leanify.exe -q -p --keep-exif --keep-icc --jpeg-keep-all -i 30 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294960873_2.jpg"
                         //Plugin: jpegoptim (6/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jpegoptim.exe -o -q --all-progressive "Z:\FileOptimizerTemp\FileOptimizer_Input_8520_2.jpg"
                         //Plugin: jpegtran (7/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jpegtran.exe -progressive -optimize -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg" "Z:\FileOptimizerTemp\FileOptimizer_Output_4294960987_2.jpg"
                         //Plugin: mozjpegtran (8/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\mozjpegtran.exe -outfile "Z:\FileOptimizerTemp\FileOptimizer_Output_8530_2.jpg" -progressive -optimize -perfect -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg"
@@ -97,7 +97,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 30,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"--keep-exif --keep-icc-profile --jpeg-keep-all-metadata -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"--keep-exif --keep-icc --jpeg-keep-all -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\""));
 
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegoptim.exe"), $"-o --all-progressive \"{ImageOptimizationStep.InputFileToken}\""));
