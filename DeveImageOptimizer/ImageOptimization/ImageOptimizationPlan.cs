@@ -86,7 +86,7 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: mozjpegtran (8/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\mozjpegtran.exe -outfile "Z:\FileOptimizerTemp\FileOptimizer_Output_8530_2.jpg" -progressive -optimize -perfect -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg"
                         //Plugin: ECT (9/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --allfilters -progressive -9 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294965741_2.jpg"
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jhead.exe"), $"-autorot -zt  \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jhead.exe"), $"-autorot -zt \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var leanifyLevel = imageOptimizationLevel switch
                         {
@@ -97,12 +97,12 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 30,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"--keep-exif --keep-icc --jpeg-keep-all -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"--keep-exif --keep-icc --jpeg-keep-all -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\"", true));
 
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegoptim.exe"), $"-o --all-progressive \"{ImageOptimizationStep.InputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegtran.exe"), $"-progressive -optimize -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "mozjpegtran.exe"), $"-outfile \"{ImageOptimizationStep.OutputFileToken}\" -progressive -optimize -perfect -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegoptim.exe"), $"-o --all-progressive \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegtran.exe"), $"-progressive -optimize -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "mozjpegtran.exe"), $"-outfile \"{ImageOptimizationStep.OutputFileToken}\" -progressive -optimize -perfect -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var ectLevel = imageOptimizationLevel switch
                         {
@@ -116,7 +116,7 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         var extraTagB = imageOptimizationLevel == ImageOptimizationLevel.Placebo ? "-b" : "";
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -progressive -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -progressive -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.PNGExtensions.Contains(e.ToUpperInvariant()):
@@ -132,7 +132,7 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: defluff (15/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\defluff.bat "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_8276_1.png"
                         //Plugin: DeflOpt (16/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\deflopt.exe /a /b /s /k "Z:\FileOptimizerTemp\FileOptimizer_Input_4983_1.png"
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "PngOptimizer.exe"), $"-KeepPhysicalPixelDimensions -file:\"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "PngOptimizer.exe"), $"-KeepPhysicalPixelDimensions -file:\"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var truePngLevel = imageOptimizationLevel switch
                         {
@@ -143,7 +143,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 4,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} - md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} - md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var pngOutLevel = imageOptimizationLevel switch
                         {
@@ -155,7 +155,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             _ => throw new NotSupportedException()
                         };
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d{pngOutLevel} /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d{pngOutLevel} /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
 
                         var optiPngLevel = imageOptimizationLevel switch
                         {
@@ -173,7 +173,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             extraOptiPngFlags = "-zm1-9 ";
                         }
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var pngWolfIterations = imageOptimizationLevel switch
                         {
@@ -185,8 +185,8 @@ namespace DeveImageOptimizer.ImageOptimization
                             _ => throw new NotSupportedException()
                         };
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngwolf.exe"), $"--out-deflate=zopfli,iter={pngWolfIterations}--in=\"{ImageOptimizationStep.InputFileToken}\" --out=\"{ImageOptimizationStep.OutputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngrewrite.exe"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngwolf.exe"), $"--out-deflate=zopfli,iter={pngWolfIterations}--in=\"{ImageOptimizationStep.InputFileToken}\" --out=\"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngrewrite.exe"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
 
                         var ectLevel = imageOptimizationLevel switch
                         {
@@ -200,10 +200,10 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         var extraTagB = imageOptimizationLevel == ImageOptimizationLevel.Placebo ? "-b" : "";
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "defluff.bat"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "defluff.bat"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                     }
                     break;
@@ -212,8 +212,8 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" -quiet -compress RLE "Z:\FileOptimizerTemp\FileOptimizer_Output_8722_TestImageBMP_xnvdctl3.bmp"
                         //Plugin: ImageWorsener (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\imagew.exe -noresize -zipcmprlevel 9 -outfmt bmp -compress "rle" "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" "Z:\FileOptimizerTemp\FileOptimizer_Output_1885_TestImageBMP_xnvdctl3.bmp"
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -compress RLE \"{ImageOptimizationStep.OutputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "imagew.exe"), $"-noresize -zipcmprlevel 9 -outfmt bmp -compress \"rle\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -compress RLE \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "imagew.exe"), $"-noresize -zipcmprlevel 9 -outfmt bmp -compress \"rle\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.GIFExtensions.Contains(e.ToUpperInvariant()):
@@ -221,8 +221,8 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif" -quiet -set dispose background -layers optimize -compress -loop 0 LZW "Z:\FileOptimizerTemp\FileOptimizer_Output_4294964962_TestImageGIF_gykbljhq.gif"
                         //Plugin: gifsicle (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\gifsicle.exe -w -j --no-conserve-memory -o "Z:\FileOptimizerTemp\FileOptimizer_Output_4294966173_TestImageGIF_gykbljhq.gif" -O3 "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif"
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -set dispose background -layers optimize -compress -loop 0 LZW \"{ImageOptimizationStep.OutputFileToken}\""));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "gifsicle.exe"), $"-w -j --no-conserve-memory -o \"{ImageOptimizationStep.OutputFileToken}\" -O3 \"{ImageOptimizationStep.InputFileToken}\""));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -set dispose background -layers optimize -compress -loop 0 LZW \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "gifsicle.exe"), $"-w -j --no-conserve-memory -o \"{ImageOptimizationStep.OutputFileToken}\" -O3 \"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
                 default:

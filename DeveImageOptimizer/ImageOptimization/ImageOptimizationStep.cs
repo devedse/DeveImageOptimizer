@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.ImageOptimization
@@ -14,6 +13,8 @@ namespace DeveImageOptimizer.ImageOptimization
     public class ImageOptimizationStep
     {
         private readonly string _toolExePath;
+        private readonly bool _replaceToWindowsSlashOnNonWindows;
+
         public string Arguments { get; }
 
         public string ToolExeFileName => Path.GetFileName(_toolExePath);
@@ -26,10 +27,21 @@ namespace DeveImageOptimizer.ImageOptimization
         /// </summary>
         /// <param name="toolExePath">The path to the .exe file of the optimizer</param>
         /// <param name="arguments">The arguments to pass to the tool, any temp file arguments should be tokenized as follows: ImageOptimizationStep.TempFileToken</param>
-        public ImageOptimizationStep(string toolExePath, string arguments)
+        /// <param name="replaceToWindowsSlashOnNonWindows">For some tools when running in Linux you want to replace slashes</param>
+        public ImageOptimizationStep(string toolExePath, string arguments, bool replaceToWindowsSlashOnNonWindows)
         {
             _toolExePath = toolExePath;
             Arguments = arguments;
+            _replaceToWindowsSlashOnNonWindows = replaceToWindowsSlashOnNonWindows;
+        }
+
+        private string ReplaceSlashesIfneeded(string input)
+        {
+            if (_replaceToWindowsSlashOnNonWindows && !OperatingSystem.IsWindows())
+            {
+                return input.Replace('/', '\\');
+            }
+            return input;
         }
 
         public async Task<ImageOptimizationStepResult> Run(DeveImageOptimizerConfiguration configuration, string imagePath, List<string> tempFiles)
@@ -41,7 +53,7 @@ namespace DeveImageOptimizer.ImageOptimization
             File.Copy(imagePath, inputFile, true);
             string args = Arguments;
 
-            args = args.Replace(InputFileToken, inputFile);
+            args = args.Replace(InputFileToken, ReplaceSlashesIfneeded(inputFile));
 
             bool usesTempFile = Arguments.Contains(OutputFileToken);
             string tempFilePath = "";
@@ -49,7 +61,7 @@ namespace DeveImageOptimizer.ImageOptimization
             {
                 tempFilePath = Path.Combine(configuration.TempDirectory, RandomFileNameHelper.RandomFileNameShort(Path.GetFileNameWithoutExtension($"{ToolExeFileName}_out"), extension));
                 tempFiles.Add(tempFilePath);
-                args = args.Replace(OutputFileToken, tempFilePath);
+                args = args.Replace(OutputFileToken, ReplaceSlashesIfneeded(tempFilePath));
             }
 
             ProcessStartInfo psi;
@@ -58,21 +70,23 @@ namespace DeveImageOptimizer.ImageOptimization
             {
                 psi = new ProcessStartInfo(_toolExePath, args)
                 {
-                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                    //WorkingDirectory = Path.GetDirectoryName(_toolExePath)
                 };
             }
             else if (RuntimeInformation.ProcessArchitecture == Architecture.Arm || RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
             {
                 psi = new ProcessStartInfo("/root/hangover/build/wine-host/loader/wine", $"/root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so \"{_toolExePath}\" {args}")
                 {
-                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                    //If you use a working directory, paths in Linux with wine don't work anymore
+                    //WorkingDirectory = Path.GetDirectoryName(_toolExePath)
                 };
             }
             else
             {
                 psi = new ProcessStartInfo("wine", $"\"{_toolExePath}\" {args}")
                 {
-                    WorkingDirectory = Path.GetDirectoryName(_toolExePath)
+                    //If you use a working directory, paths in Linux with wine don't work anymore
+                    //WorkingDirectory = Path.GetDirectoryName(_toolExePath)
                 };
             }
 
