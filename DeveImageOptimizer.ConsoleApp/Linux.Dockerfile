@@ -4,15 +4,15 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 ARG TARGETPLATFORM
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        echo Architecture: amd64 ($TARGETPLATFORM) ; \
-        apt-get update && apt-get install -y 
+        echo Architecture: amd64 $TARGETPLATFORM ; \
+        apt-get update && apt-get install -y \
 			wget tar htop ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        echo Architecture: arm64 ($TARGETPLATFORM) ; \
+        echo Architecture: arm64 $TARGETPLATFORM ; \
         apt-get update && apt-get install -y \
 			wget tar htop pkg-config ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
-        echo Architecture: armv7 ($TARGETPLATFORM) ; \
+        echo Architecture: armv7 $TARGETPLATFORM ; \
     else \
         echo $TARGETPLATFORM ; \
 	fi
@@ -68,7 +68,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         /root/hangover/build/wine-host/loader/wine /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so /root/FileOptimizerSetup.exe /S ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
-        echo Architecture: armv7 ($TARGETPLATFORM) ; \
+        echo Architecture: armv7 $TARGETPLATFORM ; \
     else \
         echo $TARGETPLATFORM ; \
 	fi
