@@ -3,14 +3,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 ARG TARGETPLATFORM
 
+RUN apt-get update && apt-get install -y \
+	wget tar htop p7zip-full ;
+
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         echo Architecture: amd64 $TARGETPLATFORM ; \
-        apt-get update && apt-get install -y \
-			wget tar htop ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         echo Architecture: arm64 $TARGETPLATFORM ; \
         apt-get update && apt-get install -y \
-			wget tar htop pkg-config ; \
+			pkg-config ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
         echo Architecture: armv7 $TARGETPLATFORM ; \
     else \
@@ -63,15 +64,16 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 
 RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download
 
-RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        wine /root/FileOptimizerSetup.exe /S ; \
-    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        /root/hangover/build/wine-host/loader/wine /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so /root/FileOptimizerSetup.exe /S ; \
-    elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
-        echo Architecture: armv7 $TARGETPLATFORM ; \
-    else \
-        echo $TARGETPLATFORM ; \
-	fi
+RUN 7z e FileOptimizerSetup.exe -o/root/.wine/drive_c/Program Files/FileOptimizer/
+# RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+#         wine /root/FileOptimizerSetup.exe /S ; \
+#     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+#         /root/hangover/build/wine-host/loader/wine /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so /root/FileOptimizerSetup.exe /S ; \
+#     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
+#         echo Architecture: armv7 $TARGETPLATFORM ; \
+#     else \
+#         echo $TARGETPLATFORM ; \
+# 	fi
 
 RUN rm /root/FileOptimizerSetup.exe
 
