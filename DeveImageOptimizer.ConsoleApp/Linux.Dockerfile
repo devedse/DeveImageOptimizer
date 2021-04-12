@@ -64,7 +64,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 
 RUN wget -O /root/FileOptimizerSetup.exe https://sourceforge.net/projects/nikkhokkho/files/latest/download
 
-RUN 7z e FileOptimizerSetup.exe -o/root/.wine/drive_c/Program Files/FileOptimizer/
+RUN 7z x /root/FileOptimizerSetup.exe -o"/root/.wine/drive_c/Program Files/FileOptimizer/"
 # RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 #         wine /root/FileOptimizerSetup.exe /S ; \
 #     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
