@@ -64,7 +64,7 @@ jobs:
       run: |
         docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
         #docker run --rm devedse/deveimageoptimizerconsoleapp
-        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
+        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
 
   test_docker_linuxqus:
     needs: [generate_version_number, build_docker_linux]
@@ -78,7 +78,7 @@ jobs:
       run: |
         docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
         #docker run --rm devedse/deveimageoptimizerconsoleapp
-        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
+        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
 
   test_docker_linuxnoqemu:
     needs: [generate_version_number, build_docker_linux]
@@ -89,7 +89,7 @@ jobs:
       run: |
         docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
         #docker run --rm devedse/deveimageoptimizerconsoleapp
-        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
+        docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
 
   build_docker_windows:
     needs: generate_version_number
