@@ -49,6 +49,45 @@ jobs:
         echo Version: $VERSION
         docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
 
+  test_docker_linux:
+    needs: [generate_version_number, build_docker_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up QEMU
+      id: qemu
+      uses: docker/setup-qemu-action@v1
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: all
+    - name: Test docker run
+      run: |
+        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
+        docker run --rm -it devedse/deveimageoptimizerconsoleapp
+
+  test_docker_linuxqus:
+    needs: [generate_version_number, build_docker_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup qus
+      run: |
+        docker run --rm --privileged aptman/qus -s -- -p
+    - name: Test docker run
+      run: |
+        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
+        docker run --rm -it devedse/deveimageoptimizerconsoleapp
+
+  test_docker_linuxnoqemu:
+    needs: [generate_version_number, build_docker_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Test docker run
+      run: |
+        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
+        docker run --rm -it devedse/deveimageoptimizerconsoleapp
+
   build_docker_windows:
     needs: generate_version_number
     runs-on: windows-latest
