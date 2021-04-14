@@ -1,5 +1,6 @@
 ﻿using DeveCoolLib.ProcessAsTask;
 using DeveImageOptimizer.FileProcessing;
+using DeveImageOptimizer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,9 @@ namespace DeveImageOptimizer.ImageOptimization
 {
     public class ImageOptimizationPlan
     {
+        public static object LOCKFORDEFLUFFFILECREATION = new object();
+        public static bool DEFLUFFFILECREATED = false;
+
         public DeveImageOptimizerConfiguration Configuration { get; }
 
         public ImageOptimizationPlan(DeveImageOptimizerConfiguration configuration)
@@ -202,7 +206,23 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "defluff.bat"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+
+                        //This hack is required because defluff.exe expects piped images. Fileoptimizerfull does this by calling a .bat file, but this bat file uses a relative path. So we fix this to be an absolute path.
+                        var expectedDefluff2batpath = Path.Join(FolderHelperMethods.TempDirectory, "defluff2.bat");
+                        if (!DEFLUFFFILECREATED)
+                        {
+                            lock (LOCKFORDEFLUFFFILECREATION)
+                            {
+                                if (!DEFLUFFFILECREATED)
+                                {
+                                    File.WriteAllText(expectedDefluff2batpath, $"@\"{Path.Join(toolpath, "defluff.exe")}\" <%1 >%2");
+                                    DEFLUFFFILECREATED = true;
+                                }
+                            }
+                        }
+
+
+                        steps.Add(new ImageOptimizationStep(expectedDefluff2batpath, $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                     }
