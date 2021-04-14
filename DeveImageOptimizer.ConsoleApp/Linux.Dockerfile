@@ -98,4 +98,23 @@ RUN dotnet publish "DeveImageOptimizer.ConsoleApp.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DeveImageOptimizer.ConsoleApp.dll"]
+
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+        echo '#!/bin/bash\n\
+dotnet DeveImageOptimizer.ConsoleApp.dll' > /app/go.sh && chmod +x /app/go.sh ; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+		wget https://github.com/jackdp/sleep/releases/download/v1.0/sleep64.exe ; \
+        echo '#!/bin/bash\n\
+nohup /root/hangover/build/wine-host/loader/wine /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so /app/sleep64.exe 49d &\n\
+dotnet DeveImageOptimizer.ConsoleApp.dll' > /app/go.sh && chmod +x /app/go.sh ; \
+    elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
+        echo "SKIPPING" ; \
+    else \
+        echo $TARGETPLATFORM ; \
+	fi
+
+RUN chmod +x /app/go.sh
+#ENTRYPOINT ["dotnet", "DeveImageOptimizer.ConsoleApp.dll"]
+#ENTRYPOINT ["/root/hangover/build/wine-host/loader/wine", "/root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so", "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe", "-o", "--all-progressive", "/app/TestImage.jpg", "--", "&&", "dotnet", "DeveImageOptimizer.ConsoleApp.dll"]
+ENTRYPOINT ["./go.sh"]
