@@ -75,7 +75,7 @@ jobs:
         echo Version: $VERSION
         docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
 
-  test_docker_linux:
+  test_docker_linux_qemudefault:
     needs: [generate_version_number, build_docker_linux]
     runs-on: ubuntu-latest
     steps:
@@ -85,6 +85,23 @@ jobs:
       uses: docker/setup-qemu-action@v1
       with:
         image: tonistiigi/binfmt:latest
+        platforms: all
+    - name: Test docker run
+      run: |
+        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
+        docker run --rm devedse/deveimageoptimizerconsoleapp
+        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
+
+test_docker_linux_qemu520:
+    needs: [generate_version_number, build_docker_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up QEMU
+      id: qemu
+      uses: docker/setup-qemu-action@v1
+      with:
+        image: tonistiigi/binfmt:qemu-v5.2.0
         platforms: all
     - name: Test docker run
       run: |
