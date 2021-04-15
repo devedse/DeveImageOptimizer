@@ -54,21 +54,17 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        # dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y ; \
-		dpkg --add-architecture i386 ; \
-		wget -nc https://dl.winehq.org/wine-builds/winehq.key ; \
-		apt-key add winehq.key ; \
-		echo 'deb https://dl.winehq.org/wine-builds/debian/ buster main' >> /etc/apt/sources.list ; \
-		wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/amd64/libfaudio0_19.07-0~bionic_amd64.deb ; \
-		wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/i386/libfaudio0_19.07-0~bionic_i386.deb ; \
-		dpkg -i libfaudio0_19.07-0~bionic_amd64.deb libfaudio0_19.07-0~bionic_i386.deb ; \
-		apt-get update ; \
-		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/amd64/libfaudio0_20.01-0~buster_amd64.deb ; \
-		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/i386/libfaudio0_20.01-0~buster_i386.deb ; \
-		#dpkg -i libfaudio0_20.01-0~buster_amd64.deb libfaudio0_20.01-0~buster_i386.deb ; \
-		apt-get update ; \
-		apt --fix-broken install -y ; \
-		apt install --install-recommends winehq-stable ; \
+        dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y ; \
+		#dpkg --add-architecture i386 ; \
+		#wget -nc https://dl.winehq.org/wine-builds/winehq.key ; \
+		#apt-key add winehq.key ; \
+		#echo 'deb https://dl.winehq.org/wine-builds/debian/ buster main' >> /etc/apt/sources.list ; \
+		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/amd64/libfaudio0_19.07-0~bionic_amd64.deb ; \
+		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/i386/libfaudio0_19.07-0~bionic_i386.deb ; \
+		#dpkg -i libfaudio0_19.07-0~bionic_amd64.deb libfaudio0_19.07-0~bionic_i386.deb ; \
+		#apt-get update ; \
+		#apt --fix-broken install -y ; \
+		#apt install --install-recommends winehq-stable -y ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 		wget -O /root/buildfolder_build_arm64.tar.gz --no-verbose https://github.com/devedse/hangover/releases/latest/download/buildfolder_build_arm64.tar.gz ; \
 		tar -C /root/hangover -zxvf /root/buildfolder_build_arm64.tar.gz ; \
@@ -115,9 +111,11 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-
+# We call the sleep64.exe here, it doesn't actually seem to work but it loads in wine, which makes all subsequent calls faster :)
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        echo '#!/bin/bash\n\
+        wget https://github.com/jackdp/sleep/releases/download/v1.0/sleep64.exe ; \
+		echo '#!/bin/bash\n\
+nohup wine /app/sleep64.exe 49d &\n\
 dotnet DeveImageOptimizer.ConsoleApp.dll' > /app/go.sh && chmod +x /app/go.sh ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 		wget https://github.com/jackdp/sleep/releases/download/v1.0/sleep64.exe ; \

@@ -222,7 +222,7 @@ namespace DeveImageOptimizer.ImageOptimization
                         }
 
 
-                        steps.Add(new ImageOptimizationStep(expectedDefluff2batpath, $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep("cmd", $"/c \" \"{expectedDefluff2batpath}\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\" \"", false));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                     }

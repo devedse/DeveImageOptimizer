@@ -18,6 +18,9 @@
     <None Update="TestImage.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestImage.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestImage.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

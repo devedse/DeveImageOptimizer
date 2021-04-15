@@ -3,6 +3,7 @@ using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -30,8 +31,15 @@ namespace DeveImageOptimizer.ConsoleApp
 
             var fp = new DeveImageOptimizerProcessor(config, fileProcessedListener, rememberer, dirRememberer);
 
-            await fp.ProcessDirectory(dirrr);
-            Console.WriteLine("Application done press any key to exit");
+            var filesProcessedIEnumerable = await fp.ProcessDirectory(dirrr);
+            var filesProcessed = filesProcessedIEnumerable.ToList();
+            Console.WriteLine();
+            Console.WriteLine("Application completed, stats:");
+            for (int i = 0; i < filesProcessed.Count; i++)
+            {
+                var cur = filesProcessed[i];
+                Console.WriteLine($"{i + 1}/{filesProcessed.Count}: {Path.GetFileName(cur.Path)} ({cur.OptimizationResult}) {cur.OriginalSize} --> {cur.OptimizedSize} (Reduced by: {cur.OriginalSize - cur.OptimizedSize} {{{Math.Round((double)cur.OptimizedSize / (double)cur.OriginalSize * 100.0, 1)}%}}) in {Math.Round(cur.Duration.TotalSeconds, 1)} seconds");
+            }
         }
     }
 }
