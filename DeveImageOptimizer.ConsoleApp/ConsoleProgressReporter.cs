@@ -9,7 +9,14 @@ namespace DeveImageOptimizer.ConsoleApp
     {
         public Task OptimizableFileProgressUpdated(OptimizableFile optimizableFile)
         {
-            Console.WriteLine($"File Optimized: {optimizableFile}");
+            if (optimizableFile.OptimizationResult == OptimizationResult.InProgress)
+            {
+                Console.WriteLine($"File being optimized: {optimizableFile}");
+            }
+            else
+            {
+                Console.WriteLine($"File Optimized: {optimizableFile} ({optimizableFile.OptimizationResult})");
+            }
             return Task.CompletedTask;
         }
 
