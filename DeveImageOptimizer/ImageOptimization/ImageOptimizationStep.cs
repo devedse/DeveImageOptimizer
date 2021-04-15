@@ -39,7 +39,7 @@ namespace DeveImageOptimizer.ImageOptimization
         {
             if (_replaceToWindowsSlashOnNonWindows && !OperatingSystem.IsWindows())
             {
-                return input.Replace('/', '\\');
+                return "z:" + input.Replace('/', '\\');
             }
             return input;
         }

@@ -147,7 +147,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 4,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} - md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} - md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                         var pngOutLevel = imageOptimizationLevel switch
                         {
@@ -159,7 +159,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             _ => throw new NotSupportedException()
                         };
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d{pngOutLevel} /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d{pngOutLevel} /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", true));
 
                         var optiPngLevel = imageOptimizationLevel switch
                         {
@@ -189,7 +189,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             _ => throw new NotSupportedException()
                         };
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngwolf.exe"), $"--out-deflate=zopfli,iter={pngWolfIterations}--in=\"{ImageOptimizationStep.InputFileToken}\" --out=\"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngwolf.exe"), $"--out-deflate=zopfli,iter={pngWolfIterations} --in=\"{ImageOptimizationStep.InputFileToken}\" --out=\"{ImageOptimizationStep.OutputFileToken}\"", true));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngrewrite.exe"), $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
 
                         var ectLevel = imageOptimizationLevel switch
@@ -205,7 +205,7 @@ namespace DeveImageOptimizer.ImageOptimization
                         var extraTagB = imageOptimizationLevel == ImageOptimizationLevel.Placebo ? "-b" : "";
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                         //This hack is required because defluff.exe expects piped images. Fileoptimizerfull does this by calling a .bat file, but this bat file uses a relative path. So we fix this to be an absolute path.
                         var expectedDefluff2batpath = Path.Join(FolderHelperMethods.TempDirectory, "defluff2.bat");
@@ -223,7 +223,7 @@ namespace DeveImageOptimizer.ImageOptimization
 
 
                         steps.Add(new ImageOptimizationStep(expectedDefluff2batpath, $"\"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                     }
                     break;
