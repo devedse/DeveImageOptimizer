@@ -54,17 +54,19 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y ; \
-		#dpkg --add-architecture i386 ; \
-		#wget -nc https://dl.winehq.org/wine-builds/winehq.key ; \
-		#apt-key add winehq.key ; \
-		#echo 'deb https://dl.winehq.org/wine-builds/debian/ buster main' >> /etc/apt/sources.list ; \
-		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/amd64/libfaudio0_19.07-0~bionic_amd64.deb ; \
-		#wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/i386/libfaudio0_19.07-0~bionic_i386.deb ; \
-		#dpkg -i libfaudio0_19.07-0~bionic_amd64.deb libfaudio0_19.07-0~bionic_i386.deb ; \
-		#apt-get update ; \
-		#apt --fix-broken install -y ; \
-		#apt install --install-recommends winehq-stable -y ; \
+        dpkg --add-architecture i386 && apt-get update && apt-get install wine wget -y && wine --version ; \
+		# echo hoiiii ; \
+		# dpkg --add-architecture i386 ; \
+		# wget -nc https://dl.winehq.org/wine-builds/winehq.key ; \
+		# apt-key add winehq.key ; \
+		# echo 'deb https://dl.winehq.org/wine-builds/debian/ buster main' >> /etc/apt/sources.list ; \
+		# wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/amd64/libfaudio0_19.07-0~bionic_amd64.deb ; \
+		# wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/i386/libfaudio0_19.07-0~bionic_i386.deb ; \
+		# dpkg -i libfaudio0_19.07-0~bionic_amd64.deb libfaudio0_19.07-0~bionic_i386.deb ; \
+		# apt-get update ; \
+		# apt --fix-broken install -y ; \
+		# apt install --install-recommends winehq-stable -y ; \
+		# wine --version ; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 		wget -O /root/buildfolder_build_arm64.tar.gz --no-verbose https://github.com/devedse/hangover/releases/latest/download/buildfolder_build_arm64.tar.gz ; \
 		tar -C /root/hangover -zxvf /root/buildfolder_build_arm64.tar.gz ; \
