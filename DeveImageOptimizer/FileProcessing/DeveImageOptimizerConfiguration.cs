@@ -37,7 +37,7 @@ namespace DeveImageOptimizer.FileProcessing
         /// <summary>
         /// This settings ensures the DeveImageOptimizer doesn't make use of FileOptimizerFull anymore. It calls the tool .exe files directly.
         /// </summary>
-        public bool UseNewDeveImageOptimizer { get; set; } = false;
+        public bool CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer { get; set; } = false;
 
         /// <summary>
         /// This setting determines if logs from internal tools will be forwarded to the console log

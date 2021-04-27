@@ -24,7 +24,7 @@ namespace DeveImageOptimizer.ConsoleApp
             var config = new DeveImageOptimizerConfiguration()
             {
                 ExecuteImageOptimizationParallel = false,
-                UseNewDeveImageOptimizer = true,
+                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true,
                 ForwardOptimizerToolLogsToConsole = true,
                 //FileOptimizerPath = Assembly.GetEntryAssembly().Location
             };

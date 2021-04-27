@@ -17,7 +17,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel,
-                UseNewDeveImageOptimizer = true
+                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true
             };
             return config;
         }

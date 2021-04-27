@@ -236,14 +236,14 @@ namespace DeveImageOptimizer.Tests.FileProcessingNewImageOptimization
             var configFileOptimizer = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                UseNewDeveImageOptimizer = true,
+                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel
             };
             var configNew = new DeveImageOptimizerConfiguration()
             {
                 HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                UseNewDeveImageOptimizer = false,
+                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = false,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel
             };

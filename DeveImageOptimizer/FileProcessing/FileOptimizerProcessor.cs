@@ -52,7 +52,7 @@ namespace DeveImageOptimizer.FileProcessing
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
-                if (Configuration.UseNewDeveImageOptimizer)
+                if (Configuration.CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer)
                 {
                     var optimizationPlan = new ImageOptimizationPlan(Configuration);
                     var result = await optimizationPlan.GoOptimize(tempFilePath, Configuration.ImageOptimizationLevel, tempFiles);
