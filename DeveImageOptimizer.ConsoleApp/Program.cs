@@ -25,7 +25,8 @@ namespace DeveImageOptimizer.ConsoleApp
             {
                 ExecuteImageOptimizationParallel = false,
                 CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true,
-                ForwardOptimizerToolLogsToConsole = true,
+                ForwardOptimizerToolLogsToConsole = false,
+                ImageOptimizationLevel = ImageOptimization.ImageOptimizationLevel.Placebo
                 //FileOptimizerPath = Assembly.GetEntryAssembly().Location
             };
 

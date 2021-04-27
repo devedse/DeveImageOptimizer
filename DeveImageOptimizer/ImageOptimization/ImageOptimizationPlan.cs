@@ -132,6 +132,7 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: pngwolf (9/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pngwolf.exe --out-deflate=zopfli,iter=30 --in="C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" --out="Z:\FileOptimizerTemp\FileOptimizer_Output_1440_1.png"
                         //Plugin: pngrewrite (10/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pngrewrite.exe "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_3539_1.png"
                         //Plugin: ECT (12/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --allfilters -9 "Z:\FileOptimizerTemp\FileOptimizer_Input_7162_1.png"
+                        //Plugin: pingo (13/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pingo.exe -s8 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294959867_Untitled.png"
                         //Plugin: DeflOpt (14/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\deflopt.exe /a /b /s /k "Z:\FileOptimizerTemp\FileOptimizer_Input_4294964645_1.png"
                         //Plugin: defluff (15/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\defluff.bat "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_8276_1.png"
                         //Plugin: DeflOpt (16/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\deflopt.exe /a /b /s /k "Z:\FileOptimizerTemp\FileOptimizer_Input_4983_1.png"
@@ -147,7 +148,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 4,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} - md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\"", true));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "truepng.exe"), $"-o{truePngLevel} -md keep all /i0 /nc /tz /y /out \"{ImageOptimizationStep.OutputFileToken}\" \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                         var pngOutLevel = imageOptimizationLevel switch
                         {
@@ -197,14 +198,26 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.SuperFast => 1,
                             ImageOptimizationLevel.Fast => 3,
                             ImageOptimizationLevel.Normal => 5,
-                            ImageOptimizationLevel.Maximum => 9,
+                            ImageOptimizationLevel.Maximum => 90032,
                             ImageOptimizationLevel.Placebo => 30060,
                             _ => throw new NotSupportedException()
                         };
 
                         var extraTagB = imageOptimizationLevel == ImageOptimizationLevel.Placebo ? "-b" : "";
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--mt-deflate --allfilters{extraTagB} -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+
+                        var pingoLevel = imageOptimizationLevel switch
+                        {
+                            ImageOptimizationLevel.SuperFast => 1,
+                            ImageOptimizationLevel.Fast => 3,
+                            ImageOptimizationLevel.Normal => 5,
+                            ImageOptimizationLevel.Maximum => 8,
+                            ImageOptimizationLevel.Placebo => 8,
+                            _ => throw new NotSupportedException()
+                        };
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 
                         //This hack is required because defluff.exe expects piped images. Fileoptimizerfull does this by calling a .bat file, but this bat file uses a relative path. So we fix this to be an absolute path.
