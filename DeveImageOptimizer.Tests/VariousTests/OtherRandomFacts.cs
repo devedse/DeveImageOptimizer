@@ -5,7 +5,6 @@ using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
