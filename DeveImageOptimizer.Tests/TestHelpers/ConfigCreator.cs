@@ -14,7 +14,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                 FileOptimizerPath = fileOptimizerPath,
                 MaxDegreeOfParallelism = 8,
                 ExecuteImageOptimizationParallel = parallel,
-                HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
+                HideOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel,
                 CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true

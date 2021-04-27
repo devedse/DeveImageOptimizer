@@ -10,7 +10,7 @@ namespace DeveImageOptimizer.FileProcessing
         public string FileOptimizerPath { get; set; } = Environment.GetEnvironmentVariable("FILEOPTIMIZERPATH") ?? $"C:{s}Program Files{s}FileOptimizer{s}FileOptimizer64.exe";
         public string TempDirectory { get; set; } = FolderHelperMethods.TempDirectory;
 
-        public bool HideFileOptimizerWindow { get; set; } = true;
+        public bool HideOptimizerWindow { get; set; } = true;
 
         public string FailedFilesDirectory { get; set; } = FolderHelperMethods.FailedFilesDirectory;
         public bool SaveFailedFiles { get; set; } = false;

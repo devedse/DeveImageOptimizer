@@ -235,7 +235,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             var config = new DeveImageOptimizerConfiguration()
             {
-                HideFileOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
+                HideOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = false,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel

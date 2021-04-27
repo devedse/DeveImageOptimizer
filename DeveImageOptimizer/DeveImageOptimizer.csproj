@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeveCoolLib" Version="1.0.504" />
+    <PackageReference Include="DeveCoolLib" Version="1.0.505" />
     <PackageReference Include="ExifLibNet" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.5" />

@@ -77,7 +77,7 @@ namespace DeveImageOptimizer.FileProcessing
                     //    args = $"/NoWindow {args}";
                     //}
                     var processStartInfo = new ProcessStartInfo(Configuration.FileOptimizerPath, $" {args} \"{tempFilePath}\"");
-                    if (Configuration.HideFileOptimizerWindow)
+                    if (Configuration.HideOptimizerWindow)
                     {
                         processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         processStartInfo.UseShellExecute = true;

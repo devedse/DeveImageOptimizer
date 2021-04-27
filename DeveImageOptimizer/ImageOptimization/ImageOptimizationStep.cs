@@ -92,7 +92,7 @@ namespace DeveImageOptimizer.ImageOptimization
 
             Console.WriteLine($"Executing: {psi.FileName} {psi.Arguments}");
 
-            var processResult = await ProcessRunner.RunAsync(psi, configuration.ForwardOptimizerToolLogsToConsole);
+            var processResult = await ProcessRunner.RunAsync(psi, configuration.ForwardOptimizerToolLogsToConsole, configuration.HideOptimizerWindow);
 
             return new ImageOptimizationStepResult(processResult, usesTempFile ? tempFilePath : inputFile);
         }
