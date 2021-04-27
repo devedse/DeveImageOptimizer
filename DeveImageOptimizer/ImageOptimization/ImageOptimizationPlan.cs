@@ -121,6 +121,20 @@ namespace DeveImageOptimizer.ImageOptimization
                         var extraTagB = imageOptimizationLevel == ImageOptimizationLevel.Placebo ? "-b" : "";
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -progressive -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+
+                        //Apparently pingo doesn't copy metadata
+                        //var pingoLevel = imageOptimizationLevel switch
+                        //{
+                        //    ImageOptimizationLevel.SuperFast => 1,
+                        //    ImageOptimizationLevel.Fast => 3,
+                        //    ImageOptimizationLevel.Normal => 5,
+                        //    ImageOptimizationLevel.Maximum => 8,
+                        //    ImageOptimizationLevel.Placebo => 8,
+                        //    _ => throw new NotSupportedException()
+                        //};
+
+                        //var extraTagPingo = imageOptimizationLevel >= ImageOptimizationLevel.Maximum ? "-table=6 " : "";
+                        //steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} {extraTagPingo}\"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.PNGExtensions.Contains(e.ToUpperInvariant()):
