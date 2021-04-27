@@ -1,4 +1,5 @@
-﻿using DeveCoolLib.ProcessAsTask;
+﻿using DeveCoolLib.Conversion;
+using DeveCoolLib.ProcessAsTask;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;

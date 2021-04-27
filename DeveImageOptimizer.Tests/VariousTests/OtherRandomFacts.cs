@@ -16,14 +16,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
         [Fact]
         public void ReproducesJpgDecoderBug()
         {
-            var startupAssembly = typeof(OtherRandomFacts).GetTypeInfo().Assembly;
-            var cb = startupAssembly.CodeBase;
-
-            UriBuilder uri = new UriBuilder(cb);
-            string path = Uri.UnescapeDataString(uri.Path);
-            var assemblyDir = Path.GetDirectoryName(path);
-
-            var image1path = Path.Combine(assemblyDir, "TestImages", "Image1A.JPG");
+            var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "Image1A.JPG");
 
             using (var img = Image.Load<Rgba32>(image1path))
             {
