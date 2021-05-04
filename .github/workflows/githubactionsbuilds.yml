@@ -80,7 +80,7 @@ jobs:
         echo Version: $VERSION
         docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
 
-  build_docker_linux_crazymax:
+  build_docker_linux_crazymax_600rc4:
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -95,6 +95,37 @@ jobs:
       uses: docker/setup-qemu-action@v1
       with:
         image: crazymax/binfmt:v6.0.0-rc4
+        platforms: all
+    - name: Available platforms
+      run: echo ${{ steps.qemu.outputs.platforms }}
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Builder instance name
+      run: echo ${{ steps.buildx.outputs.name }}
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
+    - name: Run Buildx
+      run: |
+        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
+        echo Version: $VERSION
+        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
+
+  build_docker_linux_tonistiigi_600:
+    needs: generate_version_number
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: devedse
+        password: ${{ secrets.DOCKERHUBTOKEN }}
+    - name: Set up QEMU
+      id: qemu
+      uses: docker/setup-qemu-action@v1
+      with:
+        image: tonistiigi/binfmt:qemu-v6.0.0
         platforms: all
     - name: Available platforms
       run: echo ${{ steps.qemu.outputs.platforms }}
@@ -171,7 +202,7 @@ jobs:
         docker run --rm -t devedse/deveimageoptimizerconsoleapp
         #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
 
-  test_docker_linux_qemu_crazymax:
+  test_docker_linux_qemu_crazymax_600rc4:
     needs: [generate_version_number, build_docker_linux]
     runs-on: ubuntu-latest
     steps:
@@ -181,6 +212,23 @@ jobs:
       uses: docker/setup-qemu-action@v1
       with:
         image: crazymax/binfmt:v6.0.0-rc4
+        platforms: all
+    - name: Test docker run
+      run: |
+        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
+        docker run --rm -t devedse/deveimageoptimizerconsoleapp
+        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
+
+  test_docker_linux_qemu_tonistiigi_600:
+    needs: [generate_version_number, build_docker_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up QEMU
+      id: qemu
+      uses: docker/setup-qemu-action@v1
+      with:
+        image: tonistiigi/binfmt:qemu-v6.0.0
         platforms: all
     - name: Test docker run
       run: |
