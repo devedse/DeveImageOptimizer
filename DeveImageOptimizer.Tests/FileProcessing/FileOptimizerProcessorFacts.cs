@@ -51,6 +51,12 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         }
 
         [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        public async Task CorrectlyOptimizesTimelineSelectorImage()
+        {
+            await OptimizeFileTest("TimelineSelector.png");
+        }
+
+        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
         public async Task CorrectlyOptimizesSnakeImage()
         {
             await OptimizeFileTest("snake.png");
