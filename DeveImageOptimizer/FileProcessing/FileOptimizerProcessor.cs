@@ -1,5 +1,5 @@
 ﻿using DeveCoolLib.Conversion;
-using DeveCoolLib.ProcessAsTask;
+using DeveImageOptimizer.Exceptions;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
@@ -26,6 +26,11 @@ namespace DeveImageOptimizer.FileProcessing
 
         public async Task OptimizeFile(OptimizableFile file)
         {
+            if (!File.Exists(Configuration.FileOptimizerPath))
+            {
+                throw new FileOptimizerNotFoundException($"Could not find FileOptimizer in path: '${Configuration.FileOptimizerPath}'");
+            }
+
             var w = Stopwatch.StartNew();
 
             var tempFiles = new List<string>();
@@ -117,7 +122,7 @@ namespace DeveImageOptimizer.FileProcessing
 
                 if (errors.Count == 0 && newSize < file.OriginalSize)
                 {
-                    
+
                     await AsyncFileHelper.CopyFileAsync(tempFilePath, file.Path, true);
                     if (Configuration.KeepFileAttributes)
                     {
