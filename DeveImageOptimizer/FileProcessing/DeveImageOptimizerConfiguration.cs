@@ -46,6 +46,11 @@ namespace DeveImageOptimizer.FileProcessing
         public bool ForwardOptimizerToolLogsToConsole { get; set; } = false;
 
         /// <summary>
+        /// Configure whether to keep the file attributes like CreationDate and ModifiedDate after optimisation.
+        /// </summary>
+        public bool KeepFileAttributes { get; set; } = false;
+
+        /// <summary>
         /// Configure how strong the image compression should be. Only the levels 'Maximum' and 'Placebo' will 
         /// </summary>
         public ImageOptimizationLevel ImageOptimizationLevel { get; set; } = ImageOptimizationLevel.Maximum;

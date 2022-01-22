@@ -40,6 +40,8 @@ namespace DeveImageOptimizer.FileProcessing
                 var tempFilePath = Path.Combine(Configuration.TempDirectory, RandomFileNameHelper.RandomizeFileName(fileName));
                 tempFiles.Add(tempFilePath);
 
+                var originalCreationTime = File.GetCreationTimeUtc(file.Path);
+                var originalLastModifiedTime = File.GetLastWriteTimeUtc(file.Path);
                 await AsyncFileHelper.CopyFileAsync(file.Path, tempFilePath, true);
 
                 Orientation? jpegFileOrientation = null;
@@ -115,7 +117,13 @@ namespace DeveImageOptimizer.FileProcessing
 
                 if (errors.Count == 0 && newSize < file.OriginalSize)
                 {
+                    
                     await AsyncFileHelper.CopyFileAsync(tempFilePath, file.Path, true);
+                    if (Configuration.KeepFileAttributes)
+                    {
+                        File.SetCreationTimeUtc(file.Path, originalCreationTime);
+                        File.SetLastWriteTimeUtc(file.Path, originalLastModifiedTime);
+                    }
                 }
                 else if (errors.Count != 0)
                 {
