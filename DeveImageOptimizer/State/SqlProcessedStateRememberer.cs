@@ -1,12 +1,9 @@
 ﻿using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State.SqlState;
-using SixLabors.ImageSharp;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.State
@@ -17,14 +14,17 @@ namespace DeveImageOptimizer.State
 
         private readonly string _filePath;
 
-        public SqlProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
+        public SqlProcessedStateRememberer(bool shouldAlwaysOptimize, string? saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
 
-            _filePath = saveFilePath;
-            if (_filePath == null)
+            if (saveFilePath == null)
             {
                 _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedFilesSqlDbName);
+            }
+            else
+            {
+                _filePath = saveFilePath;
             }
 
             var dbContext = CreateDbContext();

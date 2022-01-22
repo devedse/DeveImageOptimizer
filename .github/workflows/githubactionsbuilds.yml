@@ -316,7 +316,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Build with dotnet
       run: dotnet build DeveImageOptimizer.sln -c Release /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}} # Project needs to build before training a model.
     - name: Train Intellicode Model
@@ -330,7 +330,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Install dependencies
       run: dotnet restore DeveImageOptimizer.sln
     - name: Build
@@ -347,7 +347,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         source-url: https://nuget.pkg.github.com/<organization>/index.json
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}        
     - uses: actions/setup-java@v1

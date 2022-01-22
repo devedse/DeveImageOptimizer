@@ -5,11 +5,11 @@ namespace DeveImageOptimizer.Helpers
 {
     public class DeveProgressReporter<T>
     {
-        private readonly Func<T, Task> _reportProgress;
+        private readonly Func<T, Task>? _reportProgress;
         private readonly bool _useSynchronizationContext;
-        private readonly IProgress<T> _progress;
+        private readonly IProgress<T>? _progress;
 
-        public DeveProgressReporter(Func<T, Task> reportProgress, bool useSynchronizationContext)
+        public DeveProgressReporter(Func<T, Task>? reportProgress, bool useSynchronizationContext)
         {
             _useSynchronizationContext = useSynchronizationContext;
 
@@ -23,7 +23,7 @@ namespace DeveImageOptimizer.Helpers
 
         public async Task Report(T value)
         {
-            if (_reportProgress != null)
+            if (_reportProgress != null && _progress != null)
             {
                 if (_useSynchronizationContext)
                 {

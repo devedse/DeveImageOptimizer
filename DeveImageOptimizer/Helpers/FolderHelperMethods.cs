@@ -31,7 +31,7 @@ namespace DeveImageOptimizer.Helpers
         public static string FailedFilesDirectory => Internal_FailedFilesDirectory.Value;
 
         public static Lazy<string> Internal_AppDataFolder { get; } = new Lazy<string>(() => EnsureExists(CreateAppDataFolder()));
-        public static Lazy<string> Internal_AssemblyDirectory { get; } = new Lazy<string>(() => EnsureExists(CreateLocationOfImageProcessorAssemblyDirectory()));
+        public static Lazy<string> Internal_AssemblyDirectory { get; } = new Lazy<string>(() => DeveCoolLib.PathHelpers.FolderHelperMethods.AssemblyDirectory);
         public static Lazy<string> Internal_TempDirectory { get; } = new Lazy<string>(() => EnsureExists(Path.Combine(Path.GetTempPath(), ConstantsAndConfig.TempDirectoryName)));
         public static Lazy<string> Internal_FailedFilesDirectory { get; } = new Lazy<string>(() => EnsureExists(Path.Combine(ConfigFolder, ConstantsAndConfig.FailedFilesDirectoryName)));
 
@@ -43,17 +43,10 @@ namespace DeveImageOptimizer.Helpers
             if (string.IsNullOrWhiteSpace(appdataPath))
             {
                 //Fall back to assembly directory (this is not ideal but it's required to be ran inside a windows nanoserver docker container)
-                appdataPath = CreateLocationOfImageProcessorAssemblyDirectory();
+                appdataPath = DeveCoolLib.PathHelpers.FolderHelperMethods.AssemblyDirectory;
             }
             var combinedPath = Path.Combine(appdataPath, ConstantsAndConfig.AppDataDirectoryName);
             return combinedPath;
-        }
-
-        private static string CreateLocationOfImageProcessorAssemblyDirectory()
-        {
-            var assembly = typeof(FolderHelperMethods).GetTypeInfo().Assembly;
-            var assemblyDir = Path.GetDirectoryName(assembly.Location);
-            return assemblyDir;
         }
 
         private static string EnsureExists(string dir)

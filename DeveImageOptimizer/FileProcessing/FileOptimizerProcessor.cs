@@ -16,12 +16,9 @@ namespace DeveImageOptimizer.FileProcessing
     {
         public DeveImageOptimizerConfiguration Configuration { get; }
 
-
         public FileOptimizerProcessor(DeveImageOptimizerConfiguration configuration)
         {
             Configuration = configuration;
-
-
 
             Directory.CreateDirectory(Configuration.TempDirectory);
             Directory.CreateDirectory(Configuration.FailedFilesDirectory);

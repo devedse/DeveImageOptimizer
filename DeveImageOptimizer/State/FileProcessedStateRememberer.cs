@@ -16,19 +16,22 @@ namespace DeveImageOptimizer.State
         private readonly ConcurrentDictionary<string, FileProcessedStateRemembererFile> _fullyOptimizedFileHashes = new ConcurrentDictionary<string, FileProcessedStateRemembererFile>();
         private readonly string _filePath;
 
-        public FileProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
+        public FileProcessedStateRememberer(bool shouldAlwaysOptimize, string? saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
 
-            _filePath = saveFilePath;
-            if (_filePath == null)
+            if (saveFilePath == null)
             {
                 _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedFilesFileName);
+            }
+            else
+            {
+                _filePath = saveFilePath;
             }
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {
-                string line;
+                string? line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     try

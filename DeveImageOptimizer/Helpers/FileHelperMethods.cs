@@ -23,7 +23,7 @@ namespace DeveImageOptimizer.Helpers
             }
         }
 
-        public static IEnumerable<FileAndCountOfFilesInDirectory> RecurseFiles(string directory, Func<string, bool> filter = null)
+        public static IEnumerable<FileAndCountOfFilesInDirectory> RecurseFiles(string directory, Func<string, bool>? filter = null)
         {
             if (filter == null)
             {

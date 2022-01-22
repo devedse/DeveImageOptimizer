@@ -4,7 +4,7 @@ namespace DeveImageOptimizer.Helpers
 {
     public static class RandomFileNameHelper
     {
-        public static string RandomizeFileName(string fileName, string desiredExtension = null)
+        public static string RandomizeFileName(string fileName, string? desiredExtension = null)
         {
             var nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             if (desiredExtension == null)

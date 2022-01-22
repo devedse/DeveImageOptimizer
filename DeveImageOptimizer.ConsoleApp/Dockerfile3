@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS base
 WORKDIR /root
 RUN dpkg --add-architecture i386 && dpkg --add-architecture amd64
 RUN apt update

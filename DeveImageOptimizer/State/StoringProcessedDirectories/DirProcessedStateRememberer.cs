@@ -1,5 +1,5 @@
-﻿using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.Helpers.Concurrent;
+﻿using DeveCoolLib.Collections.Concurrent;
+using DeveImageOptimizer.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,19 +13,22 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
         private readonly ConcurrentHashSet<string> _fullyOptimizedDirectories = new ConcurrentHashSet<string>();
         private readonly string _filePath;
 
-        public DirProcessedStateRememberer(bool shouldAlwaysOptimize, string saveFilePath = null)
+        public DirProcessedStateRememberer(bool shouldAlwaysOptimize, string? saveFilePath = null)
         {
             ShouldAlwaysOptimize = shouldAlwaysOptimize;
 
-            _filePath = saveFilePath;
-            if (_filePath == null)
+            if (saveFilePath == null)
             {
                 _filePath = Path.Combine(FolderHelperMethods.ConfigFolder, ConstantsAndConfig.ProcessedDirsFileName);
+            }
+            else
+            {
+                _filePath = saveFilePath;
             }
 
             using (var streamReader = new StreamReader(new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read)))
             {
-                string line;
+                string? line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     try
@@ -78,9 +81,9 @@ namespace DeveImageOptimizer.State.StoringProcessedDirectories
                 return true;
             }
 
-            var dirPath = Path.GetDirectoryName(path).ToLowerInvariant();
+            var dirPath = Path.GetDirectoryName(path)?.ToLowerInvariant();
 
-            if (!_fullyOptimizedDirectories.Contains(dirPath))
+            if (string.IsNullOrWhiteSpace(dirPath) || !_fullyOptimizedDirectories.Contains(dirPath))
             {
                 return true;
             }

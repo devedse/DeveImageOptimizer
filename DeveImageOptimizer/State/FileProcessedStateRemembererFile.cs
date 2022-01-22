@@ -1,4 +1,4 @@
-﻿using DeveImageOptimizer.Helpers.Concurrent;
+﻿using DeveCoolLib.Collections.Concurrent;
 using DeveImageOptimizer.ImageOptimization;
 
 namespace DeveImageOptimizer.State
@@ -13,6 +13,5 @@ namespace DeveImageOptimizer.State
             OptimizationLevel = optimizationLevel;
             ConcurrentHashSet = new ConcurrentHashSet<string>();
         }
-
     }
 }
