@@ -28,7 +28,7 @@ namespace DeveImageOptimizer.FileProcessing
         {
             if (!File.Exists(Configuration.FileOptimizerPath))
             {
-                throw new FileOptimizerNotFoundException($"Could not find FileOptimizer in path: '${Configuration.FileOptimizerPath}'");
+                throw new FileOptimizerNotFoundException(Configuration.FileOptimizerPath);
             }
 
             var w = Stopwatch.StartNew();
