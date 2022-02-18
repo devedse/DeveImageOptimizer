@@ -86,9 +86,10 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: jhead (3/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jhead.exe -q -autorot -zt  "Z:\FileOptimizerTemp\FileOptimizer_Input_4294959198_2.jpg"
                         //Plugin: Leanify (4/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\leanify.exe -q -p --keep-exif --keep-icc --jpeg-keep-all -i 30 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294960873_2.jpg"
                         //Plugin: jpegoptim (6/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jpegoptim.exe -o -q --all-progressive "Z:\FileOptimizerTemp\FileOptimizer_Input_8520_2.jpg"
-                        //Plugin: jpegtran (7/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jpegtran.exe -progressive -optimize -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg" "Z:\FileOptimizerTemp\FileOptimizer_Output_4294960987_2.jpg"
+                        //Plugin: jpegtran (7/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\jpegtran.exe -progressive -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg" "Z:\FileOptimizerTemp\FileOptimizer_Output_4294960987_2.jpg"
                         //Plugin: mozjpegtran (8/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\mozjpegtran.exe -outfile "Z:\FileOptimizerTemp\FileOptimizer_Output_8530_2.jpg" -progressive -optimize -perfect -optimize -copy all "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\2.jpg"
-                        //Plugin: ECT (9/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --allfilters -progressive -9 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294965741_2.jpg"
+                        //Plugin: ECT (9/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --mt-deflate --allfilters -progressive -90032 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294965741_2.jpg"
+                        //Plugin: pingo (10/10)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pingo.exe -progressive -s8 -table=6 "Z:\FileOptimizerTemp\FileOptimizer_Input_8485_Original.jpg"
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jhead.exe"), $"-autorot -zt \"{ImageOptimizationStep.InputFileToken}\"", false));
 
@@ -101,11 +102,11 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 30,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"--keep-exif --keep-icc --jpeg-keep-all -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\"", true));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"-p --keep-exif --keep-icc --jpeg-keep-all -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\"", true));
 
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegoptim.exe"), $"-o --all-progressive \"{ImageOptimizationStep.InputFileToken}\"", false));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegtran.exe"), $"-progressive -optimize -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "jpegtran.exe"), $"-progressive -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "mozjpegtran.exe"), $"-outfile \"{ImageOptimizationStep.OutputFileToken}\" -progressive -optimize -perfect -optimize -copy all \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         var ectLevel = imageOptimizationLevel switch
@@ -114,7 +115,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Fast => 3,
                             ImageOptimizationLevel.Normal => 5,
                             ImageOptimizationLevel.Maximum => 9,
-                            ImageOptimizationLevel.Placebo => 30060,
+                            ImageOptimizationLevel.Placebo => 90032,
                             _ => throw new NotSupportedException()
                         };
 
@@ -122,19 +123,18 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "ECT.exe"), $"--allfilters{extraTagB} -progressive -{ectLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
 
-                        //Apparently pingo doesn't copy metadata
-                        //var pingoLevel = imageOptimizationLevel switch
-                        //{
-                        //    ImageOptimizationLevel.SuperFast => 1,
-                        //    ImageOptimizationLevel.Fast => 3,
-                        //    ImageOptimizationLevel.Normal => 5,
-                        //    ImageOptimizationLevel.Maximum => 8,
-                        //    ImageOptimizationLevel.Placebo => 8,
-                        //    _ => throw new NotSupportedException()
-                        //};
+                        var pingoLevel = imageOptimizationLevel switch
+                        {
+                            ImageOptimizationLevel.SuperFast => 1,
+                            ImageOptimizationLevel.Fast => 3,
+                            ImageOptimizationLevel.Normal => 5,
+                            ImageOptimizationLevel.Maximum => 8,
+                            ImageOptimizationLevel.Placebo => 8,
+                            _ => throw new NotSupportedException()
+                        };
 
-                        //var extraTagPingo = imageOptimizationLevel >= ImageOptimizationLevel.Maximum ? "-table=6 " : "";
-                        //steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} {extraTagPingo}\"{ImageOptimizationStep.InputFileToken}\"", false));
+                        var extraTagPingo = imageOptimizationLevel >= ImageOptimizationLevel.Maximum ? "-table=6 " : "";
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} {extraTagPingo}\"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.PNGExtensions.Contains(e.ToUpperInvariant()):
@@ -143,9 +143,10 @@ namespace DeveImageOptimizer.ImageOptimization
                         //Plugin: TruePNG (4/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\truepng.exe -o4 -md keep all /i0 /nc /tz /quiet /y /out "Z:\FileOptimizerTemp\FileOptimizer_Output_4294960559_1.png" "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png"
                         //Plugin: PNGOut (5/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pngout.exe /q /y /r /d0 /mincodes0 /k1 /s0 "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_4294965414_1.png"
                         //Plugin: OptiPNG (7/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\optipng.exe -zw32k -quiet -o6 "Z:\FileOptimizerTemp\FileOptimizer_Input_8625_1.png"
+                        //<Not used> Plugin: Leanify (8/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\leanify.exe -q -p -i 30 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294961286_fileoptimizer.png"
                         //Plugin: pngwolf (9/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pngwolf.exe --out-deflate=zopfli,iter=30 --in="C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" --out="Z:\FileOptimizerTemp\FileOptimizer_Output_1440_1.png"
                         //Plugin: pngrewrite (10/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pngrewrite.exe "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_3539_1.png"
-                        //Plugin: ECT (12/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --allfilters -9 "Z:\FileOptimizerTemp\FileOptimizer_Input_7162_1.png"
+                        //Plugin: ECT (12/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\ECT.exe -quiet --mt-deflate --allfilters -90032 "Z:\FileOptimizerTemp\FileOptimizer_Input_7162_1.png"
                         //Plugin: pingo (13/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\pingo.exe -s8 "Z:\FileOptimizerTemp\FileOptimizer_Input_4294959867_Untitled.png"
                         //Plugin: DeflOpt (14/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\deflopt.exe /a /b /s /k "Z:\FileOptimizerTemp\FileOptimizer_Input_4294964645_1.png"
                         //Plugin: defluff (15/16)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\defluff.bat "C:\Users\Davy\Desktop\TestImages\FileOptimizer1\1.png" "Z:\FileOptimizerTemp\FileOptimizer_Output_8276_1.png"
@@ -194,6 +195,18 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
 
+                        //Not used when copy metadata is enabled
+                        //var leanifyLevel = imageOptimizationLevel switch
+                        //{
+                        //    ImageOptimizationLevel.SuperFast => 1,
+                        //    ImageOptimizationLevel.Fast => 1,
+                        //    ImageOptimizationLevel.Normal => 9,
+                        //    ImageOptimizationLevel.Maximum => 30,
+                        //    ImageOptimizationLevel.Placebo => 30,
+                        //    _ => throw new NotSupportedException()
+                        //};
+                        //steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "Leanify.exe"), $"-p -i {leanifyLevel} \"{ImageOptimizationStep.InputFileToken}\"", true));
+
                         var pngWolfIterations = imageOptimizationLevel switch
                         {
                             ImageOptimizationLevel.SuperFast => 1,
@@ -212,8 +225,8 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.SuperFast => 1,
                             ImageOptimizationLevel.Fast => 3,
                             ImageOptimizationLevel.Normal => 5,
-                            ImageOptimizationLevel.Maximum => 90032,
-                            ImageOptimizationLevel.Placebo => 30060,
+                            ImageOptimizationLevel.Maximum => 9,
+                            ImageOptimizationLevel.Placebo => 90032,
                             _ => throw new NotSupportedException()
                         };
 
