@@ -46,7 +46,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_VIPS");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
-            Assert.Equal(957775, result);
+            Assert.Equal(957777, result);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_IRFANVIEW");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
-            Assert.Equal(957775, result);
+            Assert.Equal(957777, result);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_PAINT");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
-            Assert.Equal(918501, result);
+            Assert.Equal(918503, result);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
             var result = await ImageComparerAndWriteOutputDifferences.CompareTheseImagesAndWriteResultToOutputAsync(image1path, image2path, JpegInvestigationName, "JPG_TO_PaintNET");
             //It doesn't really matter if this test fails but I just wanted to note this down to know if ImageSharp changes again
-            Assert.Equal(918501, result);
+            Assert.Equal(918503, result);
         }
 
 
