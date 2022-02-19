@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build_number: "1234"
+    steps:
+    - name: Just a message
+      run: echo "Set version to 1234"
 
 
   build_docker_linux:
