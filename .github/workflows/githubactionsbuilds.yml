@@ -126,7 +126,7 @@ jobs:
           ./DeveImageOptimizer/bin/Release/*.nupkg
           ./DeveImageOptimizer/bin/Release/*.snupkg
 
- release_github:
+  release_github:
     needs: [generate_version_number, intellicode, build_windows, build_linux]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
