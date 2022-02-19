@@ -1,10 +1,6 @@
 name: GitHubActionsBuilds
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: push
 
 jobs:
   generate_version_number:
@@ -18,292 +14,6 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
-  build_docker_linux:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: devedse
-        password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:latest
-        platforms: all
-    - name: Available platforms
-      run: echo ${{ steps.qemu.outputs.platforms }}
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Builder instance name
-      run: echo ${{ steps.buildx.outputs.name }}
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Buildx
-      run: |
-        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        echo Version: $VERSION
-        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
-
-  build_docker_linux_qemu520:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: devedse
-        password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:qemu-v5.2.0
-        platforms: all
-    - name: Available platforms
-      run: echo ${{ steps.qemu.outputs.platforms }}
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Builder instance name
-      run: echo ${{ steps.buildx.outputs.name }}
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Buildx
-      run: |
-        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        echo Version: $VERSION
-        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
-
-  build_docker_linux_crazymax_600rc4:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: devedse
-        password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: crazymax/binfmt:v6.0.0-rc4
-        platforms: all
-    - name: Available platforms
-      run: echo ${{ steps.qemu.outputs.platforms }}
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Builder instance name
-      run: echo ${{ steps.buildx.outputs.name }}
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Buildx
-      run: |
-        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        echo Version: $VERSION
-        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
-
-  build_docker_linux_tonistiigi_600:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: devedse
-        password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:qemu-v6.0.0
-        platforms: all
-    - name: Available platforms
-      run: echo ${{ steps.qemu.outputs.platforms }}
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Builder instance name
-      run: echo ${{ steps.buildx.outputs.name }}
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Buildx
-      run: |
-        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        echo Version: $VERSION
-        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
-
-  build_docker_linux_qusbuild:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: devedse
-        password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Setup qus
-      run: |
-        docker run --rm --privileged aptman/qus -s -- -p
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Builder instance name
-      run: echo ${{ steps.buildx.outputs.name }}
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Buildx
-      run: |
-        export VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        echo Version: $VERSION
-        docker buildx build -f DeveImageOptimizer.ConsoleApp/Linux.Dockerfile --build-arg BUILD_VERSION=$VERSION --platform linux/arm64,linux/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleapp:latest --push .
-
-  test_docker_linux_qemudefault:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:latest
-        platforms: all
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linux_qemu520:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:qemu-v5.2.0
-        platforms: all
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linux_qemu_crazymax_600rc4:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: crazymax/binfmt:v6.0.0-rc4
-        platforms: all
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linux_qemu_tonistiigi_600:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-      with:
-        image: tonistiigi/binfmt:qemu-v6.0.0
-        platforms: all
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linuxqus:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup qus
-      run: |
-        docker run --rm --privileged aptman/qus -s -- -p
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linuxnoqemu:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/arm64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  test_docker_linuxnoqemu_amd64image:
-    needs: [generate_version_number, build_docker_linux]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Test docker run
-      run: |
-        docker pull --platform linux/amd64 devedse/deveimageoptimizerconsoleapp
-        docker run --rm -t devedse/deveimageoptimizerconsoleapp
-        #docker run --rm --entrypoint /root/hangover/build/wine-host/loader/wine devedse/deveimageoptimizerconsoleapp:latest /root/hangover/build/qemu/x86_64-windows-user/qemu-x86_64.exe.so "/root/.wine/drive_c/Program Files/FileOptimizer/Plugins64/jpegoptim.exe" -o --all-progressive "/app/TestImage.jpg"
-
-  build_docker_windows:
-    needs: generate_version_number
-    runs-on: windows-2022
-    steps:
-    - uses: actions/checkout@v2
-    # - name: Login to Docker Hub
-    #   uses: docker/login-action@v1
-    #   with:
-    #     username: devedse
-    #     password: ${{ secrets.DOCKERHUBTOKEN }}
-    - name: Login to GitHub Package Registry #TODO replace with docker-login action when https://github.com/docker/login-action/issues/47
-      run: echo ${{ secrets.DOCKERHUBTOKEN }} | docker login -u devedse --password-stdin
-    # - name: Set up QEMU
-    #   id: qemu
-    #   uses: docker/setup-qemu-action@v1
-    #   with:
-    #     image: tonistiigi/binfmt:latest
-    #     platforms: all
-    # - name: Available platforms
-    #   run: echo ${{ steps.qemu.outputs.platforms }}
-    # - name: Set up Docker Buildx
-    #   id: buildx
-    #   uses: docker/setup-buildx-action@v1
-    # - name: Builder instance name
-    #   run: echo ${{ steps.buildx.outputs.name }}
-    # - name: Available platforms
-    #   run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Run Build
-      run: |
-        $env:VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
-        Write-Host Version: $env:VERSION
-        docker build -f DeveImageOptimizer.ConsoleApp/WindowsServer.Dockerfile --build-arg BUILD_VERSION=$env:VERSION --platform windows/amd64 -t devedse/deveimageoptimizerconsoleapp:${{needs.generate_version_number.outputs.build_number}} -t devedse/deveimageoptimizerconsoleappwindows:latest .
 
 
   intellicode:
@@ -401,18 +111,69 @@ jobs:
       run: .\Scripts\GoPackage.ps1
       shell: powershell
   
+    - uses: actions/upload-artifact@v2
+      with:
+        name: DeveImageOptimizer7z
+        path: ./Scripts/Output/DeveImageOptimizer.7z
+    - uses: actions/upload-artifact@v2
+      with:
+        name: DeveImageOptimizerZip
+        path: ./Scripts/Output/DeveImageOptimizer.zip
+    - uses: actions/upload-artifact@v2
+      with:
+        name: DeveImageOptimizerNuGet
+        path: |
+          ./DeveImageOptimizer/bin/Release/*.nupkg
+          ./DeveImageOptimizer/bin/Release/*.snupkg
+
+ release_github:
+    needs: [generate_version_number, intellicode, build_windows, build_linux]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: ./artifacts/
+
+    - name: Display structure of downloaded files
+      run: |
+        cd ./artifacts/
+        ls -R
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: 1.0.${{needs.generate_version_number.outputs.build_number}}
+        release_name: 1.0.${{needs.generate_version_number.outputs.build_number}}
+        body: |
+          ${{ github.event.head_commit.message }}
+        draft: false
+        prerelease: false
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: 1.0.${{needs.generate_version_number.outputs.build_number}}
         files: |
-          ./Scripts/Output/DeveImageOptimizer.7z
-          ./Scripts/Output/DeveImageOptimizer.zip
-          ./DeveImageOptimizer/bin/Release/*.nupkg
-          ./DeveImageOptimizer/bin/Release/*.snupkg
+          ./artifacts/DeveImageOptimizer7z/DeveImageOptimizer.7z
+          ./artifacts/DeveImageOptimizerZip/DeveImageOptimizer.zip
+          ./artifacts/DeveImageOptimizerNuGet/*.nupkg
+          ./artifacts/DeveImageOptimizerNuGet/*.snupkg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
+  release_nuget:
+    needs: [generate_version_number, intellicode, build_windows, build_linux, release_github]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: DeveImageOptimizerNuGet
+        path: ./artifacts/DeveImageOptimizerNuGet/
     - name: Push NuGet
-      run: dotnet nuget push ./DeveImageOptimizer/bin/Release/DeveImageOptimizer.1.0.${{needs.generate_version_number.outputs.build_number}}.nupkg -k ${{ secrets.NUGETTOKEN }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./artifacts/DeveImageOptimizerNuGet/DeveImageOptimizer.1.0.${{needs.generate_version_number.outputs.build_number}}.nupkg -k ${{ secrets.NUGETTOKEN }} -s https://api.nuget.org/v3/index.json
