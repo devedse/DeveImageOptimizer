@@ -14,7 +14,22 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
-
+  windows_runfileoptimizertests:
+    needs: generate_version_number
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core @ Latest
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Run download-fileoptimizer2.ps1 script
+      run: .\Scripts\download-fileoptimizer2.ps1
+      shell: powershell
+    - name: Test
+      run: dotnet test DeveImageOptimizer.sln --verbosity normal --no-build -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/
 
   intellicode:
     needs: generate_version_number
@@ -56,7 +71,6 @@ jobs:
     - name: Setup .NET Core @ Latest
       uses: actions/setup-dotnet@v1
       with:
-        source-url: https://nuget.pkg.github.com/<organization>/index.json
         dotnet-version: 6.0.x
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}        
