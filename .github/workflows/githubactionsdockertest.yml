@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build_number: "1234"
-    steps:
-      - name: SetMockedVersion
-        run: |
-          echo "::set-output name=build_number::1234"
 
 
   build_docker_linux:
