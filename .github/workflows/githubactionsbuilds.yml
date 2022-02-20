@@ -14,7 +14,7 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
-  windows_runfileoptimizertests:
+  windows_runfileoptimizertests_coverage_sonarqube:
     needs: generate_version_number
     runs-on: windows-2022
     steps:
@@ -23,20 +23,39 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '15' # The JDK version to make available on the path.
+        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        architecture: x64 # (x64 or x86) - defaults to x64
+    - name: Install tools
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet tool install --global dotnet-reportgenerator-globaltool
     - name: Run download-fileoptimizer2.ps1 script
       run: .\Scripts\download-fileoptimizer2.ps1
       shell: powershell
-    - name: Install dependencies
+    - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
-    - name: Build
+    - name: SonarQube begin
+      run: dotnet-sonarscanner begin /k:"DeveImageOptimizer" /o:"devedse-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${{secrets.SONARQUBETOKEN}} /d:sonar.cs.opencover.reportsPaths=".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml" /d:sonar.coverage.exclusions="DeveImageOptimizer.ConsoleApp/**/*.cs,DeveImageOptimizer.Tests/**/*.cs"
+    - name: dotnet build
       run: dotnet build DeveImageOptimizer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal
-      #-p:ParallelizeTestCollections=false
-    - name: Test2
-      run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/
+    - name: dotnet test and coverage
+      run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/  
+    - name: SonarQube end
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet-sonarscanner end /d:sonar.login=${{secrets.SONARQUBETOKEN}}
+    - name: Run CodeCov #codecov -f ".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml"
+      uses: codecov/codecov-action@v2
+      with:
+        #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        files: .\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml # optional
+        #flags: unittests # optional
+        #name: codecov-umbrella # optional
+        #fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)
 
   intellicode:
     needs: generate_version_number
@@ -63,11 +82,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Install dependencies
+    - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
-    - name: Build
+    - name: dotnet build
       run: dotnet build DeveImageOptimizer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
+    - name: dotnet test
       run: dotnet test DeveImageOptimizer.sln -c Release --no-build --verbosity normal
 
   build_windows:
@@ -79,40 +98,15 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}        
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '15' # The JDK version to make available on the path.
-        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
-        architecture: x64 # (x64 or x86) - defaults to x64
-    - name: Install tools
-      run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-    - name: Install dependencies
+    - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
-    - name: SonarQube begin
-      run: dotnet-sonarscanner begin /k:"DeveImageOptimizer" /o:"devedse-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${{secrets.SONARQUBETOKEN}} /d:sonar.cs.opencover.reportsPaths=".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml" /d:sonar.coverage.exclusions="DeveImageOptimizer.ConsoleApp/**/*.cs,DeveImageOptimizer.Tests/**/*.cs"
-    - name: Build
+    - name: dotnet build
       run: dotnet build DeveImageOptimizer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveImageOptimizer.sln --verbosity normal --no-build -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/
-    - name: SonarQube end
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: dotnet-sonarscanner end /d:sonar.login=${{secrets.SONARQUBETOKEN}}
+    - name: dotnet test
+      run: dotnet test DeveImageOptimizer.sln -c Release --no-build --verbosity normal
+
     - name: Pack
       run: dotnet pack DeveImageOptimizer\DeveImageOptimizer.csproj --verbosity normal --no-build -c Release /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Run CodeCov #codecov -f ".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml"
-      uses: codecov/codecov-action@v2
-      with:
-        #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-        files: .\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml # optional
-        #flags: unittests # optional
-        #name: codecov-umbrella # optional
-        #fail_ci_if_error: true # optional (default = false)
-        verbose: true # optional (default = false)
 
     - name: Run GoPackage.ps1 script
       run: .\Scripts\GoPackage.ps1
