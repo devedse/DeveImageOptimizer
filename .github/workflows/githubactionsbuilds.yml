@@ -34,9 +34,9 @@ jobs:
       run: dotnet build DeveImageOptimizer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Test
       run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal
-    #-p:ParallelizeTestCollections=false
-    # - name: Test2
-    #   run: dotnet test DeveImageOptimizer.sln --verbosity normal --no-build -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/
+      #-p:ParallelizeTestCollections=false
+    - name: Test2
+      run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/
 
   intellicode:
     needs: generate_version_number
