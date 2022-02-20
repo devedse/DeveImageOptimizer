@@ -1,5 +1,4 @@
 ﻿using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System;
 using System.Collections.Generic;
