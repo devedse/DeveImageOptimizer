@@ -3,7 +3,6 @@ using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
-using DeveImageOptimizer.Tests.FileProcessingDirect;
 using DeveImageOptimizer.Tests.TestHelpers;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests.FileProcessingFileOptimizer
+namespace DeveImageOptimizer.Tests.FileProcessingDirect
 {
     public class OptimizationLevelTests
     {
