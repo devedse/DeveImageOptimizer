@@ -2,7 +2,7 @@
 {
     public static class TraitNames
     {
-        public const string RunTime = nameof(RunTime);
-        public const string ShouldSkipForAppVeyor = nameof(ShouldSkipForAppVeyor);
+        public const string CallsFileOptimizer = nameof(CallsFileOptimizer);
+        public const string FailingTest = nameof(FailingTest);
     }
 }

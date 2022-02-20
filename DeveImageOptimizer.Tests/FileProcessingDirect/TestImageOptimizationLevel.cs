@@ -3,25 +3,20 @@ using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
-using DeveImageOptimizer.Tests.TestConfig;
 using DeveImageOptimizer.Tests.TestHelpers;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests.FileProcessing
+namespace DeveImageOptimizer.Tests.FileProcessingDirect
 {
     public class TestImageOptimizationLevel
     {
         [SkippableFact]
         public async Task CorrectlyOptimizesWithOptimizationLevel()
         {
-            var config = ConfigCreator.CreateTestConfig(false);
-            config.ImageOptimizationLevel = ImageOptimizationLevel.SuperFast;
+            var config = ConfigCreator.CreateTestConfig(false, ImageOptimizationLevel.SuperFast);
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesWithOptimizationLevel)}";
             var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
@@ -103,8 +98,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
         [SkippableFact]
         public async Task CorrectlyOptimizesWithOptimizationLevelWithDb()
         {
-            var config = ConfigCreator.CreateTestConfig(false);
-            config.ImageOptimizationLevel = ImageOptimizationLevel.SuperFast;
+            var config = ConfigCreator.CreateTestConfig(false, ImageOptimizationLevel.SuperFast);
 
             var testName = $"{nameof(FileProcessorDirTests)}_{nameof(CorrectlyOptimizesWithOptimizationLevel)}";
             var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.db");

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests.FileProcessing
+namespace DeveImageOptimizer.Tests.OtherImageTests
 {
     public class ImageLoadTests
     {
@@ -204,7 +204,7 @@ namespace DeveImageOptimizer.Tests.FileProcessing
 
             if (FileTypeHelper.IsJpgFile(imagepath))
             {
-                var file = JPEGFile.FromFile(imagepath);
+                var file = ImageFile.FromFile(imagepath);
                 ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
                 Assert.NotNull(file);

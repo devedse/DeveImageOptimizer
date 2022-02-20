@@ -15,7 +15,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
     {
         public const string BabeRuthInvestigationName = "BaberuthInvestigation";
 
-        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        [SkippableFact]
         public async Task ShouldBeEqualToAllIterationsOfRuth()
         {
             //These tests fail due to bug in TruePNG, but it's disabled in FileOptimizerFull
@@ -53,9 +53,11 @@ namespace DeveImageOptimizer.Tests.VariousTests
             }
         }
 
-        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        [SkippableFact]
         public async Task TestTruePngDirectly()
         {
+            throw new SkipException("This test fails because of an issue in FileOptimizer");
+
             //These tests fail due to bug in TruePNG, but it's disabled in FileOptimizerFull
 
             var bPNGCopyMetadata = true;

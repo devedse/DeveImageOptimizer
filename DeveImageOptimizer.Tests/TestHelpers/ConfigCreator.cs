@@ -5,7 +5,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
 {
     public static class ConfigCreator
     {
-        public static DeveImageOptimizerConfiguration CreateTestConfig(bool parallel, ImageOptimizationLevel imageOptimizationLevel = ImageOptimizationLevel.Maximum)
+        public static DeveImageOptimizerConfiguration CreateTestConfig(bool parallel = false, ImageOptimizationLevel imageOptimizationLevel = ImageOptimizationLevel.SuperFast, bool directMode = true)
         {
             var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
 
@@ -17,7 +17,7 @@ namespace DeveImageOptimizer.Tests.TestHelpers
                 HideOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
                 LogLevel = 4,
                 ImageOptimizationLevel = imageOptimizationLevel,
-                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true
+                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = directMode
             };
             return config;
         }

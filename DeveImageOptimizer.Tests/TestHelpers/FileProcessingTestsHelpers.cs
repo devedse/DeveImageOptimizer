@@ -1,7 +1,7 @@
 ﻿using DeveImageOptimizer.Helpers;
 using System.IO;
 
-namespace DeveImageOptimizer.Tests.FileProcessing
+namespace DeveImageOptimizer.Tests.TestHelpers
 {
     public static class FileProcessingTestsHelpers
     {

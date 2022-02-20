@@ -7,25 +7,17 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests.FileProcessing
+namespace DeveImageOptimizer.Tests.FileProcessingDirect
 {
     public class KeepFileAttributesTests
     {
-        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
         public async Task DoesNotKeepAttributesWhenKeepFIleAttributesIsFalse()
         {
-            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
             var fileName = "GoProBison.JPG";
 
-            var config = new DeveImageOptimizerConfiguration()
-            {
-                FileOptimizerPath = fileOptimizerPath,
-                HideOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true,
-                LogLevel = 4,
-                ImageOptimizationLevel = ImageOptimization.ImageOptimizationLevel.SuperFast,
-                KeepFileAttributes = false
-            };
+            var config = ConfigCreator.CreateTestConfig();
+            config.KeepFileAttributes = false;
 
             var fop = new FileOptimizerProcessor(config);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
@@ -64,21 +56,13 @@ namespace DeveImageOptimizer.Tests.FileProcessing
             }
         }
 
-        [SkippableFact, Trait(TraitNames.ShouldSkipForAppVeyor, TraitShouldSkipForAppVeyor.Yes)]
+        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
         public async Task KeepsAttributesWhenConfigured()
         {
-            var fileOptimizerPath = FileOptimizerFullExeFinder.GetFileOptimizerPathOrThrowSkipTestException();
             var fileName = "GoProBison.JPG";
 
-            var config = new DeveImageOptimizerConfiguration()
-            {
-                FileOptimizerPath = fileOptimizerPath,
-                HideOptimizerWindow = !TestConstants.ShouldShowFileOptimizerWindow,
-                CallOptimizationToolsDirectlyInsteadOfThroughFileOptimizer = true,
-                LogLevel = 4,
-                ImageOptimizationLevel = ImageOptimization.ImageOptimizationLevel.SuperFast,
-                KeepFileAttributes = true
-            };
+            var config = ConfigCreator.CreateTestConfig();
+            config.KeepFileAttributes = true;
 
             var fop = new FileOptimizerProcessor(config);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);

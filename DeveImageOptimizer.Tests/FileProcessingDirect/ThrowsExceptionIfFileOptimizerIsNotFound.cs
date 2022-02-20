@@ -3,14 +3,14 @@ using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
-using DeveImageOptimizer.Tests.TestConfig;
+using DeveImageOptimizer.Tests.TestHelpers;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DeveImageOptimizer.Tests.FileProcessing
+namespace DeveImageOptimizer.Tests.FileProcessingDirect
 {
     public class ThrowsExceptionIfFileOptimizerIsNotFound
     {
