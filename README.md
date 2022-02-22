@@ -9,10 +9,6 @@ This project is the source for the github package [DeveImageOptimizer](https://w
 |:--------------------:|
 | [![GitHubActions Builds](https://github.com/devedse/DeveImageOptimizer/workflows/GitHubActionsBuilds/badge.svg)](https://github.com/devedse/DeveImageOptimizer/actions/workflows/githubactionsbuilds.yml) |
 
-| AppVeyor (Windows build) (deprecated) |
-|:------------------------:|
-| [![Build status](https://ci.appveyor.com/api/projects/status/qo0hx7i9j2hrlmpr?svg=true)](https://ci.appveyor.com/project/devedse/deveimageoptimizer) |
-
 ## Code Coverage status
 
 | CodeCov |
