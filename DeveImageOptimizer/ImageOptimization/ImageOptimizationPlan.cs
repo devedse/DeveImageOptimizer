@@ -1,11 +1,9 @@
-﻿using DeveCoolLib.ProcessAsTask;
-using DeveImageOptimizer.FileProcessing;
+﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.ImageOptimization
@@ -27,6 +25,14 @@ namespace DeveImageOptimizer.ImageOptimization
             var ext = Path.GetExtension(imagePath).ToUpperInvariant();
             var steps = DeterminePlan(imageOptimizationLevel, ext);
 
+            var originalImageCopyForVerifyPath = "";
+            if (Configuration.VerifyImageAfterEveryOptimizationStep)
+            {
+                //Create a separate copy of the original
+                originalImageCopyForVerifyPath = Path.Combine(Configuration.TempDirectory, RandomFileNameHelper.RandomizeFileName(imagePath));
+                tempFiles.Add(originalImageCopyForVerifyPath);
+                await AsyncFileHelper.CopyFileAsync(imagePath, originalImageCopyForVerifyPath, true);
+            }
 
 
             bool success = true;
@@ -65,6 +71,19 @@ namespace DeveImageOptimizer.ImageOptimization
 
                 var warnIsBigger = fileSizeAfter > fileSizeBefore ? "(SKIPPED! After is larger then before)" : $"(Reduced by {fileSizeBefore - fileSizeAfter})";
                 var resultString = $"Optimization successfull: {fileSizeBefore} => {fileSizeAfter} {warnIsBigger} (Elapsed: {Math.Round(result.ProcessResults.RunTime.TotalSeconds, 2) } seconds)";
+
+                if (Configuration.VerifyImageAfterEveryOptimizationStep)
+                {
+                    var imagesEqual = await ImageComparer.AreImagesEqualAsync(originalImageCopyForVerifyPath, result.OutputPath);
+                    resultString += $" (Image still equal to original: {imagesEqual})";
+                    if (!imagesEqual)
+                    {
+                        errorsLog.Add($"Image not equal to original for step: {step.ToolExeFileName} {step.Arguments}");
+                        success = false;
+                        break;
+                    }
+                }
+
                 Console.WriteLine(resultString);
                 outputLog.Add(resultString);
                 outputLog.Add("");
@@ -134,7 +153,8 @@ namespace DeveImageOptimizer.ImageOptimization
                         };
 
                         var extraTagPingo = imageOptimizationLevel >= ImageOptimizationLevel.Maximum ? "-table=6 " : "";
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} {extraTagPingo}\"{ImageOptimizationStep.InputFileToken}\"", false));
+                        //Changed -progressive to -jpgtype=2. Should be the same though (in my tests it was)
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-jpgtype=2 -s{pingoLevel} -nostrip {extraTagPingo}\"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.PNGExtensions.Contains(e.ToUpperInvariant()):
@@ -243,7 +263,7 @@ namespace DeveImageOptimizer.ImageOptimization
                             ImageOptimizationLevel.Placebo => 8,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} -nostrip \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 

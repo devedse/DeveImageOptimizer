@@ -19,7 +19,7 @@ namespace DeveImageOptimizer.Tests.FileProcessingCompareDirectVsFileOptimizer
             await OptimizeFileTest("Image1A.JPG");
         }
 
-        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True), Trait(TraitNames.FailingTest, Trait.True)]
+        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
         public async Task CorrectlyOptimizesStandingRotatedImage()
         {
             await OptimizeFileTest("Image2A.JPG");

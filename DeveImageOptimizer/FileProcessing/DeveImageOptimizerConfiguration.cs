@@ -54,5 +54,10 @@ namespace DeveImageOptimizer.FileProcessing
         /// Configure how strong the image compression should be. Only the levels 'Maximum' and 'Placebo' will 
         /// </summary>
         public ImageOptimizationLevel ImageOptimizationLevel { get; set; } = ImageOptimizationLevel.Maximum;
+
+        /// <summary>
+        /// Whether to do a Pixel by Pixel comparison after every optimization step. This is a real debug feature that should not be used normally.
+        /// </summary>
+        public bool VerifyImageAfterEveryOptimizationStep { get; set; } = false;
     }
 }

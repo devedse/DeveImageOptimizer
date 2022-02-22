@@ -9,17 +9,9 @@ namespace DeveImageOptimizer.Helpers
     {
         public static async Task<Orientation?> UnrotateImageAsync(string path)
         {
-            return await Task.Run(() =>
-            {
-                return UnrotateImage(path);
-            });
-        }
+            var file = await JPEGFile.FromFileAsync(path);
 
-        private static Orientation? UnrotateImage(string path)
-        {
-            var file = JPEGFile.FromFile(path);
-
-            ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
+            ExifProperty? orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
             if (orientationExif != null)
             {
@@ -28,7 +20,7 @@ namespace DeveImageOptimizer.Helpers
                 {
                     orientationExif.Value = Orientation.Normal;
 
-                    file.Save(path);
+                    await file.SaveAsync(path);
 
                     return retval;
                 }
@@ -38,19 +30,11 @@ namespace DeveImageOptimizer.Helpers
 
         public static async Task RerotateImageAsync(string path, Orientation? newOrientation)
         {
-            await Task.Run(() =>
-            {
-                RerotateImage(path, newOrientation);
-            });
-        }
-
-        private static void RerotateImage(string path, Orientation? newOrientation)
-        {
             if (newOrientation != null)
             {
-                var file = ImageFile.FromFile(path);
+                var file = await ImageFile.FromFileAsync(path);
 
-                ExifProperty orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
+                ExifProperty? orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 
                 if (orientationExif != null)
                 {
@@ -61,7 +45,7 @@ namespace DeveImageOptimizer.Helpers
                     throw new InvalidOperationException("MetaData is not kept equal");
                 }
 
-                file.Save(path);
+                await file.SaveAsync(path);
             }
         }
     }
