@@ -19,7 +19,7 @@ This project is the source for the github package [DeveImageOptimizer](https://w
 |:-------:|
 | [![codecov](https://codecov.io/gh/devedse/DeveImageOptimizer/branch/master/graph/badge.svg)](https://codecov.io/gh/devedse/DeveImageOptimizer) |
 
-(Reason why Coverage is quite low is because a lot of tests can't run on the Build Server)
+(As of 21-02-2022 image optimization is also done in the unit tests which greatly improved the code coverage)
 
 ## Code Quality Status
 
