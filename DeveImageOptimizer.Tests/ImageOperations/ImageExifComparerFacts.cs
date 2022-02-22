@@ -29,5 +29,16 @@ namespace DeveImageOptimizer.Tests.ImageOperations
 
             Assert.False(areEqual);
         }
+
+        [Fact]
+        public async Task FindsOutThatExifDataIsDifferent2()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "After.JPG");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "AfterWithDifferentExif2.JPG");
+
+            var areEqual = await ImageExifComparer.AreImageExifDatasEqual(imageApath, imageBpath);
+
+            Assert.False(areEqual);
+        }
     }
 }
