@@ -1,6 +1,7 @@
 ﻿using DeveCoolLib.Conversion;
 using DeveImageOptimizer.Exceptions;
 using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOperations;
 using DeveImageOptimizer.ImageOptimization;
 using DeveImageOptimizer.State;
 using ExifLibrary;

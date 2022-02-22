@@ -3,13 +3,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DeveImageOptimizer.Helpers
+namespace DeveImageOptimizer.ImageOperations
 {
     public static class ExifImageRotator
     {
         public static async Task<Orientation?> UnrotateImageAsync(string path)
         {
-            var file = await JPEGFile.FromFileAsync(path);
+            var file = await ImageFile.FromFileAsync(path);
 
             ExifProperty? orientationExif = file.Properties.FirstOrDefault(t => t.Tag == ExifTag.Orientation);
 

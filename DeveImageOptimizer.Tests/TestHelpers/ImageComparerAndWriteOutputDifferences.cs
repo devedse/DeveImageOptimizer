@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOperations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;

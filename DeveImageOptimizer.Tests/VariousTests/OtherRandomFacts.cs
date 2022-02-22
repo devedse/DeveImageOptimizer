@@ -1,4 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOperations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;

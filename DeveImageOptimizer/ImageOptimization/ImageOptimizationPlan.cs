@@ -1,5 +1,6 @@
 ﻿using DeveImageOptimizer.FileProcessing;
 using DeveImageOptimizer.Helpers;
+using DeveImageOptimizer.ImageOperations;
 using System;
 using System.Collections.Generic;
 using System.IO;
