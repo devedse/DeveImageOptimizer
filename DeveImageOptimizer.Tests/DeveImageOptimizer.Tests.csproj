@@ -226,6 +226,9 @@
     <None Update="TestImages\Imagesharp\Resize_IsAppliedToAllFrames_Rgba32_giphy.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestImages\MonoGameIcon.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestImages\OfficeLensImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

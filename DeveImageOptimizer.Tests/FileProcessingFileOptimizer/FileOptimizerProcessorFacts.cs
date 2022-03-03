@@ -207,6 +207,12 @@ namespace DeveImageOptimizer.Tests.FileProcessingFileOptimizer
         }
 
         [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
+        public async Task OptimizesMonoGameIcon()
+        {
+            await OptimizeFileTest("MonoGameIcon.bmp");
+        }
+
+        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
         public async Task CorrectlyOptimizesReadOnlyFile()
         {
             var fileName = "ReadOnlyJpg.jpg";

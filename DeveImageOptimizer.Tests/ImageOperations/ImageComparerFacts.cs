@@ -18,5 +18,38 @@ namespace DeveImageOptimizer.Tests.ImageOperations
 
             Assert.True(areEqual);
         }
+
+        [Fact]
+        public async Task PngImageStillComparesCorrectly()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "08_1.png");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "08_1.png");
+
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
+        [Fact]
+        public async Task BmpImageStillComparesCorrectly()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "SmileFaceBmp.bmp");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "SmileFaceBmp.bmp");
+
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
+
+        [Fact]
+        public async Task GifImageStillComparesCorrectly()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "devtools-full_1.gif");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "devtools-full_1.gif");
+
+            var areEqual = await ImageComparer.AreImagesEqualAsync(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
     }
 }
