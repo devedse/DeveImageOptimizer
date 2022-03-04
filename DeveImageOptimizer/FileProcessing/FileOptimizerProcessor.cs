@@ -54,6 +54,9 @@ namespace DeveImageOptimizer.FileProcessing
                 bool shouldUseJpgWorkaround = FileTypeHelper.IsJpgFile(tempFilePath);
                 if (shouldUseJpgWorkaround)
                 {
+                    //From what I've found in my latest tests is that this is apparently not needed anymore
+                    //for the latest version of FileOptimizer or directly calling the plugins
+                    //For now I've just left it here as it doesn't hurt either.
                     jpegFileOrientation = await ExifImageRotator.UnrotateImageAsync(tempFilePath);
                 }
 
