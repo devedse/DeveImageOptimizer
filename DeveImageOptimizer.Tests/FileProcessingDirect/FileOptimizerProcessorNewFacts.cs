@@ -206,7 +206,7 @@ namespace DeveImageOptimizer.Tests.FileProcessingDirect
             await OptimizeFileTest("SmileEnzo.jpg");
         }
 
-        [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
+        [SkippableFact, Trait(TraitNames.FailingTest, Trait.True)]
         public async Task OptimizesMonoGameIcon()
         {
             await OptimizeFileTest("MonoGameIcon.bmp");

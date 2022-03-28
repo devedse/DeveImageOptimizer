@@ -40,5 +40,16 @@ namespace DeveImageOptimizer.Tests.ImageOperations
 
             Assert.False(areEqual);
         }
+
+        [Fact]
+        public async Task DoesntFailWhenThereIsWrongExifButTheImportantExifIsCorrect()
+        {
+            var imageApath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "EXIFTEST_BeforeOptimization.JPG");
+            var imageBpath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", "EXIFTEST_AfterOptimization.JPG");
+
+            var areEqual = await ImageExifComparer.AreImageExifDatasEqual(imageApath, imageBpath);
+
+            Assert.True(areEqual);
+        }
     }
 }
