@@ -12,9 +12,9 @@ namespace DeveImageOptimizer.Tests.Investigation
     public class TestSpecificImageWhyItFails
     {
         [SkippableFact, Trait(TraitNames.FailingTest, Trait.True)]
-        public async Task CorrectlyOptimizesStandingRotatedImage()
+        public async Task ImageFailInvestigationTest()
         {
-            await OptimizeFileTest("Image2A.JPG");
+            await OptimizeFileTest("MonoGameIcon.bmp");
         }
 
         private async Task OptimizeFileTest(string fileName)
