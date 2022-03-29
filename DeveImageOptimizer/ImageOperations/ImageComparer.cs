@@ -9,10 +9,7 @@ namespace DeveImageOptimizer.ImageOperations
             return Task.Run(async () =>
             {
                 var imagePixelsEqual = ImagePixelComparer.AreImagePixelsEqual(image1Path, image2Path);
-
-                //Commented out imageExifEqual because it doesn't work correctly yet
-                //var imageExifEqual = await ImageExifComparer.AreImageExifDatasEqual(image1Path, image2Path);
-                var imageExifEqual = true;
+                var imageExifEqual = await ImageExifComparer.AreImageExifDatasEqual(image1Path, image2Path);
 
                 return imagePixelsEqual && imageExifEqual;
             });

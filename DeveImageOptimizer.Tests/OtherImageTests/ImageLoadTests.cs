@@ -191,6 +191,12 @@ namespace DeveImageOptimizer.Tests.OtherImageTests
             TestImageLoading("Brokenstickman.JPG");
         }
 
+        [Fact]
+        public void CorrectlyLoadsMonoGameIcon()
+        {
+            TestImageLoading("MonoGameIcon.bmp");
+        }
+
         private void TestImageLoading(string filename)
         {
             var imagepath = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", filename);
