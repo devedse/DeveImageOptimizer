@@ -291,10 +291,10 @@ namespace DeveImageOptimizer.ImageOptimization
                 case var e when ConstantsFileExtensions.BMPExtensions.Contains(e.ToUpperInvariant()):
                     {
                         //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" -quiet -compress RLE "Z:\FileOptimizerTemp\FileOptimizer_Output_8722_TestImageBMP_xnvdctl3.bmp"
-                        //Plugin: ImageWorsener (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\imagew.exe -noresize -zipcmprlevel 9 -outfmt bmp -compress "rle" "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" "Z:\FileOptimizerTemp\FileOptimizer_Output_1885_TestImageBMP_xnvdctl3.bmp"
+                        //Plugin: ImageWorsener (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\imagew.exe -noresize -zipcmprlevel 9 -outfmt bmp -opt bmp:version=auto -compress "rle" "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageBMP_xnvdctl3.bmp" "Z:\FileOptimizerTemp\FileOptimizer_Output_1885_TestImageBMP_xnvdctl3.bmp"
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -compress RLE \"{ImageOptimizationStep.OutputFileToken}\"", false));
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "imagew.exe"), $"-noresize -zipcmprlevel 9 -outfmt bmp -compress \"rle\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "imagew.exe"), $"-noresize -zipcmprlevel 9 -outfmt bmp -opt bmp:version=auto -compress \"rle\" \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", false));
                     }
                     break;
                 case var e when ConstantsFileExtensions.GIFExtensions.Contains(e.ToUpperInvariant()):
