@@ -40,6 +40,19 @@ namespace DeveImageOptimizer.ImageOperations
                 if (image1.Frames.Count > 1)
                 {
                     Console.WriteLine("Image with multiple frames detected.");
+
+                    var gifMetaData1 = image1.Metadata.GetGifMetadata();
+                    var gifMetaData2 = image2.Metadata.GetGifMetadata();
+
+                    if (gifMetaData1 != null && gifMetaData2 != null)
+                    {
+                        if (gifMetaData1.RepeatCount != gifMetaData2.RepeatCount)
+                        {
+                            Console.WriteLine($"Repeat count for Gif not equal. Image1: {gifMetaData1.RepeatCount}, Image2: {gifMetaData2.RepeatCount}");
+                            return false;
+                        }
+                    }
+
                     Console.WriteLine($"Comparing all {image1.Frames.Count} frames...");
 
                     int pointer1 = 0;
@@ -105,16 +118,23 @@ namespace DeveImageOptimizer.ImageOperations
                         if (pixelsWrong != 0)
                         {
                             //Currently disabled
-                            //TODO: When image sharp implements this again, fix it.
 
-                            //using (var im = new Image<Rgba32>(frame1))
+                            //var data1 = new Rgba32[frame1.Width * frame1.Height];
+                            //var span1 = new Span<Rgba32>(data1);
+                            //frame1.CopyPixelDataTo(span1);
+
+                            //var data2 = new Rgba32[frame2.Width * frame2.Height];
+                            //var span2 = new Span<Rgba32>(data2);
+                            //frame2.CopyPixelDataTo(span1);
+
+                            //using (var im = Image.LoadPixelData(data1, frame1.Width, frame1.Height))
                             //{
                             //    using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
                             //    {
                             //        im.SaveAsPng(fs);
                             //    }
                             //}
-                            //using (var im = new Image<Rgba32>(frame2))
+                            //using (var im = Image.LoadPixelData(data2, frame2.Width, frame2.Height))
                             //{
                             //    using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
                             //    {
