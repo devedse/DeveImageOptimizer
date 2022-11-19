@@ -1,7 +1,7 @@
 
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS base
 ARG TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         git clone --recurse-submodules -j8 https://github.com/devedse/hangover.git /root/hangover ; \
@@ -143,8 +143,8 @@ RUN /root/hangover/build/wine-host/loader/wine /root/hangover/build/qemu/x86_64-
 ENV FILEOPTIMIZERPATH="/root/.wine/drive_c/Program Files/FileOptimizer/FileOptimizer64.exe"
 WORKDIR /app
 
-#FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+#FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim-amd64 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
 COPY ["DeveImageOptimizer.ConsoleApp/DeveImageOptimizer.ConsoleApp.csproj", "DeveImageOptimizer.ConsoleApp/"]

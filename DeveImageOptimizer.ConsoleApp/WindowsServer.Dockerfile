@@ -1,6 +1,6 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2022 AS base
+FROM mcr.microsoft.com/dotnet/sdk:7.0-windowsservercore-ltsc2022 AS base
 ARG TARGETPLATFORM
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 RUN if ($env:TARGETPLATFORM -eq 'windows/amd64') { ; \
@@ -25,7 +25,7 @@ RUN \
 # ENV FILEOPTIMIZERPATH="/root/.wine/drive_c/Program Files/FileOptimizer/FileOptimizer64.exe"
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2022 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-windowsservercore-ltsc2022 AS build
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
 COPY ["DeveImageOptimizer.ConsoleApp/DeveImageOptimizer.ConsoleApp.csproj", "DeveImageOptimizer.ConsoleApp/"]
