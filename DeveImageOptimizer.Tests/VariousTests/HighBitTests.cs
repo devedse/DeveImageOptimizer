@@ -53,7 +53,7 @@ namespace DeveImageOptimizer.Tests.VariousTests
             Assert.False(result2);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task CorrectlyOptimizesHighBitImage()
         {
             int width = 100;
