@@ -10,9 +10,9 @@ namespace DeveImageOptimizer.ImageOperations
 {
     public static class ImagePixelComparer
     {
-        private static Image<Rgba32> LoadImageHelper(string imagePath)
+        private static Image<Rgba64> LoadImageHelper(string imagePath)
         {
-            return Image.Load<Rgba32>(imagePath);
+            return Image.Load<Rgba64>(imagePath);
         }
 
         public static bool AreImagePixelsEqual(string image1Path, string image2Path)
@@ -104,8 +104,8 @@ namespace DeveImageOptimizer.ImageOperations
 
 
 
-                    ImageFrame<Rgba32> frame1 = image1.Frames[0];
-                    ImageFrame<Rgba32> frame2 = image2.Frames[0];
+                    ImageFrame<Rgba64> frame1 = image1.Frames[0];
+                    ImageFrame<Rgba64> frame2 = image2.Frames[0];
 
                     int delay1 = frame1.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
                     int delay2 = frame2.Metadata.GetFormatMetadata(GifFormat.Instance).FrameDelay;
@@ -204,7 +204,7 @@ namespace DeveImageOptimizer.ImageOperations
             }
         }
 
-        private static long FindWrongPixels(ImageFrame<Rgba32> image1, ImageFrame<Rgba32> image2)
+        private static long FindWrongPixels(ImageFrame<Rgba64> image1, ImageFrame<Rgba64> image2)
         {
             if (image1.Width != image2.Width || image1.Height != image2.Height)
             {
