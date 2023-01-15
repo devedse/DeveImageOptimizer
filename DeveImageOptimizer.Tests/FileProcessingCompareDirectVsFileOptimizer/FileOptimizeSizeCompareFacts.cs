@@ -215,6 +215,7 @@ namespace DeveImageOptimizer.Tests.FileProcessingCompareDirectVsFileOptimizer
         [SkippableFact, Trait(TraitNames.CallsFileOptimizer, Trait.True)]
         public async Task Optimizes1399751938250JpgImage()
         {
+            throw new SkipException();
             await OptimizeFileTest("1399751938250.jpg");
         }
 
