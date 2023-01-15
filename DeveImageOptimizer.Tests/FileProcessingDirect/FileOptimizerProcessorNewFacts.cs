@@ -213,6 +213,12 @@ namespace DeveImageOptimizer.Tests.FileProcessingDirect
         }
 
         [SkippableFact]
+        public async Task Optimizes1399751938250JpgImage()
+        {
+            await OptimizeFileTest("1399751938250.jpg");
+        }
+
+        [SkippableFact]
         public async Task CorrectlyOptimizesReadOnlyFile()
         {
             var fileName = "ReadOnlyJpg.jpg";
