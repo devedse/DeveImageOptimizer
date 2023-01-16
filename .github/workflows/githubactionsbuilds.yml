@@ -39,14 +39,14 @@ jobs:
     - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
     - name: SonarQube begin
-      if: github.repository_owner == 'devedse'
+      if: github.actor != 'dependabot[bot]'
       run: dotnet-sonarscanner begin /k:"DeveImageOptimizer" /o:"devedse-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${{secrets.SONARQUBETOKEN}} /d:sonar.cs.opencover.reportsPaths=".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml" /d:sonar.coverage.exclusions="DeveImageOptimizer.ConsoleApp/**/*.cs,DeveImageOptimizer.Tests/**/*.cs"
     - name: dotnet build
       run: dotnet build DeveImageOptimizer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: dotnet test and coverage
       run: dotnet test DeveImageOptimizer.sln -c Release --filter "CallsFileOptimizer!=True&FailingTest!=True" --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=\`"cobertura,opencover\`" /p:CoverletOutput=./TestResults/Coverage/  
     - name: SonarQube end
-      if: github.repository_owner == 'devedse'
+      if: github.actor != 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: dotnet-sonarscanner end /d:sonar.login=${{secrets.SONARQUBETOKEN}}
