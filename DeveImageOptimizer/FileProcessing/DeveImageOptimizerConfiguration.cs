@@ -60,8 +60,8 @@ namespace DeveImageOptimizer.FileProcessing
         /// </summary>
         public bool VerifyImageAfterEveryOptimizationStep { get; set; } = false;
 
-        public bool OptimizePng { get; set; } = true;
         public bool OptimizeJpg { get; set; } = true;
+        public bool OptimizePng { get; set; } = true;
         public bool OptimizeGif { get; set; } = true;
         public bool OptimizeBmp { get; set; } = true;
     }
