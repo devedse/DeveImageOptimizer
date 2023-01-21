@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using DeveImageOptimizer.FileProcessing;
+using System.IO;
+using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DeveImageOptimizer
 {
@@ -13,6 +16,34 @@ namespace DeveImageOptimizer
         static ConstantsFileExtensions()
         {
             AllValidExtensions = JPGExtensions.Concat(PNGExtensions).Concat(GIFExtensions).Concat(BMPExtensions).ToArray();
+        }
+
+        public static bool ShouldSkipBasedOnConfiguration(DeveImageOptimizerConfiguration configuration, string fileExtension)
+        {
+            var upperExt = fileExtension.ToUpper();
+
+            //Check skipping
+            switch (upperExt)
+            {
+                case var e when !configuration.OptimizeJpg && JPGExtensions.Contains(e.ToUpperInvariant()):
+                    {
+                        return true;
+                    }
+                case var e when !configuration.OptimizePng && PNGExtensions.Contains(e.ToUpperInvariant()):
+                    {
+                        return true;
+                    }
+                case var e when !configuration.OptimizeGif && GIFExtensions.Contains(e.ToUpperInvariant()):
+                    {
+                        return true;
+                    }
+                case var e when !configuration.OptimizeBmp && BMPExtensions.Contains(e.ToUpperInvariant()):
+                    {
+                        return true;
+                    }
+            }
+
+            return false;
         }
     }
 }
