@@ -1,6 +1,4 @@
-﻿using DeveImageOptimizer.ImageOptimization;
-
-namespace DeveImageOptimizer.State.SqlState
+﻿namespace DeveImageOptimizer.State.SqlState
 {
     public class ProcessedFile
     {

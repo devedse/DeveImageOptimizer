@@ -71,7 +71,7 @@ namespace DeveImageOptimizer.ImageOptimization
                 //}
 
                 var warnIsBigger = fileSizeAfter > fileSizeBefore ? "(SKIPPED! After is larger then before)" : $"(Reduced by {fileSizeBefore - fileSizeAfter})";
-                var resultString = $"Optimization successfull: {fileSizeBefore} => {fileSizeAfter} {warnIsBigger} (Elapsed: {Math.Round(result.ProcessResults.RunTime.TotalSeconds, 2) } seconds)";
+                var resultString = $"Optimization successfull: {fileSizeBefore} => {fileSizeAfter} {warnIsBigger} (Elapsed: {Math.Round(result.ProcessResults.RunTime.TotalSeconds, 2)} seconds)";
 
                 if (Configuration.VerifyImageAfterEveryOptimizationStep)
                 {

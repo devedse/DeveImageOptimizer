@@ -5,7 +5,7 @@ namespace DeveImageOptimizer
 {
     public static class ConstantsAndConfig
     {
-        
+
         public const string AppDataDirectoryName = "DeveImageOptimizer";
         public const string TempDirectoryName = "DeveImageOptimizerTemp";
         public const string FailedFilesDirectoryName = "FailedFiles";

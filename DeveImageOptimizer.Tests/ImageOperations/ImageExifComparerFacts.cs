@@ -2,7 +2,6 @@
 using DeveImageOptimizer.ImageOperations;
 using ExifLibrary;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -114,7 +113,7 @@ namespace DeveImageOptimizer.Tests.ImageOperations
     {
         public TestImageFile(params ExifProperty[] collection)
         {
-            foreach(var prop in collection)
+            foreach (var prop in collection)
             {
                 Properties.Add(prop);
             }
@@ -122,12 +121,12 @@ namespace DeveImageOptimizer.Tests.ImageOperations
 
         public override void Crush()
         {
-            
+
         }
 
         protected override void SaveInternal(MemoryStream stream)
         {
-            
+
         }
     }
 }

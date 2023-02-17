@@ -1,6 +1,5 @@
 ﻿using DeveImageOptimizer.State;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DeveImageOptimizer.ConsoleApp

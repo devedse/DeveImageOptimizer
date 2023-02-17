@@ -4,13 +4,8 @@ using DeveImageOptimizer.ImageOperations;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.Tests.TestHelpers;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

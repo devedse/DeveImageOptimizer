@@ -106,7 +106,7 @@ namespace DeveImageOptimizer.Tests.ExternalTools
 
         // http://msdn.microsoft.com/en-us/library/ie/ms687284(v=vs.85).aspx
         [PreserveSig]
-        void Load([In, MarshalAs(UnmanagedType.LPWStr)]string pszFileName, [MarshalAs(UnmanagedType.U4)] StorageMode dwMode);
+        void Load([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [MarshalAs(UnmanagedType.U4)] StorageMode dwMode);
 
         [PreserveSig]
         void Save([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [In, MarshalAs(UnmanagedType.Bool)] bool fRemember);

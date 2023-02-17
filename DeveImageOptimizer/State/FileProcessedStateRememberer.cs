@@ -1,7 +1,5 @@
 ﻿using DeveImageOptimizer.Helpers;
-using DeveImageOptimizer.Helpers.Concurrent;
 using DeveImageOptimizer.ImageOptimization;
-using SixLabors.ImageSharp;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
