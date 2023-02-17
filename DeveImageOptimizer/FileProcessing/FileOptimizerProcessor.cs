@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DeveImageOptimizer.FileProcessing
 {
@@ -30,6 +32,14 @@ namespace DeveImageOptimizer.FileProcessing
             if (!File.Exists(Configuration.FileOptimizerPath))
             {
                 throw new FileOptimizerNotFoundException(Configuration.FileOptimizerPath);
+            }
+
+            var ext = Path.GetExtension(file.Path).ToUpperInvariant();
+            if (ConstantsFileExtensions.ShouldSkipBasedOnConfiguration(Configuration, ext))
+            {
+                Console.WriteLine($"=== Skipping image: {file.Path} due to extension '{ext}' being disabled in configuration ===");
+                file.SetSkipped();
+                return;
             }
 
             var w = Stopwatch.StartNew();

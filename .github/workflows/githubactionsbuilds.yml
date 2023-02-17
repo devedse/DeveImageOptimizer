@@ -19,14 +19,15 @@ jobs:
     needs: generate_version_number
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core @ Latest
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - uses: actions/setup-java@v1
+    - uses: actions/setup-java@v3
       with:
-        java-version: '15' # The JDK version to make available on the path.
+        distribution: 'zulu'
+        java-version: '19' # The JDK version to make available on the path.
         java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
         architecture: x64 # (x64 or x86) - defaults to x64
     - name: Install tools
@@ -51,7 +52,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: dotnet-sonarscanner end /d:sonar.login=${{secrets.SONARQUBETOKEN}}
     - name: Run CodeCov #codecov -f ".\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml"
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         files: .\DeveImageOptimizer.Tests\TestResults\Coverage\coverage.opencover.xml # optional
@@ -64,11 +65,11 @@ jobs:
     needs: generate_version_number
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0 # We need to fetch the entire Git history in order to verify the authenticity.
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: Build with dotnet
@@ -80,9 +81,9 @@ jobs:
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: dotnet restore
@@ -96,9 +97,9 @@ jobs:
     needs: generate_version_number
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core @ Latest
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: dotnet restore
@@ -115,15 +116,15 @@ jobs:
       run: .\Scripts\GoPackage.ps1
       shell: powershell
   
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: DeveImageOptimizer7z
         path: ./Scripts/Output/DeveImageOptimizer.7z
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: DeveImageOptimizerZip
         path: ./Scripts/Output/DeveImageOptimizer.zip
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: DeveImageOptimizerNuGet
         path: |
@@ -136,7 +137,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         path: ./artifacts/
 
@@ -175,7 +176,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: DeveImageOptimizerNuGet
         path: ./artifacts/DeveImageOptimizerNuGet/

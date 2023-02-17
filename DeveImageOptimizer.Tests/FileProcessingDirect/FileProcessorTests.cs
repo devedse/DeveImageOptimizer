@@ -240,5 +240,75 @@ namespace DeveImageOptimizer.Tests.FileProcessingDirect
                 Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Failed));
             }
         }
+
+
+
+        [SkippableFact]
+        public async Task CorrectlyOptimizesCompleteDirectoryButDoesntOptimizePngIfConfigurationIsSetLikeThat()
+        {
+            var config = ConfigCreator.CreateTestConfig(false);
+            config.OptimizePng = false;
+
+            var testName = $"{nameof(FileProcessorTests)}_{nameof(CorrectlyOptimizesCompleteDirectoryButDoesntOptimizePngIfConfigurationIsSetLikeThat)}";
+            var fileNameFileProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}.txt");
+            var fileNameDirProcessedStateRememberer = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, $"{testName}-dir.txt");
+
+            string sampleDirToOptimize = FileProcessingTestsHelpers.PrepareTestOptimizeDir("SampleDirToOptimize", fileNameFileProcessedStateRememberer, fileNameDirProcessedStateRememberer, testName);
+
+            //Optimize first time                
+            {
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
+                var dirRememberer = new DirProcessedStateRememberer(true, fileNameDirProcessedStateRememberer);
+                var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(4, results.Count);
+                Assert.Equal(3, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));
+
+                foreach (var result in results.Where(t => t.OptimizationResult == OptimizationResult.Success))
+                {
+                    Assert.True(result.OriginalSize > result.OptimizedSize);
+                }
+            }
+
+            //Optimize second time
+            {
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
+                var dirRememberer = new DirProcessedStateRememberer(true, fileNameDirProcessedStateRememberer);
+                var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(4, results.Count);
+                foreach (var result in results)
+                {
+                    Assert.Equal(OptimizationResult.Skipped, result.OptimizationResult);
+                    Assert.True(result.OriginalSize == result.OptimizedSize);
+                }
+            }
+
+            config.OptimizePng = true;
+
+            //Optimize third time with config changed
+            {
+                var rememberer = new FileProcessedStateRememberer(false, fileNameFileProcessedStateRememberer);
+                var dirRememberer = new DirProcessedStateRememberer(true, fileNameDirProcessedStateRememberer);
+                var fp = new DeveImageOptimizerProcessor(config, null, rememberer, dirRememberer);
+
+                var results = (await fp.ProcessDirectory(sampleDirToOptimize)).ToList();
+
+                Assert.Equal(4, results.Count);
+
+                Assert.Equal(3, results.Count(t => t.OptimizationResult == OptimizationResult.Skipped));
+                Assert.Equal(1, results.Count(t => t.OptimizationResult == OptimizationResult.Success));
+
+                foreach (var result in results.Where(t => t.OptimizationResult == OptimizationResult.Success))
+                {
+                    Assert.True(result.OriginalSize > result.OptimizedSize);
+                }
+            }
+        }
     }
 }

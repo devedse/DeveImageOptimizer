@@ -59,5 +59,10 @@ namespace DeveImageOptimizer.FileProcessing
         /// Whether to do a Pixel by Pixel comparison after every optimization step. This is a real debug feature that should not be used normally.
         /// </summary>
         public bool VerifyImageAfterEveryOptimizationStep { get; set; } = false;
+
+        public bool OptimizeJpg { get; set; } = true;
+        public bool OptimizePng { get; set; } = true;
+        public bool OptimizeGif { get; set; } = true;
+        public bool OptimizeBmp { get; set; } = true;
     }
 }
