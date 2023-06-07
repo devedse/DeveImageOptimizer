@@ -299,10 +299,10 @@ namespace DeveImageOptimizer.ImageOptimization
                     break;
                 case var e when ConstantsFileExtensions.GIFExtensions.Contains(e.ToUpperInvariant()):
                     {
-                        //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif" -quiet -set dispose background -layers optimize -compress -loop 0 LZW "Z:\FileOptimizerTemp\FileOptimizer_Output_4294964962_TestImageGIF_gykbljhq.gif"
+                        //Plugin: ImageMagick (1/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\magick.exe convert "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif" -quiet -layers optimize -compress -loop 0 LZW "Z:\FileOptimizerTemp\FileOptimizer_Output_4294964962_TestImageGIF_gykbljhq.gif"
                         //Plugin: gifsicle (2/2)	Commandline: C:\PROGRA~1\FILEOP~1\PLUGIN~1\gifsicle.exe -w -j --no-conserve-memory -o "Z:\FileOptimizerTemp\FileOptimizer_Output_4294966173_TestImageGIF_gykbljhq.gif" -O3 "C:\Users\Davy\AppData\Local\Temp\DeveImageOptimizerTemp\TestImageGIF_gykbljhq.gif"
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -set dispose background -layers optimize -compress -loop 0 LZW \"{ImageOptimizationStep.OutputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "magick.exe"), $"convert \"{ImageOptimizationStep.InputFileToken}\" -layers optimize -compress -loop 0 LZW \"{ImageOptimizationStep.OutputFileToken}\"", false));
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "gifsicle.exe"), $"-w -j --no-conserve-memory -o \"{ImageOptimizationStep.OutputFileToken}\" -O3 \"{ImageOptimizationStep.InputFileToken}\"", false));
                     }
                     break;
