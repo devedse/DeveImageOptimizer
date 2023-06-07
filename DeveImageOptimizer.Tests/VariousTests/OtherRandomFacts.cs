@@ -237,9 +237,13 @@ namespace DeveImageOptimizer.Tests.VariousTests
 
                         using (var imageAfter = Image.Load(image1temppath))
                         {
-                            var rotBefore = imageBefore.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
-                            var rotAfterUnrotate = imageAfterUnrotate.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
-                            var rotAfter = imageAfter.Metadata.ExifProfile.GetValue(ExifTag.Orientation);
+                            IExifValue<ushort> rotBefore;
+                            IExifValue<ushort> rotAfterUnrotate;
+                            IExifValue<ushort> rotAfter;
+
+                            Assert.True(imageBefore.Metadata.ExifProfile.TryGetValue(ExifTag.Orientation, out rotBefore));
+                            Assert.True(imageAfterUnrotate.Metadata.ExifProfile.TryGetValue(ExifTag.Orientation, out rotAfterUnrotate));
+                            Assert.True(imageAfter.Metadata.ExifProfile.TryGetValue(ExifTag.Orientation, out rotAfter));
 
                             Assert.Contains("270", rotBefore.ToString());
                             Assert.Contains("normal", rotAfterUnrotate.ToString().ToLowerInvariant());
