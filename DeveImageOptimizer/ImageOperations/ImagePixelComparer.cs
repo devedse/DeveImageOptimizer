@@ -119,22 +119,22 @@ namespace DeveImageOptimizer.ImageOperations
                         {
                             //Currently disabled
 
-                            //var data1 = new Rgba32[frame1.Width * frame1.Height];
-                            //var span1 = new Span<Rgba32>(data1);
+                            //var data1 = new Rgba64[frame1.Width * frame1.Height];
+                            //var span1 = new Span<Rgba64>(data1);
                             //frame1.CopyPixelDataTo(span1);
 
-                            //var data2 = new Rgba32[frame2.Width * frame2.Height];
-                            //var span2 = new Span<Rgba32>(data2);
+                            //var data2 = new Rgba64[frame2.Width * frame2.Height];
+                            //var span2 = new Span<Rgba64>(data2);
                             //frame2.CopyPixelDataTo(span1);
 
-                            //using (var im = Image.LoadPixelData(data1, frame1.Width, frame1.Height))
+                            //using (var im = Image.LoadPixelData<Rgba64>(data1, frame1.Width, frame1.Height))
                             //{
                             //    using (var fs = new FileStream($"Wrong_1_{pointer1}.png", FileMode.Create))
                             //    {
                             //        im.SaveAsPng(fs);
                             //    }
                             //}
-                            //using (var im = Image.LoadPixelData(data2, frame2.Width, frame2.Height))
+                            //using (var im = Image.LoadPixelData<Rgba64>(data2, frame2.Width, frame2.Height))
                             //{
                             //    using (var fs = new FileStream($"Wrong_2_{pointer2}.png", FileMode.Create))
                             //    {
