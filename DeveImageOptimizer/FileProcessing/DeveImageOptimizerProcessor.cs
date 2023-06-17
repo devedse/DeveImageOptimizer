@@ -1,4 +1,5 @@
-﻿using DeveImageOptimizer.Helpers;
+﻿using DeveCoolLib.PathHelpers;
+using DeveImageOptimizer.Helpers;
 using DeveImageOptimizer.Helpers.Concurrent;
 using DeveImageOptimizer.State;
 using DeveImageOptimizer.State.StoringProcessedDirectories;
