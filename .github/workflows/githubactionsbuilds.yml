@@ -116,15 +116,15 @@ jobs:
       run: .\Scripts\GoPackage.ps1
       shell: powershell
   
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveImageOptimizer7z
         path: ./Scripts/Output/DeveImageOptimizer.7z
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveImageOptimizerZip
         path: ./Scripts/Output/DeveImageOptimizer.zip
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveImageOptimizerNuGet
         path: |
@@ -228,7 +228,7 @@ jobs:
         tree /A
         cd
   
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: CodeQLAnalysis_${{ matrix.language }}
         path: ./artifacts/${{ matrix.language }}.zip
