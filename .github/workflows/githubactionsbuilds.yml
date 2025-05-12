@@ -61,22 +61,6 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  intellicode:
-    needs: generate_version_number
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # We need to fetch the entire Git history in order to verify the authenticity.
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
-    - name: Build with dotnet
-      run: dotnet build DeveImageOptimizer.sln -c Release /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}} # Project needs to build before training a model.
-    - name: Train Intellicode Model
-      uses: microsoft/vs-intellicode@v1
-
   build_linux:
     needs: generate_version_number
     runs-on: ubuntu-latest
@@ -132,7 +116,7 @@ jobs:
           ./DeveImageOptimizer/bin/Release/*.snupkg
 
   release_github:
-    needs: [generate_version_number, intellicode, build_windows, build_linux]
+    needs: [generate_version_number, build_windows, build_linux]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -171,7 +155,7 @@ jobs:
 
 
   release_nuget:
-    needs: [generate_version_number, intellicode, build_windows, build_linux, release_github]
+    needs: [generate_version_number, build_windows, build_linux, release_github]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
