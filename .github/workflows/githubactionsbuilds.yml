@@ -23,7 +23,7 @@ jobs:
     - name: Setup .NET Core @ Latest
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.x
     - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
@@ -71,7 +71,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.x
     - name: Build with dotnet
       run: dotnet build DeveImageOptimizer.sln -c Release /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}} # Project needs to build before training a model.
     - name: Train Intellicode Model
@@ -85,7 +85,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.x
     - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
     - name: dotnet build
@@ -101,7 +101,7 @@ jobs:
     - name: Setup .NET Core @ Latest
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.x
     - name: dotnet restore
       run: dotnet restore DeveImageOptimizer.sln
     - name: dotnet build
@@ -203,7 +203,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.x
 
     - name: Run tree
       run: tree /A
