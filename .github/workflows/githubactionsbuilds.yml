@@ -145,11 +145,16 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         tag_name: 1.0.${{needs.generate_version_number.outputs.build_number}}
+        name: 1.0.${{needs.generate_version_number.outputs.build_number}}
+        body: |
+          ${{ github.event.head_commit.message }}
         files: |
           ./artifacts/DeveImageOptimizer7z/DeveImageOptimizer.7z
           ./artifacts/DeveImageOptimizerZip/DeveImageOptimizer.zip
           ./artifacts/DeveImageOptimizerNuGet/*.nupkg
           ./artifacts/DeveImageOptimizerNuGet/*.snupkg
+        fail_on_unmatched_files: true
+        make_latest: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
