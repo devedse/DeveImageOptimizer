@@ -249,7 +249,9 @@ namespace DeveImageOptimizer.Tests.FileProcessingDirect
 
         private async Task OptimizeFileTest(string fileName)
         {
-            var config = ConfigCreator.CreateTestConfig(true, directMode: true);
+            var config = ConfigCreator.CreateTestConfig(true, directMode: true, imageOptimizationLevel: ImageOptimization.ImageOptimizationLevel.Placebo);
+
+            config.VerifyImageAfterEveryOptimizationStep = true;
 
             var fop = new FileOptimizerProcessor(config);
             var image1path = Path.Combine(FolderHelperMethods.Internal_AssemblyDirectory.Value, "TestImages", fileName);
