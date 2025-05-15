@@ -198,23 +198,27 @@ namespace DeveImageOptimizer.ImageOptimization
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pngout.exe"), $"/y /r /d{pngOutLevel} /mincodes0 /k1 /s0 \"{ImageOptimizationStep.InputFileToken}\" \"{ImageOptimizationStep.OutputFileToken}\"", true));
 
-                        var optiPngLevel = imageOptimizationLevel switch
-                        {
-                            ImageOptimizationLevel.SuperFast => 1,
-                            ImageOptimizationLevel.Fast => 3,
-                            ImageOptimizationLevel.Normal => 4,
-                            ImageOptimizationLevel.Maximum => 6,
-                            ImageOptimizationLevel.Placebo => 7,
-                            _ => throw new NotSupportedException()
-                        };
+                        //var optiPngLevel = imageOptimizationLevel switch
+                        //{
+                        //    ImageOptimizationLevel.SuperFast => 1,
+                        //    ImageOptimizationLevel.Fast => 3,
+                        //    ImageOptimizationLevel.Normal => 4,
+                        //    ImageOptimizationLevel.Maximum => 6,
+                        //    ImageOptimizationLevel.Placebo => 7,
+                        //    _ => throw new NotSupportedException()
+                        //};
 
-                        var extraOptiPngFlags = "";
-                        if (imageOptimizationLevel == ImageOptimizationLevel.Placebo)
-                        {
-                            extraOptiPngFlags = "-zm1-9 ";
-                        }
+                        //var extraOptiPngFlags = "";
+                        //if (imageOptimizationLevel == ImageOptimizationLevel.Placebo)
+                        //{
+                        //    extraOptiPngFlags = "-zm1-9 ";
+                        //}
 
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
+                        //steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
+                        var oxipngFlags = "--alpha --quiet --strip safe -o max";
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "oxipng.exe"), $"-Z {oxipngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
+
+
 
                         //Not used when copy metadata is enabled
                         //var leanifyLevel = imageOptimizationLevel switch
