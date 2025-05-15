@@ -75,7 +75,8 @@ namespace DeveImageOptimizer.ImageOptimization
 
                 if (Configuration.VerifyImageAfterEveryOptimizationStep)
                 {
-                    var imagesEqual = await ImageComparer.AreImagesEqualAsync(originalImageCopyForVerifyPath, result.OutputPath);
+                    //Technically we could skip this if outFile.Exists == false, but to be 100% complete I just point it to imagePathCur
+                    var imagesEqual = await ImageComparer.AreImagesEqualAsync(originalImageCopyForVerifyPath, imagePathCur);
                     resultString += $" (Image still equal to original: {imagesEqual})";
                     if (!imagesEqual)
                     {
@@ -90,7 +91,7 @@ namespace DeveImageOptimizer.ImageOptimization
                 outputLog.Add("");
             }
 
-            return new ImageOptimizationPlanResult(success, imagePathCur, outputLog, errorsLog);
+            return new ImageOptimizationPlanResult(success, imagePathCur, errorsLog, outputLog);
         }
 
         private List<ImageOptimizationStep> DeterminePlan(ImageOptimizationLevel imageOptimizationLevel, string ext)
@@ -215,9 +216,19 @@ namespace DeveImageOptimizer.ImageOptimization
                         //}
 
                         //steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "optipng.exe"), $"-zw32k -o{optiPngLevel} {extraOptiPngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
-                        var oxipngFlags = "--alpha --quiet --strip safe -o max";
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "oxipng.exe"), $"-Z {oxipngFlags}\"{ImageOptimizationStep.InputFileToken}\"", false));
+                       
 
+                        var oxiPngLevel = imageOptimizationLevel switch
+                        {
+                            ImageOptimizationLevel.SuperFast => "0",
+                            ImageOptimizationLevel.Fast => "1",
+                            ImageOptimizationLevel.Normal => "3",
+                            ImageOptimizationLevel.Maximum => "5",
+                            ImageOptimizationLevel.Placebo => "max",
+                            _ => throw new NotSupportedException()
+                        };
+
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "oxipng.exe"), $"-Z --alpha --strip safe -o {oxiPngLevel} \"{ImageOptimizationStep.InputFileToken}\"", false));
 
 
                         //Not used when copy metadata is enabled
@@ -262,13 +273,13 @@ namespace DeveImageOptimizer.ImageOptimization
                         var pingoLevel = imageOptimizationLevel switch
                         {
                             ImageOptimizationLevel.SuperFast => 1,
-                            ImageOptimizationLevel.Fast => 3,
-                            ImageOptimizationLevel.Normal => 5,
-                            ImageOptimizationLevel.Maximum => 8,
-                            ImageOptimizationLevel.Placebo => 8,
+                            ImageOptimizationLevel.Fast => 2,
+                            ImageOptimizationLevel.Normal => 3,
+                            ImageOptimizationLevel.Maximum => 4,
+                            ImageOptimizationLevel.Placebo => 4,
                             _ => throw new NotSupportedException()
                         };
-                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} -nostrip \"{ImageOptimizationStep.InputFileToken}\"", false));
+                        steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "pingo.exe"), $"-s{pingoLevel} -nostrip -lossless \"{ImageOptimizationStep.InputFileToken}\"", false));
 
                         steps.Add(new ImageOptimizationStep(Path.Join(toolpath, "deflopt.exe"), $"/a /b /k \"{ImageOptimizationStep.InputFileToken}\"", true));
 
